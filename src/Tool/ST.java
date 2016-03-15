@@ -1,6 +1,7 @@
 package Tool;
 
 import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.TimeZone;
@@ -48,6 +49,36 @@ public class ST {//Server Tool
 			e.printStackTrace();
 		}
 		return result;
+	}
+	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
+	private static String ByteToHex(byte[] input){
+		
+		char[] hexChars = new char[input.length * 2];
+		for ( int j = 0; j < input.length; j++ ) {
+		    int v = input[j] & 0xFF;
+		    hexChars[j * 2] = hexArray[v >>> 4];
+		    hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+		}
+		
+		return new String(hexChars);
+		
+	}
+	public static String SHA256(String inputData){
+		
+		MessageDigest sha = null;
+		
+		try{
+			sha = MessageDigest.getInstance("SHA-256");  
+			sha.update(inputData.getBytes("UTF-8"));  
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+		
+		String result = ByteToHex(sha.digest()); 
+		
+		return result;
+		
 	}
 	public static Message StringToMessage(String inputMsgString){
 		Gson gson = new Gson();

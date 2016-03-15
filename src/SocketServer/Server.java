@@ -8,13 +8,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ObjectStructure.Message;
+import ObjectStructure.Timer;
+import Tool.ERSystem;
 import Tool.ST;
 
-public class SocketServer implements Runnable {
-	private ControlCenter CC;
+public class Server implements Runnable {
+	private Center CC;
 	private String LogName = "SocketServer";
 	
-	public SocketServer(ControlCenter inputCenter){
+	public Server(Center inputCenter){
 		CC=inputCenter;
 		ST.showOnScreen(LogName, "Socket server init complete");
 	}
@@ -25,7 +27,7 @@ public class SocketServer implements Runnable {
     	
     	boolean isServerStart = false;
     	
-    	int [] PortList = CC.getPortList();
+    	int [] PortList = Option.PortList;
     	
     	for(int i = 0 ; i< PortList.length ; i++){
 			try {
@@ -42,7 +44,7 @@ public class SocketServer implements Runnable {
     		Socket ClientSocket = null;
 			try {
 				ClientSocket = Server.accept();//
-				clientThread=new Thread(new ClientService(ClientSocket, CC));
+				clientThread=new Thread(new Service(ClientSocket, CC));
 				clientThread.start();
 			} catch (IOException e) {
 				return;
@@ -51,26 +53,37 @@ public class SocketServer implements Runnable {
     }
 	public static void main(String[] args) {
 		System.out.print("BomberGameBOT Server v1.0.16.0313 beta\n");
-		ControlCenter controlCenter= new ControlCenter();
-		Thread SocketServer=new Thread(new SocketServer(controlCenter));
+		Center ControlCenter= new Center();
+		Thread SocketServer=new Thread(new Server(ControlCenter));
 		SocketServer.start();
 		
-		String testResult;
-		Message test = new Message();
 		
-		test.setMsg("Name", "Truth");
-		test.setMsg("Age", "2");
+//		ST.showOnScreen("TEST", ST.SHA256("Hi"));
 		
-		ST.showOnScreen("TEST", test.getMsg("Name"));
-		ST.showOnScreen("TEST", test.getMsg("Age"));
 		
-		ST.showOnScreen("TEST", testResult = ST.MessageToString(test));
+//		int ScoreA = 1600, ScoreB = 1600;
+//		ERSystem.newScore(ScoreA, ScoreB);
+//		ST.showOnScreen("TEST", (ERSystem.newScore(ScoreA, ScoreB) + ""));
 		
-		test = ST.StringToMessage(testResult);
+//		Timer test = new Timer(Option.timeInterval);
+//		new Thread(test).start();
 		
-		ST.showOnScreen("TEST", test.getMsg("Name"));
-		ST.showOnScreen("TEST", test.getMsg("Age"));
-		ST.showOnScreen("TEST", test.getMsg("Out") == null ? "True" : "False");
+//		String testResult;
+//		Message test = new Message();
+//		
+//		test.setMsg("Name", "Truth");
+//		test.setMsg("Age", "2");
+//		
+//		ST.showOnScreen("TEST", test.getMsg("Name"));
+//		ST.showOnScreen("TEST", test.getMsg("Age"));
+//		
+//		ST.showOnScreen("TEST", testResult = ST.MessageToString(test));
+//		
+//		test = ST.StringToMessage(testResult);
+//		
+//		ST.showOnScreen("TEST", test.getMsg("Name"));
+//		ST.showOnScreen("TEST", test.getMsg("Age"));
+//		ST.showOnScreen("TEST", test.getMsg("Out") == null ? "True" : "False");
 		
 	}
 }

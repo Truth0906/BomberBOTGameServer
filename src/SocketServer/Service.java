@@ -14,14 +14,14 @@ import Tool.ST;
 /*
  * This class service one client
  * */
-public class ClientService implements Runnable {
+public class Service implements Runnable {
 	private Socket ClientSocket;
-	private ControlCenter CC;
+	private Center CC;
 	private BufferedWriter Writer;
 	private BufferedReader Reader;
 	
 	private String LogName = "ClientService";
-	public ClientService(Socket inputClient, ControlCenter inputCenter){
+	public Service(Socket inputClient, Center inputCenter){
 		ClientSocket = inputClient;
 		CC = inputCenter;
     	Reader = null;
