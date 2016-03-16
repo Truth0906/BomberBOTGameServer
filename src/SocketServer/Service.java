@@ -49,10 +49,36 @@ public class Service implements Runnable {
 			m = (m == null ? "" : m);
 			ST.showOnScreen(LogName, ClientSocket.getInetAddress()+" echo " + m);
 			
-			Msg.setMsg("Message", m + " echo at " + ST.getTime());
+			Msg.setMsg("Message", m + " echo back at " + ST.getTime());
 			Msg.setMsg("ErrorCode", ErrorCode.Success);
 			sendMsg(Msg);
+			return;
+		}
+		else if(FunctionName.equals("match")){
+			String ID = ClientMsg.getMsg("ID");
+			String Password = ClientMsg.getMsg("ID");
+			if(ID == null || Password == null){
+				Msg.setMsg("Message", "null ID or Password");
+				Msg.setMsg("ErrorCode", ErrorCode.ParameterError);
+				sendMsg(Msg);
+				return;
+			}
 			
+			if(CC.isPlayerExist(ID)){ // registered player
+				if(!CC.verifyPassword(ID, Password)){
+					Msg.setMsg("Message", "Wrong password");
+					Msg.setMsg("ErrorCode", ErrorCode.IDandPWError);
+					sendMsg(Msg);
+					return;
+				}
+				ST.showOnScreen(LogName, ID + " verify password success");
+			}
+			else{ //new player
+				
+				CC.newPlayer(ID, Password);
+				ST.showOnScreen(LogName, ID + " create player success");
+				
+			}
 		}
 		else{
 			
@@ -71,7 +97,7 @@ public class Service implements Runnable {
     		Writer= new BufferedWriter(new OutputStreamWriter(ClientSocket.getOutputStream(),"UTF-8"));
 		} catch (java.io.IOException e) {
 			
-			ST.showOnScreen(LogName, ClientSocket.getInetAddress()+" !Create IO Buffer fail");
+			ST.showOnScreen(LogName, ClientSocket.getInetAddress()+" Create IO Buffer fail");
 			ST.showOnScreen(LogName, ClientSocket.getInetAddress()+" lose connection");
 			
 			closeConnection();

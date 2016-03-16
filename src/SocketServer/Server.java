@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ObjectStructure.Message;
+import ObjectStructure.Player;
 import ObjectStructure.Timer;
 import Tool.ERSystem;
 import Tool.ST;
@@ -57,9 +58,17 @@ public class Server implements Runnable {
 		Thread SocketServer=new Thread(new Server(ControlCenter));
 		SocketServer.start();
 		
+//		Player test = new Player();
+//		test.setID("testID");
+//		test.setPassWord("testPW");
+//		
+//		String result;
+//		ST.showOnScreen("TEST", result = ST.PlayerToString(test));
+//		Player test2 = ST.StringToPlayer(result);
+//		ST.showOnScreen("TEST", test2.getID());
+		
 		
 //		ST.showOnScreen("TEST", ST.SHA256("Hi"));
-		
 		
 //		int ScoreA = 1600, ScoreB = 1600;
 //		ERSystem.newScore(ScoreA, ScoreB);

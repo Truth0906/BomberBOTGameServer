@@ -9,6 +9,7 @@ import java.util.TimeZone;
 import com.google.gson.Gson;
 
 import ObjectStructure.Message;
+import ObjectStructure.Player;
 
 public class ST {//Server Tool
 	
@@ -80,19 +81,32 @@ public class ST {//Server Tool
 		return result;
 		
 	}
+	public static Player StringToPlayer(String inputPlayerString){
+		Gson gson = new Gson();
+		
+		Player result = gson.fromJson(inputPlayerString, Player.class);
+		
+		return result;
+	}
+	public static String PlayerToString(Player inputPlayer){
+		Gson gson = new Gson();
+		
+		String result = gson.toJson(inputPlayer);
+
+		return result;		
+	}
 	public static Message StringToMessage(String inputMsgString){
 		Gson gson = new Gson();
 		
 		Message result = gson.fromJson("{\"MsgMap\":" + inputMsgString + "}", Message.class);
 		
-		return result;	
+		return result;
 	}
 	
 	public static String MessageToString(Message inputMsg){
 		Gson gson = new Gson();
 		
 		String result = gson.toJson(inputMsg);
-		//result = result.replace("{\"MsgMap\":", "");
 		result = result.substring(10, result.length() -1);
 		return result;		
 	}

@@ -5,14 +5,14 @@ import SocketServer.Option;
 public class Player {
 	private String ID;
 	private int Score;
-	private String PassWord;
+	private String Password;
 	private int Wins;
 	private int Losses;
 	
 	public Player(){
 		ID = null;
 		Score = Option.InitScore;
-		PassWord = null;
+		Password = null;
 		Wins = 0;
 		Losses = 0;
 	}
@@ -30,10 +30,10 @@ public class Player {
 		Score = score;
 	}
 	public String getPassWord() {
-		return PassWord;
+		return Password;
 	}
 	public void setPassWord(String passWord) {
-		PassWord = passWord;
+		Password = passWord;
 	}
 	public int getWins() {
 		return Wins;
