@@ -1,4 +1,4 @@
-package ObjectStructure;
+package Tool;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +22,7 @@ public class Message {
 	}
 	public void setMsg(String inputKey, int inputValue){
 		
-		setMsg(inputKey, (inputValue + ""));
+		MsgMap.put(inputKey, inputValue + "");
 		
 	}
 	public void setMsg(String inputKey, String inputValue){
