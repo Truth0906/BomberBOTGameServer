@@ -1,2 +1,2 @@
 @echo off
-java -jar -Xms2G TruthSudokuSolver.jar
+java -jar -Xms2G BomberGameBOTServer.jar

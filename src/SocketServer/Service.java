@@ -74,10 +74,8 @@ public class Service implements Runnable {
 				ST.showOnScreen(LogName, ID + " verify password success");
 			}
 			else{ //new player
-				
 				CC.newPlayer(ID, Password);
 				ST.showOnScreen(LogName, ID + " create player success");
-				
 			}
 		}
 		else{
