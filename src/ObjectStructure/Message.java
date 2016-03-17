@@ -15,7 +15,7 @@ public class Message {
 	public String getMsg(String inputKey){
 		
 		String result = MsgMap.get(inputKey.toLowerCase());
-		result = ST.B64decode(result);
+		result = ST.HexToString(result);
 		
 		return result;
 		
@@ -27,7 +27,7 @@ public class Message {
 	}
 	public void setMsg(String inputKey, String inputValue){
 		
-		MsgMap.put(inputKey.toLowerCase(), ST.B64Encode(inputValue));
+		MsgMap.put(inputKey.toLowerCase(), ST.StringToHex(inputValue));
 		
 	}
 	public Map<String, String> getMsgMap() {

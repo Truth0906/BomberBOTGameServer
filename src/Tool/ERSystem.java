@@ -2,8 +2,8 @@ package Tool;
 
 public class ERSystem {
 	private static int win = 1;
-	private static int loss = 0;
-	private static float noWiner = 0.5f;
+//	private static int loss = 0;
+//	private static float noWiner = 0.5f;
 	private static int K = 16;
 	public ERSystem(){
 	}
@@ -18,7 +18,7 @@ public class ERSystem {
 			ScoreB = temp;
 		}
 		
-		double temp = K * (1 - getExpectedScore(ScoreA, ScoreB));
+		double temp = K * (win - getExpectedScore(ScoreA, ScoreB));
 		if(abs((double)(temp - (int)temp)) >= 0.5){
 			if(temp > 0) temp +=0.5;
 			else temp -= 0.5;

@@ -17,8 +17,6 @@ public class Timer implements Runnable{
 	@Override
 	public void run() {
 		
-		int hi = 0 ;
-		
 		long start = 0;
 		long end = 0;
 		

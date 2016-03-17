@@ -4,13 +4,8 @@ package SocketServer;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
 
 import ObjectStructure.Message;
-import ObjectStructure.Player;
-import ObjectStructure.Timer;
-import Tool.ERSystem;
 import Tool.ST;
 
 public class Server implements Runnable {
@@ -67,6 +62,9 @@ public class Server implements Runnable {
 //		Player test2 = ST.StringToPlayer(result);
 //		ST.showOnScreen("TEST", test2.getID());
 		
+//		String result;
+//		ST.showOnScreen("TEST", result = ST.StringToHex("Yo man!!!"));
+//		ST.showOnScreen("TEST", ST.HexToString(result));
 		
 //		ST.showOnScreen("TEST", ST.SHA256("Hi"));
 		
@@ -77,22 +75,22 @@ public class Server implements Runnable {
 //		Timer test = new Timer(Option.timeInterval);
 //		new Thread(test).start();
 		
-//		String testResult;
-//		Message test = new Message();
-//		
-//		test.setMsg("Name", "Truth");
-//		test.setMsg("Age", "2");
-//		
-//		ST.showOnScreen("TEST", test.getMsg("Name"));
-//		ST.showOnScreen("TEST", test.getMsg("Age"));
-//		
-//		ST.showOnScreen("TEST", testResult = ST.MessageToString(test));
-//		
-//		test = ST.StringToMessage(testResult);
-//		
-//		ST.showOnScreen("TEST", test.getMsg("Name"));
-//		ST.showOnScreen("TEST", test.getMsg("Age"));
-//		ST.showOnScreen("TEST", test.getMsg("Out") == null ? "True" : "False");
+		String testResult;
+		Message test = new Message();
+		
+		test.setMsg("Name", "Truth");
+		test.setMsg("Age", "2");
+		
+		ST.showOnScreen("TEST", test.getMsg("Name"));
+		ST.showOnScreen("TEST", test.getMsg("Age"));
+		
+		ST.showOnScreen("TEST", testResult = ST.MessageToString(test));
+		
+		test = ST.StringToMessage(testResult);
+		
+		ST.showOnScreen("TEST", test.getMsg("Name"));
+		ST.showOnScreen("TEST", test.getMsg("Age"));
+		ST.showOnScreen("TEST", test.getMsg("Out") == null ? "True" : "False");
 		
 	}
 }
