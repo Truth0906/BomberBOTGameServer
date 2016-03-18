@@ -1,9 +1,12 @@
 package SocketServer;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import ObjectStructure.Player;
 import Tool.ST;
@@ -11,10 +14,16 @@ import Tool.ST;
 
 public class Center {
 	
+	private static Object Lock;
 	private static HashMap<String, Player> Players;
 	
 	private String LogName = "Center";
 	public Center(){
+		Lock = new Object();
+
+		readOptions();
+		//writeOptions();
+		
 		Players = new HashMap<String, Player>();
 		readPlayerData();
 	}
@@ -40,6 +49,64 @@ public class Center {
 		
 		return temp.getPassWord().equals(inputPassword);
 	}
+	private void writeOptions(){
+		
+		File OptionFile = null;
+		
+		try {
+			OptionFile = new File("Option");
+			if(! OptionFile.exists()){
+				ST.showOnScreen(LogName, "Find Option file fail, create new one");
+				OptionFile.createNewFile();
+			}
+		} catch (IOException e) {
+			ST.showOnScreen(LogName, "Error! create new Option file fails");
+			return;
+		}
+		
+		try(BufferedWriter Writer = new BufferedWriter(new FileWriter(OptionFile))) {
+			
+			Option temp = new Option();
+			
+			String OptionString = ST.OptionToString(temp);
+			
+			OptionString = OptionString.replaceAll("\\{", "\\{" + System.lineSeparator() + "\t");
+			OptionString = OptionString.replaceAll(",\"", "," + System.lineSeparator() + "\t\"");
+			OptionString = OptionString.replaceAll("}", System.lineSeparator() + "}");
+			
+			Writer.write(OptionString);
+
+			Writer.close();
+		    
+		} catch (IOException e) {
+			ST.showOnScreen(LogName, "Error! write Option file fails");
+			return;
+		}
+		ST.showOnScreen(LogName, "Write Option file success");
+	}
+	private void readOptions(){
+		
+		String OptionString = "";
+		
+		try(BufferedReader br = new BufferedReader(new FileReader("Option"))) {
+			
+		    String line = null;
+		    
+			while ((line = br.readLine()) != null) {
+				OptionString += line + System.lineSeparator();
+			}
+		    
+		    br.close();
+		    
+		} catch (IOException e) {
+			writeOptions();
+			ST.showOnScreen(LogName, "read options file fail, create new one");
+			return;
+		}
+		
+		ST.StringToOption(OptionString);
+		
+	}
 	private void readPlayerData(){
 		try(BufferedReader br = new BufferedReader(new FileReader(Option.PlayerFileName))) {
 			
@@ -60,6 +127,44 @@ public class Center {
 			} catch (IOException e1) {e1.printStackTrace();}
 			
 			ST.showOnScreen(LogName, "read player file fail, create new one");
+		}
+	}
+	private void writePlayerData(){
+		synchronized(Lock){
+			
+			File PlayerFile = null;
+			
+			try {
+				PlayerFile = new File(Option.PlayerFileName);
+				if(! PlayerFile.exists()){
+					PlayerFile.createNewFile();
+				}
+			} catch (IOException e) {
+				ST.showOnScreen(LogName, "Error! create new player file fails");
+				return;
+			}
+			
+			
+			try(BufferedWriter Writer = new BufferedWriter(new FileWriter(PlayerFile))) {
+				
+				HashMap<String, Player> selects = new HashMap<String, Player>();
+
+				for(Entry<String, Player> entry : selects.entrySet()) {
+				    
+					
+					Player TempPlayer = entry.getValue();
+					String line = ST.PlayerToString(TempPlayer);
+					Writer.write(line);
+					Writer.newLine();
+					
+				}
+
+				Writer.close();
+			    
+			} catch (IOException e) {
+				ST.showOnScreen(LogName, "Error! write player file fails");
+				return;
+			}
 		}
 	}
 }

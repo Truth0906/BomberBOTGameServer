@@ -6,6 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import ObjectStructure.Message;
+import ObjectStructure.Player;
 import Tool.ST;
 
 public class Server implements Runnable {
@@ -53,14 +54,24 @@ public class Server implements Runnable {
 		Thread SocketServer=new Thread(new Server(ControlCenter));
 		SocketServer.start();
 		
+//		ST.showOnScreen("TEST", ST.OptionToString(new Option()));
+//		
+//		Option test1 = new Option();
+//		Option test2 = new Option();
+//		
+//		ST.showOnScreen("TEST", "Test1 = " + test1.InitScore);
+//		ST.showOnScreen("TEST", "Test2 = " + test2.InitScore);
+//				
+//		ST.showOnScreen("TEST", ST.OptionToString(new Option()));
+		
 //		Player test = new Player();
 //		test.setID("testID");
 //		test.setPassWord("testPW");
 //		
 //		String result;
 //		ST.showOnScreen("TEST", result = ST.PlayerToString(test));
-//		Player test2 = ST.StringToPlayer(result);
-//		ST.showOnScreen("TEST", test2.getID());
+//		Player test3 = ST.StringToPlayer(result);
+//		ST.showOnScreen("TEST", test3.getID());
 		
 //		String result;
 //		ST.showOnScreen("TEST", result = ST.StringToHex("Yo man!!!"));

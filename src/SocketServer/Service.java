@@ -39,6 +39,7 @@ public class Service implements Runnable {
 		
 		if(FunctionName == null){
 			ST.showOnScreen(LogName, ClientSocket.getInetAddress()+" FunctionName not found");
+			Msg.setMsg("Message", "Empty function name");
 			Msg.setMsg("ErrorCode", ErrorCode.ParameterError);
 			sendMsg(Msg);
 			return;

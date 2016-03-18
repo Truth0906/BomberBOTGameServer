@@ -8,9 +8,11 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import ObjectStructure.Message;
 import ObjectStructure.Player;
+import SocketServer.Option;
 
 public class ST {//Server Tool
 	
@@ -75,6 +77,32 @@ public class ST {//Server Tool
 //		return result;
 //		
 //	}
+	
+	public static Option StringToOption(String inputPlayerString){
+		GsonBuilder gsonBuilder  = new GsonBuilder();
+		gsonBuilder.excludeFieldsWithModifiers(java.lang.reflect.Modifier.TRANSIENT);
+		
+		Gson gson = gsonBuilder.create();
+		
+		Option result = gson.fromJson(inputPlayerString, Option.class);
+		
+		ST.showOnScreen("ST", result == null ? "NULL" : "Not NULL");
+		ST.showOnScreen("ST", result.InitScore+"");
+		
+		return result;
+	}
+	public static String OptionToString(Option inputOption){
+		
+		GsonBuilder gsonBuilder  = new GsonBuilder();
+		gsonBuilder.excludeFieldsWithModifiers(java.lang.reflect.Modifier.TRANSIENT);
+		
+		Gson gson = gsonBuilder.create();
+		
+		String result = gson.toJson(inputOption);
+		
+		return result;	
+	}
+	
 	public static Player StringToPlayer(String inputPlayerString){
 		Gson gson = new Gson();
 		
