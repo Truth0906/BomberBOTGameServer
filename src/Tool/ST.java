@@ -85,10 +85,7 @@ public class ST {//Server Tool
 		Gson gson = gsonBuilder.create();
 		
 		Option result = gson.fromJson(inputPlayerString, Option.class);
-		
-		ST.showOnScreen("ST", result == null ? "NULL" : "Not NULL");
-		ST.showOnScreen("ST", result.InitScore+"");
-		
+				
 		return result;
 	}
 	public static String OptionToString(Option inputOption){

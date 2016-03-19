@@ -8,43 +8,58 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import ObjectStructure.Player;
+import ObjectStructure.*;
+
 import Tool.ST;
 
 
-public class Center {
+public class Center extends Notification{
 	
-	private static Object Lock;
+	private static Object Players_Lock;
 	private static HashMap<String, Player> Players;
+	
+	private static Timer Timer;
 	
 	private String LogName = "Center";
 	public Center(){
-		Lock = new Object();
+		Players_Lock = new Object();
 
 		readOptions();
-		//writeOptions();
-		
+				
 		Players = new HashMap<String, Player>();
 		readPlayerData();
+		
+		Timer = new Timer(Option.savePlayerDataTime * 60 * 1000);
+		Timer.addNotificationList(this);
+		new Thread(Timer).start();
 	}
 	public void newPlayer(String inputID, String inputPassword){
+		
+		
 		Player NewPlayer = new Player();
 		NewPlayer.setID(inputID);
 		NewPlayer.setPassWord(inputPassword);
 		
-		Players.put(inputID.toLowerCase(), NewPlayer);
+		synchronized(Players_Lock){
+			Players.put(inputID.toLowerCase(), NewPlayer);
+		}
 	}
 	public boolean isPlayerExist(String inputID){
 		if(inputID == null) return false;
 		
-		Player temp = Players.get(inputID.toLowerCase());
-		
+		Player temp = null;
+		synchronized(Players_Lock){
+			temp = Players.get(inputID.toLowerCase());
+		}
 		return temp != null;
 	}
 	public boolean verifyPassword(String inputID, String inputPassword){
 		if(inputID == null || inputPassword == null) return false;
 		
-		Player temp = Players.get(inputID.toLowerCase());
+		Player temp = null;
+		synchronized(Players_Lock){
+			temp = Players.get(inputID.toLowerCase());
+		}
 		if(temp == null) return false;
 		
 		return temp.getPassWord().equals(inputPassword);
@@ -95,16 +110,14 @@ public class Center {
 			while ((line = br.readLine()) != null) {
 				OptionString += line + System.lineSeparator();
 			}
-		    
-		    br.close();
-		    
+			br.close();
+			
 		} catch (IOException e) {
 			writeOptions();
-			ST.showOnScreen(LogName, "read options file fail, create new one");
-			return;
 		}
-		
+				
 		ST.StringToOption(OptionString);
+		writeOptions();
 		
 	}
 	private void readPlayerData(){
@@ -130,7 +143,7 @@ public class Center {
 		}
 	}
 	private void writePlayerData(){
-		synchronized(Lock){
+		synchronized(Players_Lock){
 			
 			File PlayerFile = null;
 			
@@ -166,5 +179,10 @@ public class Center {
 				return;
 			}
 		}
+	}
+	@Override
+	public void TimeUp() {
+		writePlayerData();
+		ST.showOnScreen(LogName, "Save player data success");
 	}
 }

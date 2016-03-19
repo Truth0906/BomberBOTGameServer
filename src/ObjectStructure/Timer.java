@@ -1,38 +1,44 @@
 package ObjectStructure;
 
+import java.util.ArrayList;
+
 import Tool.ST;
 
 public class Timer implements Runnable{
 	
 	private long timeInterval;
-	
+	private Notifier Notifier;
 	
 	private String LogName = "Timer";
 	
 	public Timer(long inputTimeInterval){
 		
 		timeInterval = inputTimeInterval;
+		
+		Notifier = new Notifier();
 	}
-	
+	public void addNotificationList(Notification inputNewNotification){
+		Notifier.append(inputNewNotification);
+	}
 	@Override
 	public void run() {
 		
 		long start = 0;
 		long end = 0;
 		
-		ST.showOnScreen(LogName, "Timer Start");
-		//do{
+		do{
 			start = System.currentTimeMillis();
-			//new Thread(this.notifier).run();
+			
 			do{
 				try {
-					Thread.sleep(200);
+					Thread.sleep((long) (timeInterval / 10.0));
 				} catch (InterruptedException e) {e.printStackTrace();}
 				end = System.currentTimeMillis();
 			}while((end - start) < this.timeInterval);
-		//}while(true);
+			
+			new Thread(Notifier).run();
+			
+		}while(true);
 		
-		ST.showOnScreen(LogName, "Timer Stop");
 	}
-
 }

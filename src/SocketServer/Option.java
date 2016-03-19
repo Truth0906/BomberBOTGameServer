@@ -5,4 +5,5 @@ public class Option {
 	public static long TimeInterval = 5000;
 	public static int InitScore = 1200;
 	public static String PlayerFileName = "Player_Data";
+	public static long savePlayerDataTime = (long) 10;//mins
 }
