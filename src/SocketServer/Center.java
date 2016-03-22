@@ -18,6 +18,8 @@ public class Center extends Notification{
 	private static Object Players_Lock;
 	private static HashMap<String, Player> Players;
 	
+	private static PairService PairService;
+	
 	private static Timer Timer;
 	
 	private String LogName = "Center";
@@ -29,11 +31,27 @@ public class Center extends Notification{
 		Players = new HashMap<String, Player>();
 		readPlayerData();
 		
+		PairService = new PairService();
+		
 		Timer = new Timer(Option.savePlayerDataTime * 60 * 1000);
+		//Timer = new Timer(6000);
 		Timer.addNotificationList(this);
 		new Thread(Timer).start();
 	}
-	public void newPlayer(String inputID, String inputPassword){
+	
+	public static void addPairPlayer(String inputID, BufferedWriter inputWriter, BufferedReader inputReader){
+		Player P = null;
+		
+		synchronized(Players_Lock){
+			P = Players.get(inputID);
+		}
+		
+		P.setWriter(inputWriter);
+		P.setReader(inputReader);
+		
+		PairService.add(P);
+	}
+	public static void newPlayer(String inputID, String inputPassword){
 		
 		
 		Player NewPlayer = new Player();
@@ -44,7 +62,7 @@ public class Center extends Notification{
 			Players.put(inputID.toLowerCase(), NewPlayer);
 		}
 	}
-	public boolean isPlayerExist(String inputID){
+	public static boolean isPlayerExist(String inputID){
 		if(inputID == null) return false;
 		
 		Player temp = null;
@@ -53,7 +71,7 @@ public class Center extends Notification{
 		}
 		return temp != null;
 	}
-	public boolean verifyPassword(String inputID, String inputPassword){
+	public static boolean verifyPassword(String inputID, String inputPassword){
 		if(inputID == null || inputPassword == null) return false;
 		
 		Player temp = null;
@@ -157,12 +175,9 @@ public class Center extends Notification{
 				return;
 			}
 			
-			
 			try(BufferedWriter Writer = new BufferedWriter(new FileWriter(PlayerFile))) {
 				
-				HashMap<String, Player> selects = new HashMap<String, Player>();
-
-				for(Entry<String, Player> entry : selects.entrySet()) {
+				for(Entry<String, Player> entry : Players.entrySet()) {
 				    
 					
 					Player TempPlayer = entry.getValue();
@@ -182,7 +197,7 @@ public class Center extends Notification{
 	}
 	@Override
 	public void TimeUp() {
-		writePlayerData();
+		//writePlayerData();
 		ST.showOnScreen(LogName, "Save player data success");
 	}
 }

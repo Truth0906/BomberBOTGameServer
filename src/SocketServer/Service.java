@@ -16,14 +16,12 @@ import Tool.ST;
  * */
 public class Service implements Runnable {
 	private Socket ClientSocket;
-	private Center CC;
 	private BufferedWriter Writer;
 	private BufferedReader Reader;
 	
 	private String LogName = "ClientService";
-	public Service(Socket inputClient, Center inputCenter){
+	public Service(Socket inputClient){
 		ClientSocket = inputClient;
-		CC = inputCenter;
     	Reader = null;
     	Writer = null;
 	}
@@ -65,8 +63,8 @@ public class Service implements Runnable {
 				return;
 			}
 			
-			if(CC.isPlayerExist(ID)){ // registered player
-				if(!CC.verifyPassword(ID, Password)){
+			if(Center.isPlayerExist(ID)){ // registered player
+				if(!Center.verifyPassword(ID, Password)){
 					Msg.setMsg("Message", "Wrong password");
 					Msg.setMsg("ErrorCode", ErrorCode.IDandPWError);
 					sendMsg(Msg);
@@ -75,9 +73,12 @@ public class Service implements Runnable {
 				ST.showOnScreen(LogName, ID + " verify password success");
 			}
 			else{ //new player
-				CC.newPlayer(ID, Password);
+				Center.newPlayer(ID, Password);
 				ST.showOnScreen(LogName, ID + " create player success");
 			}
+			
+			Center.addPairPlayer(ID, Writer, Reader);
+			
 		}
 		else{
 			

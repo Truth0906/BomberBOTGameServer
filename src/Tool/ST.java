@@ -129,4 +129,9 @@ public class ST {//Server Tool
 		result = result.substring(10, result.length() -1);
 		return result;		
 	}
+	
+	public static int abs(int input){
+		if(input < 0) return -1 * input;
+		return input;
+	}
 }

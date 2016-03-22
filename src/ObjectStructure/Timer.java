@@ -1,9 +1,5 @@
 package ObjectStructure;
 
-import java.util.ArrayList;
-
-import Tool.ST;
-
 public class Timer implements Runnable{
 	
 	private long timeInterval;

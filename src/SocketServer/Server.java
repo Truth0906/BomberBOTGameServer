@@ -10,11 +10,11 @@ import ObjectStructure.Player;
 import Tool.ST;
 
 public class Server implements Runnable {
-	private Center CC;
+	private Center Center;
 	private String LogName = "SocketServer";
 	
 	public Server(Center inputCenter){
-		CC=inputCenter;
+		Center=inputCenter;
 		ST.showOnScreen(LogName, "Socket server init complete");
 	}
 	@Override
@@ -41,7 +41,7 @@ public class Server implements Runnable {
     		Socket ClientSocket = null;
 			try {
 				ClientSocket = Server.accept();//
-				clientThread=new Thread(new Service(ClientSocket, CC));
+				clientThread=new Thread(new Service(ClientSocket));
 				clientThread.start();
 			} catch (IOException e) {
 				return;
