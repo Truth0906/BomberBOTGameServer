@@ -7,7 +7,7 @@ import java.io.IOException;
 import SocketServer.Option;
 import Tool.ST;
 
-public class Player implements Runnable{
+public class Player{
 	private String ID;
 	private int Score;
 	private String Password;
@@ -16,9 +16,25 @@ public class Player implements Runnable{
 	
 	private transient int MatchRound;
 	private transient BufferedWriter Writer;
-	private transient BufferedReader Reader;
 	private transient Message Message;
-	private transient Map PlayingMap;
+	private transient State Status;
+	
+	public Player(){
+		ID = null;
+		Score = Option.InitScore;
+		Password = null;
+		Wins = 0;
+		Losses = 0;
+		Message = null;
+		Status = new State();
+	}
+	
+	public String getState(){
+		return Status.toString();
+	}
+	public void setState(String inputState){
+		Status.setStatus(inputState);
+	}
 	
 	public String getPassword() {
 		return Password;
@@ -36,29 +52,8 @@ public class Player implements Runnable{
 		MatchRound = matchRound;
 	}
 
-	public BufferedWriter getWriter() {
-		return Writer;
-	}
-
 	public void setWriter(BufferedWriter writer) {
 		Writer = writer;
-	}
-
-	public BufferedReader getReader() {
-		return Reader;
-	}
-
-	public void setReader(BufferedReader reader) {
-		Reader = reader;
-	}
-
-	public Player(){
-		ID = null;
-		Score = Option.InitScore;
-		Password = null;
-		Wins = 0;
-		Losses = 0;
-		Message = null;
 	}
 	
 	public String getID() {
@@ -91,37 +86,33 @@ public class Player implements Runnable{
 	public void setLosses(int losses) {
 		Losses = losses;
 	}
-	
-	@Override
-	public void run() {
-		Message temp;
-		while(PlayingMap.isContiue()){
-			
-			temp = receiveMsg();
-			if(temp != null) Message = temp;
-			
+	public boolean sendMsg(Message inputMsg){
+		
+		String Msg = ST.MessageToString(inputMsg);
+		try {
+			Writer.write(Msg + "\r\n");
+			Writer.flush();
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
-	
-	private Message receiveMsg(){
-		Message resultMsg = null;
-		
-		String receivedString = null;
-		try {
-			
-			receivedString = Reader.readLine();
-			resultMsg = ST.StringToMessage(receivedString);
-			
-		} catch (IOException e) {e.printStackTrace();}
-		
-		return resultMsg;
-	}
+//	private Message receiveMsg(){
+//		Message resultMsg = null;
+//		
+//		String receivedString = null;
+//		try {
+//			
+//			receivedString = Reader.readLine();
+//			resultMsg = ST.StringToMessage(receivedString);
+//			
+//		} catch (IOException e) {e.printStackTrace();}
+//		
+//		return resultMsg;
+//	}
 
 	public Message getMessage() {
 		return Message;
-	}
-
-	public void setPlayingMap(Map playingMap) {
-		PlayingMap = playingMap;
 	}
 }

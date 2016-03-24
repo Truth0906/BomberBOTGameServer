@@ -9,6 +9,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 import ObjectStructure.Message;
+import ObjectStructure.State;
 import Tool.ErrorCode;
 import Tool.ST;
 /*
@@ -55,14 +56,13 @@ public class Service implements Runnable {
 		}
 		else if(FunctionName.equals("match")){
 			String ID = ClientMsg.getMsg("ID");
-			String Password = ClientMsg.getMsg("ID");
+			String Password = ClientMsg.getMsg("Password");
 			if(ID == null || Password == null){
 				Msg.setMsg("Message", "null ID or Password");
 				Msg.setMsg("ErrorCode", ErrorCode.ParameterError);
 				sendMsg(Msg);
 				return;
 			}
-			
 			if(Center.isPlayerExist(ID)){ // registered player
 				if(!Center.verifyPassword(ID, Password)){
 					Msg.setMsg("Message", "Wrong password");
@@ -76,8 +76,14 @@ public class Service implements Runnable {
 				Center.newPlayer(ID, Password);
 				ST.showOnScreen(LogName, ID + " create player success");
 			}
+			if(!Center.checkPlayerState(ID, State.InPlayerList)){
+				Msg.setMsg("Message", "Player state is pairing or playing");
+				Msg.setMsg("ErrorCode", ErrorCode.PlayerStateNotCorret);
+				sendMsg(Msg);
+				return;
+			}
 			
-			Center.addPairPlayer(ID, Writer, Reader);
+			Center.addPairPlayer(ID, Writer);
 			
 		}
 		else{
@@ -119,11 +125,14 @@ public class Service implements Runnable {
 		try {
 			Writer.write(Msg + "\r\n");
 			Writer.flush();
+			Writer = null;
 			return true;
 		} catch (IOException e) {
+			Writer = null;
 			e.printStackTrace();
 			return false;
 		}
+		
 	}
 	private Message receiveMsg(){
 		Message resultMsg = null;

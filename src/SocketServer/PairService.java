@@ -41,9 +41,6 @@ public class PairService  extends Notification{
 
 			if(PlayerPool.size() < 2) return;
 			
-			Random ran = new Random();
-	        System.out.println(ran.nextInt(42)+1);
-			
 			int RandomIndex = new Random().nextInt(PlayerPool.size());
 			
 			int i = 0;
@@ -66,9 +63,11 @@ public class PairService  extends Notification{
 			
 			for(Entry<String, Player> entry : PlayerPool.entrySet()) {
 			    
-				ScoreB = entry.getValue().getScore();
+				Player temp = entry.getValue();
 				
-				if(ST.abs(ScoreA - ScoreB) < Min){
+				ScoreB = temp.getScore();
+				
+				if(ST.abs(ScoreA - ScoreB) < Min && !(temp.getID().equals(PickupA.getID()))){
 					
 					Min = ST.abs(ScoreA - ScoreB);
 					PickupB = entry.getValue();
@@ -76,7 +75,12 @@ public class PairService  extends Notification{
 				}
 			}
 			
-			//Send Players into map
+			PlayerPool.remove(PickupA.getID().toLowerCase());
+			PlayerPool.remove(PickupB.getID().toLowerCase());
+			
+			ST.showOnScreen(LogName, PickupA.getID() + " and " + PickupB.getID() + " ready into map");
+			
+			new Thread(new Map(PickupA, PickupB)).start();
 			
 		}
 	} 

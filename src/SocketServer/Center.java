@@ -22,7 +22,7 @@ public class Center extends Notification{
 	
 	private static Timer Timer;
 	
-	private String LogName = "Center";
+	private static String LogName = "Center";
 	public Center(){
 		Players_Lock = new Object();
 
@@ -38,16 +38,23 @@ public class Center extends Notification{
 		Timer.addNotificationList(this);
 		new Thread(Timer).start();
 	}
-	
-	public static void addPairPlayer(String inputID, BufferedWriter inputWriter, BufferedReader inputReader){
+	public static boolean checkPlayerState(String inputID, String inputState){
 		Player P = null;
 		
 		synchronized(Players_Lock){
-			P = Players.get(inputID);
+			P = Players.get(inputID.toLowerCase());
 		}
 		
-		P.setWriter(inputWriter);
-		P.setReader(inputReader);
+		return P == null ? false : P.getState().equals(inputState);
+	}
+	public static void addPairPlayer(String inputID, BufferedWriter inputWriter){
+		Player P = null;
+		
+		synchronized(Players_Lock){
+			P = Players.get(inputID.toLowerCase());
+			P.setState(State.InPairPool);
+			P.setWriter(inputWriter);
+		}
 		
 		PairService.add(P);
 	}
@@ -60,6 +67,7 @@ public class Center extends Notification{
 		
 		synchronized(Players_Lock){
 			Players.put(inputID.toLowerCase(), NewPlayer);
+			writePlayerData();
 		}
 	}
 	public static boolean isPlayerExist(String inputID){
@@ -145,6 +153,9 @@ public class Center extends Notification{
 
 		    while ((line = br.readLine()) != null) {
 		    	Player temp = ST.StringToPlayer(line);
+		    	
+		    	//ST.showOnScreen(LogName, temp.Status);
+		    	
 		    	Players.put(temp.getID().toLowerCase(), temp);
 		    }
 		    
@@ -160,7 +171,7 @@ public class Center extends Notification{
 			ST.showOnScreen(LogName, "read player file fail, create new one");
 		}
 	}
-	private void writePlayerData(){
+	private static void writePlayerData(){
 		synchronized(Players_Lock){
 			
 			File PlayerFile = null;
@@ -198,6 +209,6 @@ public class Center extends Notification{
 	@Override
 	public void TimeUp() {
 		//writePlayerData();
-		ST.showOnScreen(LogName, "Save player data success");
+		//ST.showOnScreen(LogName, "Save player data success");
 	}
 }

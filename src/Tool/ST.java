@@ -130,6 +130,23 @@ public class ST {//Server Tool
 		return result;		
 	}
 	
+	public static String MapToString(int [][] inputMap){
+		String result = "";
+		
+		result += inputMap.length + " " + inputMap[0].length;
+		
+		for(int y = 0 ; y < inputMap.length ; y++){
+			for(int x = 0 ; x < inputMap[0].length ; x++){
+				
+				result += " " + inputMap[y][x];
+				
+			}
+		}
+		
+		
+		return result;
+	}
+	
 	public static int abs(int input){
 		if(input < 0) return -1 * input;
 		return input;

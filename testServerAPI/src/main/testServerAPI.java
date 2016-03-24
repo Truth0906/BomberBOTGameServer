@@ -30,7 +30,7 @@ public class testServerAPI {
 	}
 	
 	
-	public boolean echo(String inputString){
+public boolean echo(String inputString){
 	    
 	    if (!connect()) {
 	    	return false;
@@ -46,6 +46,51 @@ public class testServerAPI {
 	    
 	    ST.showOnScreen(LogName, receiveMsg.getMsg("Message"));
 	    ST.showOnScreen(LogName, receiveMsg.getMsg("ErrorCode"));
+	    
+	    return true;
+	}
+	public boolean match(String inputID, String inputPW){
+	    
+	    if (!connect()) {
+	    	return false;
+	    }
+	    
+	    Message Msg = new Message(), receiveMsg;
+	    
+	    Msg.setMsg("FunctionName", "match");
+	    Msg.setMsg("ID", inputID);
+	    Msg.setMsg("Password", inputPW);
+	    
+	    sendMsg(Msg);
+	    receiveMsg = receiveMsg();
+	    
+	    ST.showOnScreen(LogName, receiveMsg.getMsg("Message"));
+	    ST.showOnScreen(LogName, receiveMsg.getMsg("ErrorCode"));
+	    //ST.showOnScreen(LogName, receiveMsg.getMsg("Map"));
+	    
+	    String tempMap[] = receiveMsg.getMsg("Map").split(" ");
+	    int map[][] = new int[ Integer.parseInt(tempMap[0]) ][Integer.parseInt(tempMap[1])];
+	    
+	    int indexTemp = 2;
+	    
+	    for(int y = 0 ; y < map.length ; y++){
+			for(int x = 0 ; x < map[0].length ; x++){
+				
+				map[y][x] = Integer.parseInt(tempMap[indexTemp++]);
+				
+			}
+		}
+	    
+	    for(int y = 0 ; y < map.length ; y++){
+			for(int x = 0 ; x < map[0].length ; x++){
+				
+				//System.out.print(map[y][x] + " ");
+				if(map[y][x] == 0)			System.out.print(" ");
+				else if(map[y][x] == -1) 	System.out.print("+");
+				else 						System.out.print("?");
+			}
+			System.out.print(System.lineSeparator());
+		}
 	    
 	    return true;
 	}
@@ -101,7 +146,10 @@ public class testServerAPI {
 	public static void main(String[] args) {
 		testServerAPI test = new testServerAPI();
 		
-		test.echo("Hello I am testServerAPI");
+		if(args.length != 2) return;
 		
+		test.match(args[0], args[1]);
+		
+			
 	}
 }
