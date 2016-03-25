@@ -9,7 +9,7 @@ public class Map extends Notification implements Runnable {
 	
 	private Object checkPlayerLock;
 	private Player A, B;
-	private int map[][];
+	private int MainMap[][];
 	private Timer Timer;
 	private int MapTimeUpTimes;
 	
@@ -17,15 +17,20 @@ public class Map extends Notification implements Runnable {
 	private boolean isPlayerALive;
 	private boolean isPlayerBLive;
 	
-	private final int Wall = -1;
-	private final int Path =  0;
+	private final int PlayerA = 			0x0100;
+	private final int PlayerB =  			0x0200;
 	
-	private final int PlayerA =  101;
-	private final int PlayerB =  102;
+	private final int putBombBeforeMove = 	0x10;
+	private final int putBombAfterMove =  	0x20;
+	
+	private final int Move_Up = 		  	0x01;
+	private final int Move_Down =  		  	0x02;
+	private final int Move_Left = 			0x03;
+	private final int Move_Right = 			0x04;
 	
 	private int PlayerLocationA[];
 	private int PlayerLocationB[];
-		
+	
 	private String LogName = "Map";
 	public Map(Player inputA, Player inputB){
 		
@@ -53,23 +58,74 @@ public class Map extends Notification implements Runnable {
 		
 		int type = 1;
 		
-		map = new int[13][15];
+		MainMap = new int[13][15];
 		
 		for(int y = 0 ; y < 13 ; y++){
 			for(int x = 0 ; x < 15 ; x++){
-				if(y % 2 == 1 && x % 2 ==1) map[y][x] = Wall;
-				else map[y][x] = Path;
+				if(y % 2 == 1 && x % 2 ==1) MainMap[y][x] = Wall;
+				else MainMap[y][x] = Path;
 			}
 		}
 		
-		map[6][0] = PlayerA;
-		map[6][14] = PlayerB;
+		MainMap[6][0] = PlayerA;
+		MainMap[6][14] = PlayerB;
 				
 		PlayerLocationA[0] = 6;
 		PlayerLocationA[1] = 0;
 		PlayerLocationB[0] = 6;
 		PlayerLocationB[1] = 14;
 	}
+	
+	@Override
+	public void TimeUp() {
+		
+		if(MapTimeUpTimes >= Option.GameTimeUp){
+			this.isContiue = false;
+			return;
+		}
+		++MapTimeUpTimes;
+		
+		synchronized(checkPlayerLock){
+			Message PlayerMessageA = A.getMessage();
+			Message PlayerMessageB = B.getMessage();
+			
+			if(isObjectNull(PlayerMessageA, PlayerMessageB)) return;
+			
+			String NextMoveA = PlayerMessageA.getMsg("NextMove");
+			String NextMoveB = PlayerMessageA.getMsg("NextMove");
+			
+			if(isObjectNull(NextMoveA, NextMoveB)) return;
+			
+			int MoveA = Integer.parseInt(NextMoveA);
+			int MoveB = Integer.parseInt(NextMoveB);
+			
+			setMove(MoveA, PlayerLocationA);
+			
+		}
+	}
+	
+	private void setMove(int InputMove, int [] InputPlayerLocation){
+		
+		int Y = InputPlayerLocation[0];
+		int X = InputPlayerLocation[1];
+		
+		if( (InputMove & putBombBeforeMove) == 1){
+			
+			MainMap[Y][X] = Option.BombExplosionTime;
+			
+			for(int i = 0 ; i < Option.BombExplosionRange ; i++){
+				
+				if((Y + i) >= MainMap.length ) break;
+				if((MainMap[Y + i][X] & Wall) == 1) continue;
+				
+				if(MainMap[Y + i][X] == Path) MainMap[Y + i][X] = Option.BombExplosionTime;
+				
+			}
+			
+		}
+		
+	}
+	
 	@Override
 	public void run() {
 		
@@ -77,7 +133,7 @@ public class Map extends Notification implements Runnable {
 		
 		Message Msg = new Message();
 		
-		Msg.setMsg("Map", ST.MapToString(map));
+		Msg.setMsg("Map", ST.MapToString(MainMap));
 		Msg.setMsg("Message", "Game Joined");
 		Msg.setMsg("ErrorCode", ErrorCode.Success);
 		
@@ -118,35 +174,14 @@ public class Map extends Notification implements Runnable {
 		}
 		else{
 			
-			ST.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " " + B.getID() + " in a dead heat!");
+			ST.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " peace end!");
 			
 		}
 		
 		A.setState(State.InPlayerList);
 		B.setState(State.InPlayerList);
 	}
-	@Override
-	public void TimeUp() {
-		
-		if(MapTimeUpTimes >= Option.GameTimeUp){
-			this.isContiue = false;
-			return;
-		}
-		++MapTimeUpTimes;
-		
-		synchronized(checkPlayerLock){
-			Message PlayerMessageA = A.getMessage();
-			Message PlayerMessageB = B.getMessage();
-			
-			if(isObjectNull(PlayerMessageA, PlayerMessageB)) return;
-			
-			String NextMoveA = PlayerMessageA.getMsg("NextMove");
-			String NextMoveB = PlayerMessageA.getMsg("NextMove");
-			
-			if(isObjectNull(NextMoveA, NextMoveB)) return;
-			
-		}
-	}
+	
 	private boolean isObjectNull(Object inputObjectA, Object inputObjectB){
 		
 		Message Msg = new Message();

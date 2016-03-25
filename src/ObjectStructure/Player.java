@@ -94,9 +94,10 @@ public class Player{
 			Writer.flush();
 			return true;
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			return false;
 		}
+		
 	}
 //	private Message receiveMsg(){
 //		Message resultMsg = null;

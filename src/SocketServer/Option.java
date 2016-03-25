@@ -7,4 +7,6 @@ public class Option {
 	public static String PlayerFileName = "Player_Data";
 	public static long savePlayerDataTime = (long) 10;//mins
 	public static long GameTimeUp = 240;//ticks
+	public static int BombExplosionTime = 10;
+	public static int BombExplosionRange = 8;
 }

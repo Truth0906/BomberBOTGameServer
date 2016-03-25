@@ -24,6 +24,9 @@ public class ST {//Server Tool
     	String result ="["+nowdate.format(new java.util.Date())+"]";
     	return result;
     }
+	public static void showOnScreen(String inputLogName, int inputMsg){
+		showOnScreen(inputLogName, inputMsg + "");
+	}
 	public static void showOnScreen(String inputLogName, String inputMsg){
 		//String style = System.lineSeparator();
 		String style = " ";
