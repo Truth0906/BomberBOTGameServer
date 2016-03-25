@@ -233,6 +233,8 @@ public class Map extends Notification implements Runnable {
 			}
 		}while(isContiue);
 		
+		Timer.stop();
+		
 		int ScoreTemp = ERSystem.newScore(A.getScore(), B.getScore());
 		
 		if(A.isLive()){

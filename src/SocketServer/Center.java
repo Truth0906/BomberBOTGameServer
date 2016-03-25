@@ -8,8 +8,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import ObjectStructure.*;
-
+import ObjectStructure.Message;
+import ObjectStructure.Notification;
+import ObjectStructure.Player;
+import ObjectStructure.State;
+import ObjectStructure.Timer;
 import Tool.ST;
 
 
@@ -57,6 +60,15 @@ public class Center extends Notification{
 		}
 		
 		PairService.add(P);
+	}
+	public static void setPlayerMove(String inputID, Message inputMessage){
+		Player P = null;
+		
+		synchronized(Players_Lock){
+			P = Players.get(inputID.toLowerCase());
+		}
+
+		P.setMessage(inputMessage);
 	}
 	public static void newPlayer(String inputID, String inputPassword){
 		
@@ -208,7 +220,9 @@ public class Center extends Notification{
 	}
 	@Override
 	public void TimeUp() {
-		//writePlayerData();
-		//ST.showOnScreen(LogName, "Save player data success");
+		writePlayerData();
+		ST.showOnScreen(LogName, "Save player data success");
+		System.gc();
+		ST.showOnScreen(LogName, "Free system resource");
 	}
 }

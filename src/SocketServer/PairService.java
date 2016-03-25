@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import ObjectStructure.*;
+import ObjectStructure.Map;
+import ObjectStructure.Notification;
+import ObjectStructure.Player;
+import ObjectStructure.Timer;
 import Tool.ST;
 
 

@@ -4,17 +4,20 @@ public class Timer implements Runnable{
 	
 	private long timeInterval;
 	private Notifier Notifier;
-	
+	private boolean isContinue;
 	private String LogName = "Timer";
 	
 	public Timer(long inputTimeInterval){
 		
 		timeInterval = inputTimeInterval;
-		
+		isContinue = true;
 		Notifier = new Notifier();
 	}
 	public void addNotificationList(Notification inputNewNotification){
 		Notifier.append(inputNewNotification);
+	}
+	public void stop(){
+		isContinue = false;
 	}
 	@Override
 	public void run() {
@@ -31,6 +34,8 @@ public class Timer implements Runnable{
 				} catch (InterruptedException e) {e.printStackTrace();}
 				end = System.currentTimeMillis();
 			}while((end - start) < this.timeInterval);
+			
+			if(!isContinue) break;
 			
 			new Thread(Notifier).run();
 			

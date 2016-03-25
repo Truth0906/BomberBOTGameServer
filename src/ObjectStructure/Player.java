@@ -13,7 +13,7 @@ public class Player{
 	private int Wins;
 	private int Losses;
 	private int Tie;
-	private transient int MatchRound;
+
 	private transient BufferedWriter Writer;
 	private transient Message Message;
 	private transient State Status;
@@ -60,15 +60,6 @@ public class Player{
 	public void setPassword(String password) {
 		Password = password;
 	}
-
-	public int getMatchRound() {
-		return MatchRound;
-	}
-
-	public void setMatchRound(int matchRound) {
-		MatchRound = matchRound;
-	}
-
 	public void setWriter(BufferedWriter writer) {
 		Writer = writer;
 	}
@@ -116,21 +107,16 @@ public class Player{
 		}
 		
 	}
-//	private Message receiveMsg(){
-//		Message resultMsg = null;
-//		
-//		String receivedString = null;
-//		try {
-//			
-//			receivedString = Reader.readLine();
-//			resultMsg = ST.StringToMessage(receivedString);
-//			
-//		} catch (IOException e) {e.printStackTrace();}
-//		
-//		return resultMsg;
-//	}
+	
+	public void setMessage(Message inputMessage) {
+		Message = inputMessage;
+	}
 
 	public Message getMessage() {
-		return Message;
+		Message temp = Message;
+		
+		Message = null;
+		
+		return temp;
 	}
 }

@@ -5,16 +5,14 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import ObjectStructure.Message;
-import ObjectStructure.Player;
 import Tool.ST;
 
 public class Server implements Runnable {
 	private Center Center;
 	private String LogName = "SocketServer";
 	
-	public Server(Center inputCenter){
-		Center=inputCenter;
+	public Server(){
+		Center = new Center();
 		ST.showOnScreen(LogName, "Socket server init complete");
 	}
 	@Override
@@ -49,10 +47,9 @@ public class Server implements Runnable {
     	}
     }
 	public static void main(String[] args) {
-		System.out.print("BomberGameBOT Server v1.0.16.0319 beta\n");
-		Center ControlCenter= new Center();
-		Thread SocketServer=new Thread(new Server(ControlCenter));
-		SocketServer.start();
+		System.out.print("BomberGameBOT Server v1.0.16.0325 beta\n");
+		new Thread(new Server()).start();
+		
 		
 //		ST.showOnScreen("TEST", ST.OptionToString(new Option()));
 //		

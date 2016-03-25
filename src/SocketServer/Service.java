@@ -87,6 +87,26 @@ public class Service implements Runnable {
 			Center.addPairPlayer(ID, Writer);
 			
 		}
+		if(FunctionName.equals("move")){
+			String ID = ClientMsg.getMsg("ID");
+			String Password = ClientMsg.getMsg("Password");
+			if(ID == null || Password == null){
+				Msg.setMsg("Message", "null ID or Password");
+				Msg.setMsg("ErrorCode", ErrorCode.ParameterError);
+				sendMsg(Msg);
+				return;
+			}
+			if(!Center.verifyPassword(ID, Password)){
+				Msg.setMsg("Message", "Wrong password");
+				Msg.setMsg("ErrorCode", ErrorCode.IDandPWError);
+				sendMsg(Msg);
+				return;
+			}
+			//ST.showOnScreen(LogName, ID + " verify password success");
+			
+			Center.setPlayerMove(ID, ClientMsg);
+			return;
+		}
 		else{
 			
 			ST.showOnScreen(LogName, ClientSocket.getInetAddress()+" Unknow function " + FunctionName);
