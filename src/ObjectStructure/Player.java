@@ -1,6 +1,5 @@
 package ObjectStructure;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
@@ -13,22 +12,40 @@ public class Player{
 	private String Password;
 	private int Wins;
 	private int Losses;
-	
+	private int Tie;
 	private transient int MatchRound;
 	private transient BufferedWriter Writer;
 	private transient Message Message;
 	private transient State Status;
+	private boolean isLive;
 	
+	public boolean isLive() {
+		return isLive;
+	}
+
+	public void setLive(boolean isLive) {
+		this.isLive = isLive;
+	}
+
 	public Player(){
 		ID = null;
 		Score = Option.InitScore;
 		Password = null;
 		Wins = 0;
 		Losses = 0;
+		Tie = 0;
 		Message = null;
 		Status = new State();
 	}
 	
+	public int getTie() {
+		return Tie;
+	}
+
+	public void setTie(int inputTie) {
+		Tie = inputTie;
+	}
+
 	public String getState(){
 		return Status.toString();
 	}

@@ -10,6 +10,7 @@ import org.apache.commons.codec.binary.Hex;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import ObjectStructure.Block;
 import ObjectStructure.Message;
 import ObjectStructure.Player;
 import SocketServer.Option;
@@ -27,7 +28,7 @@ public class ST {//Server Tool
 	public static void showOnScreen(String inputLogName, int inputMsg){
 		showOnScreen(inputLogName, inputMsg + "");
 	}
-	public static void showOnScreen(String inputLogName, String inputMsg){
+	public static synchronized void showOnScreen(String inputLogName, String inputMsg){
 		//String style = System.lineSeparator();
 		String style = " ";
 		
@@ -133,7 +134,7 @@ public class ST {//Server Tool
 		return result;		
 	}
 	
-	public static String MapToString(int [][] inputMap){
+	public static String MapToString(Block [][] inputMap){
 		String result = "";
 		
 		result += inputMap.length + " " + inputMap[0].length;

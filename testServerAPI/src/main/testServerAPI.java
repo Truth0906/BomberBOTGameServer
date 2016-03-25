@@ -10,6 +10,7 @@ import java.net.Socket;
 
 import javax.net.SocketFactory;
 
+import Tool.ErrorCode;
 import Tool.Message;
 import Tool.ST;
 
@@ -20,6 +21,8 @@ public class testServerAPI {
 	private Socket Client;
 	private String ServerIP = "127.0.0.1";
 	private int PortList[] = {52013, 52014, 53013, 53014};
+	private int Errorcode;
+	private String ErrorMessage;
 	
 	private String LogName = "TestAPI";
 	  
@@ -30,10 +33,12 @@ public class testServerAPI {
 	}
 	
 	
-public boolean echo(String inputString){
+public int echo(String inputString){
 	    
 	    if (!connect()) {
-	    	return false;
+	    	Errorcode = ErrorCode.ConnectError;
+	    	ErrorMessage = "Connect Error";
+	    	return Errorcode;
 	    }
 	    
 	    Message Msg = new Message(), receiveMsg;
@@ -47,12 +52,15 @@ public boolean echo(String inputString){
 	    ST.showOnScreen(LogName, receiveMsg.getMsg("Message"));
 	    ST.showOnScreen(LogName, receiveMsg.getMsg("ErrorCode"));
 	    
-	    return true;
+	    Errorcode = Integer.parseInt(receiveMsg.getMsg("ErrorCode"));
+	    
+	    return Errorcode;
 	}
-	public boolean match(String inputID, String inputPW){
+	public int match(String inputID, String inputPW){
 	    
 	    if (!connect()) {
-	    	return false;
+	    	Errorcode = ErrorCode.ConnectError;
+	    	return Errorcode;
 	    }
 	    
 	    Message Msg = new Message(), receiveMsg;
@@ -67,6 +75,10 @@ public boolean echo(String inputString){
 	    ST.showOnScreen(LogName, receiveMsg.getMsg("Message"));
 	    ST.showOnScreen(LogName, receiveMsg.getMsg("ErrorCode"));
 	    //ST.showOnScreen(LogName, receiveMsg.getMsg("Map"));
+	    
+	    int ErrorCode = Integer.parseInt(receiveMsg.getMsg("ErrorCode"));
+	    
+	    if(ErrorCode != 0 ) return ErrorCode;
 	    
 	    String tempMap[] = receiveMsg.getMsg("Map").split(" ");
 	    int map[][] = new int[ Integer.parseInt(tempMap[0]) ][Integer.parseInt(tempMap[1])];
@@ -84,15 +96,17 @@ public boolean echo(String inputString){
 	    for(int y = 0 ; y < map.length ; y++){
 			for(int x = 0 ; x < map[0].length ; x++){
 				
-				//System.out.print(map[y][x] + " ");
-				if(map[y][x] == 0)			System.out.print(" ");
-				else if(map[y][x] == -1) 	System.out.print("+");
-				else 						System.out.print("?");
+				System.out.print(map[y][x] + " ");
+//				if(map[y][x] == 0)			System.out.print(" ");
+//				else if(map[y][x] == -1) 	System.out.print("+");
+//				else 						System.out.print("?");
 			}
 			System.out.print(System.lineSeparator());
 		}
 	    
-	    return true;
+	    Errorcode = Integer.parseInt(receiveMsg.getMsg("ErrorCode"));
+	    
+	    return Errorcode;
 	}
 	private boolean connect(){
 		
@@ -148,8 +162,9 @@ public boolean echo(String inputString){
 		
 		if(args.length != 2) return;
 		
+		test.echo("QvQ");
 		test.match(args[0], args[1]);
 		
-			
+		
 	}
 }

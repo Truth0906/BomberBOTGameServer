@@ -30,7 +30,6 @@ public class Notifier implements Runnable{
 	}
 	@Override
 	public void run() {
-		
 		synchronized(List_Lock){
 			
 			Iterator<Notification> ListIterator = NotificationList.iterator();
@@ -39,6 +38,5 @@ public class Notifier implements Runnable{
 				ListIterator.next().TimeUp();
 			}
 		}
-		
 	}
 }

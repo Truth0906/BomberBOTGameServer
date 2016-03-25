@@ -45,6 +45,7 @@ public class Service implements Runnable {
 		}
 		
 		if(FunctionName.equals("echo")){
+			
 			String m = ClientMsg.getMsg("Message");
 			m = (m == null ? "" : m);
 			ST.showOnScreen(LogName, ClientSocket.getInetAddress()+" echo " + m);
@@ -139,7 +140,6 @@ public class Service implements Runnable {
 		
 		String receivedString = null;
 		try {
-			
 			receivedString = Reader.readLine();
 			resultMsg = ST.StringToMessage(receivedString);
 			
