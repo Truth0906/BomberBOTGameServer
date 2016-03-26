@@ -1,5 +1,7 @@
 package ObjectStructure;
 
+import Tool.ST;
+
 public class Timer implements Runnable{
 	
 	private long timeInterval;
@@ -24,22 +26,31 @@ public class Timer implements Runnable{
 		
 		long start = 0;
 		long end = 0;
+		long temp = 0;
+		long insidetemp = 0;
+		long cycle = 1;
+		start = System.currentTimeMillis();
 		
 		do{
-			start = System.currentTimeMillis();
-			
+			temp = start + timeInterval * cycle;
 			do{
-				try {
-					Thread.sleep((long) (timeInterval / 10.0));
-				} catch (InterruptedException e) {e.printStackTrace();}
+				
 				end = System.currentTimeMillis();
-			}while((end - start) < this.timeInterval);
+				insidetemp = (temp - end)>>1;
+				
+				try {
+					if(insidetemp > 0) Thread.sleep(insidetemp);
+				} catch (InterruptedException e) {e.printStackTrace();}
+				
+				if(!isContinue) break;
+				
+			}while(end < temp);
 			
 			if(!isContinue) break;
 			
 			new Thread(Notifier).run();
 			
-		}while(true);
+		}while(false);
 		
 	}
 }

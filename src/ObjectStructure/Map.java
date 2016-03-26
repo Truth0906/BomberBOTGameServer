@@ -101,7 +101,84 @@ public class Map extends Notification implements Runnable {
 			setMove(MoveB, PlayerLocationB);
 			
 			countMap();
+			
+			Message Msg = new Message();
+			
+			Msg.setMsg("Map", ST.MapToString(MainMap));
+			Msg.setMsg("ErrorCode", ErrorCode.Success);
+			
+			Msg.setMsg("Live", A.isLive() + "");
+			A.sendMsg(Msg);
+			
+			Msg.setMsg("Live", B.isLive() + "");
+			B.sendMsg(Msg);
 		}
+	}
+	@Override
+	public void run() {
+		
+		ST.showOnScreen(LogName, A.getID() + " and " + B.getID() + " join game");
+		
+		Message Msg = new Message();
+		
+		Msg.setMsg("Map", ST.MapToString(MainMap));
+		Msg.setMsg("Message", "Game Joined");
+		Msg.setMsg("ErrorCode", ErrorCode.Success);
+		
+		Msg.setMsg("Mark", PlayerA);
+		A.sendMsg(Msg);
+		
+		Msg.setMsg("Mark", PlayerB);
+		B.sendMsg(Msg);
+		
+		
+		Timer = new Timer(Option.TimeInterval);
+		Timer.addNotificationList(this);
+		new Thread(Timer).start();
+		
+		do{
+			try {
+				Thread.sleep(Option.TimeInterval / 10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			synchronized(checkPlayerLock){
+				if(A.isLive() == false || B.isLive() == false){
+					break;
+				}
+			}
+		}while(isContiue);
+		
+		Timer.stop();
+		
+		int ScoreTemp = ERSystem.newScore(A.getScore(), B.getScore());
+		
+		if(A.isLive()){
+			A.setScore(A.getScore() + ScoreTemp);
+			B.setScore(B.getScore() - ScoreTemp);
+			
+			A.setWins(A.getWins() + 1);
+			B.setLosses(B.getLosses() + 1);
+			ST.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " " + A.getID() + " Win!");
+		}
+		else if(B.isLive()){
+			A.setScore(A.getScore() - ScoreTemp);
+			B.setScore(B.getScore() + ScoreTemp);
+			
+			A.setLosses(A.getLosses() + 1);
+			B.setWins(B.getWins() + 1);
+			ST.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " " + B.getID() + " Win!");
+		}
+		else{
+			
+			A.setTie(A.getTie() + 1);
+			B.setTie(B.getTie() + 1);
+			ST.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " peace end!");
+			
+		}
+		
+		A.setState(State.InPlayerList);
+		B.setState(State.InPlayerList);
 	}
 	private void countMap(){
 		for(int y = 0 ; y < MainMap.length ; y++){
@@ -198,73 +275,7 @@ public class Map extends Notification implements Runnable {
 			if(MainMap[Y][X - i].getType() == Block.Path_Type) MainMap[Y][X - i].setBombExplosionTime(BombExplosionTime);
 		}
 	}
-	@Override
-	public void run() {
 		
-		ST.showOnScreen(LogName, A.getID() + " and " + B.getID() + " join game");
-		
-		Message Msg = new Message();
-		
-		Msg.setMsg("Map", ST.MapToString(MainMap));
-		Msg.setMsg("Message", "Game Joined");
-		Msg.setMsg("ErrorCode", ErrorCode.Success);
-		
-		Msg.setMsg("Mark", PlayerA);
-		A.sendMsg(Msg);
-		
-		Msg.setMsg("Mark", PlayerB);
-		B.sendMsg(Msg);
-		
-		
-		Timer = new Timer(Option.TimeInterval);
-		Timer.addNotificationList(this);
-		new Thread(Timer).start();
-		
-		do{
-			try {
-				Thread.sleep(Option.TimeInterval / 10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			synchronized(checkPlayerLock){
-				if(A.isLive() == false || B.isLive() == false){
-					break;
-				}
-			}
-		}while(isContiue);
-		
-		Timer.stop();
-		
-		int ScoreTemp = ERSystem.newScore(A.getScore(), B.getScore());
-		
-		if(A.isLive()){
-			A.setScore(A.getScore() + ScoreTemp);
-			B.setScore(B.getScore() - ScoreTemp);
-			
-			A.setWins(A.getWins() + 1);
-			B.setLosses(B.getLosses() + 1);
-			ST.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " " + A.getID() + " Win!");
-		}
-		else if(B.isLive()){
-			A.setScore(A.getScore() - ScoreTemp);
-			B.setScore(B.getScore() + ScoreTemp);
-			
-			A.setLosses(A.getLosses() + 1);
-			B.setWins(B.getWins() + 1);
-			ST.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " " + B.getID() + " Win!");
-		}
-		else{
-			
-			A.setTie(A.getTie() + 1);
-			B.setTie(B.getTie() + 1);
-			ST.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " peace end!");
-			
-		}
-		
-		A.setState(State.InPlayerList);
-		B.setState(State.InPlayerList);
-	}
-	
 	private boolean isObjectNull(Object inputObjectA, Object inputObjectB){
 		
 		Message Msg = new Message();

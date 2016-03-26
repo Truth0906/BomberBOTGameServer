@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import ObjectStructure.Timer;
 import Tool.ST;
 
 public class Server implements Runnable {
@@ -80,7 +81,7 @@ public class Server implements Runnable {
 //		ERSystem.newScore(ScoreA, ScoreB);
 //		ST.showOnScreen("TEST", (ERSystem.newScore(ScoreA, ScoreB) + ""));
 		
-//		Timer test = new Timer(Option.timeInterval);
+//		Timer test = new Timer(2000);
 //		new Thread(test).start();
 		
 //		String testResult;
