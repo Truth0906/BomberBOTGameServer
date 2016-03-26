@@ -1,7 +1,5 @@
 package ObjectStructure;
 
-import Tool.ST;
-
 public class Timer implements Runnable{
 	
 	private long timeInterval;
@@ -46,11 +44,9 @@ public class Timer implements Runnable{
 				
 			}while(end < temp);
 			
-			if(!isContinue) break;
+			if(isContinue) new Thread(Notifier).run();
 			
-			new Thread(Notifier).run();
-			
-		}while(false);
+		}while(isContinue);
 		
 	}
 }
