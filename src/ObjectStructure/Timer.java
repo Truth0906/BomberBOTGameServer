@@ -31,6 +31,8 @@ public class Timer implements Runnable{
 		
 		do{
 			temp = start + timeInterval * cycle;
+			++cycle;
+			
 			do{
 				
 				end = System.currentTimeMillis();
