@@ -1,5 +1,6 @@
 package ObjectStructure;
 
+import SocketServer.Center;
 import SocketServer.Option;
 import Tool.ERSystem;
 import Tool.ErrorCode;
@@ -7,7 +8,6 @@ import Tool.ST;
 
 public class Map extends Notification implements Runnable {
 	
-	//private Object checkPlayerLock;
 	private Player A, B;
 	private Block MainMap[][];
 	private Timer Timer;
@@ -15,14 +15,11 @@ public class Map extends Notification implements Runnable {
 	
 	private final int PlayerA = 			0x0100;
 	private final int PlayerB =  			0x0200;
-	
-	private final int putBombBeforeMove = 	0x10;
-	private final int putBombAfterMove =  	0x20;
-	
-	private final int Move_Up = 		  	0x01;
-	private final int Move_Down =  		  	0x02;
-	private final int Move_Left = 			0x03;
-	private final int Move_Right = 			0x04;
+		
+	private final int Move_Up = 		  	  0x01;
+	private final int Move_Down =  		  	  0x02;
+	private final int Move_Left = 			  0x03;
+	private final int Move_Right = 			  0x04;
 	
 	private int PlayerLocationA[];
 	private int PlayerLocationB[];
@@ -71,6 +68,8 @@ public class Map extends Notification implements Runnable {
 	
 	@Override
 	public void TimeUp() {
+		ST.showOnScreen(LogName, "A " + A.isLive());
+		ST.showOnScreen(LogName, "B " + B.isLive());
 		
 		if(MapTimeUpTimes >= Option.GameTimeUp){
 			checkAlive();
@@ -78,7 +77,6 @@ public class Map extends Notification implements Runnable {
 		}
 		++MapTimeUpTimes;
 		
-			
 		Message PlayerMessageA = A.getMessage();
 		Message PlayerMessageB = B.getMessage();
 		
@@ -87,8 +85,8 @@ public class Map extends Notification implements Runnable {
 			return;
 		}
 		
-		String NextMoveA = PlayerMessageA.getMsg("NextMove");
-		String NextMoveB = PlayerMessageA.getMsg("NextMove");
+		String NextMoveA = PlayerMessageA.getMsg("Move");
+		String NextMoveB = PlayerMessageA.getMsg("Move");
 		
 		if(isObjectNull(NextMoveA, NextMoveB)){
 			checkAlive();
@@ -98,8 +96,26 @@ public class Map extends Notification implements Runnable {
 		int MoveA = Integer.parseInt(NextMoveA);
 		int MoveB = Integer.parseInt(NextMoveB);
 		
-		setMove(MoveA, PlayerLocationA);
-		setMove(MoveB, PlayerLocationB);
+		String TempA = PlayerMessageA.getMsg("putBombBeforeMove");
+		String TempB = PlayerMessageB.getMsg("putBombBeforeMove");
+		if(isObjectNull(TempA, TempB)){
+			checkAlive();
+			return;
+		}
+		boolean PBBM_A = Boolean.parseBoolean(TempA);
+		boolean PBBM_B = Boolean.parseBoolean(TempB);
+		
+		TempA = PlayerMessageA.getMsg("putBombAfterMove");
+		TempB = PlayerMessageB.getMsg("putBombAfterMove");
+		if(isObjectNull(TempA, TempB)){
+			checkAlive();
+			return;
+		}
+		boolean PBAM_A = Boolean.parseBoolean(TempA);
+		boolean PBAM_B = Boolean.parseBoolean(TempB);
+		
+		setMove(PBBM_A, MoveA, PBAM_A, PlayerLocationA);
+		setMove(PBBM_B, MoveB, PBAM_B, PlayerLocationB);
 		
 		countMap();
 		checkAlive();
@@ -114,7 +130,6 @@ public class Map extends Notification implements Runnable {
 		
 		Msg.setMsg("Live", B.isLive() + "");
 		B.sendMsg(Msg);
-			
 		
 	}
 	@Override
@@ -128,10 +143,10 @@ public class Map extends Notification implements Runnable {
 		Msg.setMsg("Message", "Game Joined");
 		Msg.setMsg("ErrorCode", ErrorCode.Success);
 		
-		Msg.setMsg("Mark", PlayerA);
+		Msg.setMsg("PlayerMark", PlayerA);
 		A.sendMsg(Msg);
 		
-		Msg.setMsg("Mark", PlayerB);
+		Msg.setMsg("PlayerMark", PlayerB);
 		B.sendMsg(Msg);
 		
 		
@@ -170,6 +185,8 @@ public class Map extends Notification implements Runnable {
 			
 		}
 		
+		Center.writePlayerData();
+		
 		A.setState(State.InPlayerList);
 		B.setState(State.InPlayerList);
 	}
@@ -180,7 +197,8 @@ public class Map extends Notification implements Runnable {
 			}
 		}
 	}
-	private void setMove(int InputMove, int [] InputPlayerLocation){
+	//boolean putBombBeforeMove, String inputMove, boolean putBombAfterMove
+	private void setMove(boolean putBombBeforeMove, int InputMove,  boolean putBombAfterMove, int [] InputPlayerLocation){
 		
 		int Y = InputPlayerLocation[0];
 		int X = InputPlayerLocation[1];
@@ -188,9 +206,9 @@ public class Map extends Notification implements Runnable {
 		Player tempP = MainMap[Y][X].getPlayer();
 		int tempPT = MainMap[Y][X].getPlayerType();
 		
-		if( (InputMove & putBombBeforeMove) == 1) setBomb(Y, X);
+		if( putBombBeforeMove) setBomb(Y, X);
 		
-		if( (InputMove & Move_Up) == 1){
+		if(InputMove == Move_Up){
 			if( (Y - 1) >= 0){
 				if(MainMap[Y -1][X].getType() == Block.Path_Type){
 					MainMap[Y][X].setPlayer(null, Block.NoPlayer);
@@ -200,7 +218,7 @@ public class Map extends Notification implements Runnable {
 				}
 			}
 		}
-		else if((InputMove & Move_Down) == 1){
+		else if(InputMove == Move_Down){
 			if( (Y + 1) >= MainMap.length ){
 				if(MainMap[Y + 1][X].getType() == Block.Path_Type){
 					MainMap[Y][X].setPlayer(null, Block.NoPlayer);
@@ -210,7 +228,7 @@ public class Map extends Notification implements Runnable {
 				}
 			}
 		}
-		else if( (InputMove & Move_Left) == 1){
+		else if(InputMove == Move_Left){
 			if( (X - 1) >= 0){
 				if(MainMap[Y][X - 1].getType() == Block.Path_Type){
 					MainMap[Y][X].setPlayer(null, Block.NoPlayer);
@@ -220,7 +238,7 @@ public class Map extends Notification implements Runnable {
 				}
 			}
 		}
-		else if((InputMove & Move_Right) == 1){
+		else if(InputMove == Move_Right){
 			if( (X + 1) >= MainMap[0].length){
 				if(MainMap[Y][X + 1].getType() == Block.Path_Type){
 					MainMap[Y][X].setPlayer(null, Block.NoPlayer);
@@ -231,7 +249,7 @@ public class Map extends Notification implements Runnable {
 			}
 		}
 		
-		if( (InputMove & putBombAfterMove) == 1) setBomb(Y, X);
+		if(putBombAfterMove) setBomb(Y, X);
 		
 	}
 	private void setBomb(int Y, int X){

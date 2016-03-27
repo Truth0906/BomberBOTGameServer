@@ -61,11 +61,12 @@ public class Center extends Notification{
 		
 		PairService.add(P);
 	}
-	public static void setPlayerMove(String inputID, Message inputMessage){
+	public static void setPlayerMove(String inputID, Message inputMessage, BufferedWriter inputWriter){
 		Player P = null;
 		
 		synchronized(Players_Lock){
 			P = Players.get(inputID.toLowerCase());
+			P.setWriter(inputWriter);
 		}
 
 		P.setMessage(inputMessage);
@@ -183,7 +184,7 @@ public class Center extends Notification{
 			ST.showOnScreen(LogName, "read player file fail, create new one");
 		}
 	}
-	private static void writePlayerData(){
+	public static void writePlayerData(){
 		synchronized(Players_Lock){
 			
 			File PlayerFile = null;
@@ -202,7 +203,6 @@ public class Center extends Notification{
 				
 				for(Entry<String, Player> entry : Players.entrySet()) {
 				    
-					
 					Player TempPlayer = entry.getValue();
 					String line = ST.PlayerToString(TempPlayer);
 					Writer.write(line);
@@ -220,8 +220,6 @@ public class Center extends Notification{
 	}
 	@Override
 	public void TimeUp() {
-		writePlayerData();
-		ST.showOnScreen(LogName, "Save player data success");
 		System.gc();
 		ST.showOnScreen(LogName, "Free system resource");
 	}

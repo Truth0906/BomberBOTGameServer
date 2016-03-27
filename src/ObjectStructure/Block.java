@@ -53,10 +53,22 @@ public class Block {
 		if(PlayerTemp != null) return PlayerType + "";
 		if(BombExplosionTime > 0) return BombExplosionTime + "";
 		return BlockType + "";
+		
+//		String result = "";
+//		int temp = 0;
+//		
+//		temp = temp & PlayerType;
+//		temp = temp & BombExplosionTime;
+//		temp = temp & BlockType;
+//		
+//		result = temp + "";
+//		
+//		return result;
 	}
 	
 	public void CountBombExplosionTime() {
 		if(BlockType == Wall_Type) return;
+		if(BombExplosionTime == 0) return;
 		
 		if(BombExplosionTime > 0) --BombExplosionTime;
 		else{

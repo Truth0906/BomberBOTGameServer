@@ -9,4 +9,5 @@ public class Option {
 	public static long GameTimeUp = 240;//ticks
 	public static int BombExplosionTime = 10;
 	public static int BombExplosionRange = 8;
+	public static boolean Log = false;
 }

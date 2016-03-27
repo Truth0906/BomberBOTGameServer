@@ -1,4 +1,4 @@
-package Tool;
+package ObjectStructure;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 import Tool.ST;
 
 public class Message {
-	private Map<String, String> MsgMap;
+	private HashMap<String, String> MsgMap;
 	public Message(){
 		
 		MsgMap = new HashMap<String, String>();
@@ -22,7 +22,7 @@ public class Message {
 	}
 	public void setMsg(String inputKey, int inputValue){
 		
-		MsgMap.put(inputKey, inputValue + "");
+		setMsg(inputKey, (inputValue + ""));
 		
 	}
 	public void setMsg(String inputKey, String inputValue){
@@ -33,7 +33,7 @@ public class Message {
 	public Map<String, String> getMsgMap() {
 		return MsgMap;
 	}
-	public void setMsgMap(Map<String, String> msgMap) {
+	public void setMsgMap(HashMap<String, String> msgMap) {
 		MsgMap = msgMap;
 	}
 }

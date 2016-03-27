@@ -15,16 +15,16 @@ public class Player{
 	private int Tie;
 
 	private transient BufferedWriter Writer;
-	private transient Message Message;
+	private transient Message message;
 	private transient State Status;
-	private boolean isLive;
+	private transient boolean Live;
 	
 	public boolean isLive() {
-		return isLive;
+		return Live;
 	}
 
-	public void setLive(boolean isLive) {
-		this.isLive = isLive;
+	public void setLive(boolean inputLive) {
+		Live = inputLive;
 	}
 
 	public Player(){
@@ -34,7 +34,7 @@ public class Player{
 		Wins = 0;
 		Losses = 0;
 		Tie = 0;
-		Message = null;
+		message = null;
 		Status = new State();
 	}
 	
@@ -60,8 +60,8 @@ public class Player{
 	public void setPassword(String password) {
 		Password = password;
 	}
-	public void setWriter(BufferedWriter writer) {
-		Writer = writer;
+	public void setWriter(BufferedWriter inputWriter) {
+		Writer = inputWriter;
 	}
 	
 	public String getID() {
@@ -100,22 +100,24 @@ public class Player{
 		try {
 			Writer.write(Msg + "\r\n");
 			Writer.flush();
-			return true;
+			Writer.close();
 		} catch (IOException e) {
-			//e.printStackTrace();
 			return false;
 		}
 		
+		return true;
 	}
 	
 	public void setMessage(Message inputMessage) {
-		Message = inputMessage;
+		if(message == null){
+			message = inputMessage;
+		}
 	}
 
 	public Message getMessage() {
-		Message temp = Message;
+		Message temp = message;
 		
-		Message = null;
+		message = null;
 		
 		return temp;
 	}

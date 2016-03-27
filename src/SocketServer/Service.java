@@ -88,6 +88,9 @@ public class Service implements Runnable {
 			
 		}
 		else if(FunctionName.equals("move")){
+			
+			ST.showOnScreen(LogName, "move function");
+			
 			String ID = ClientMsg.getMsg("ID");
 			String Password = ClientMsg.getMsg("Password");
 			if(ID == null || Password == null){
@@ -102,9 +105,8 @@ public class Service implements Runnable {
 				sendMsg(Msg);
 				return;
 			}
-			//ST.showOnScreen(LogName, ID + " verify password success");
-			
-			Center.setPlayerMove(ID, ClientMsg);
+			ST.showOnScreen(LogName, ID + " verify password success");
+			Center.setPlayerMove(ID, ClientMsg, Writer);
 			return;
 		}
 		else{

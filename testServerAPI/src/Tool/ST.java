@@ -8,7 +8,9 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import ObjectStructure.Message;
 
 public class ST {//Server Tool
 	
@@ -20,7 +22,10 @@ public class ST {//Server Tool
     	String result ="["+nowdate.format(new java.util.Date())+"]";
     	return result;
     }
-	public static void showOnScreen(String inputLogName, String inputMsg){
+	public static void showOnScreen(String inputLogName, int inputMsg){
+		showOnScreen(inputLogName, inputMsg + "");
+	}
+	public static synchronized void showOnScreen(String inputLogName, String inputMsg){
 		//String style = System.lineSeparator();
 		String style = " ";
 		
@@ -56,6 +61,24 @@ public class ST {//Server Tool
 		}
 		return result;
 	}
+//	public static String SHA256(String inputData){
+//		
+//		MessageDigest sha = null;
+//		
+//		try{
+//			sha = MessageDigest.getInstance("SHA-256");  
+//			sha.update(inputData.getBytes("UTF-8"));  
+//		}catch(Exception e){
+//			e.printStackTrace();
+//			return null;
+//		}
+//		
+//		String result = ByteToHex(sha.digest()); 
+//		
+//		return result;
+//		
+//	}
+
 	public static Message StringToMessage(String inputMsgString){
 		Gson gson = new Gson();
 		
@@ -70,5 +93,10 @@ public class ST {//Server Tool
 		String result = gson.toJson(inputMsg);
 		result = result.substring(10, result.length() -1);
 		return result;		
+	}
+	
+	public static int abs(int input){
+		if(input < 0) return -1 * input;
+		return input;
 	}
 }
