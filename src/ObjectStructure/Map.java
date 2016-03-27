@@ -7,14 +7,12 @@ import Tool.ST;
 
 public class Map extends Notification implements Runnable {
 	
-	private Object checkPlayerLock;
+	//private Object checkPlayerLock;
 	private Player A, B;
 	private Block MainMap[][];
 	private Timer Timer;
 	private int MapTimeUpTimes;
 	
-	private boolean isContiue;
-		
 	private final int PlayerA = 			0x0100;
 	private final int PlayerB =  			0x0200;
 	
@@ -32,15 +30,12 @@ public class Map extends Notification implements Runnable {
 	private String LogName = "Map";
 	public Map(Player inputA, Player inputB){
 		
-		checkPlayerLock = new Object();
-		
 		A = inputA;
 		B = inputB;
 		
 		A.setState(State.InMap);
 		B.setState(State.InMap);
 		
-		isContiue = true;
 		A.setLive(true);
 		B.setLive(true);
 
@@ -78,41 +73,49 @@ public class Map extends Notification implements Runnable {
 	public void TimeUp() {
 		
 		if(MapTimeUpTimes >= Option.GameTimeUp){
-			this.isContiue = false;
+			checkAlive();
 			return;
 		}
 		++MapTimeUpTimes;
 		
-		synchronized(checkPlayerLock){
-			Message PlayerMessageA = A.getMessage();
-			Message PlayerMessageB = B.getMessage();
 			
-			if(isObjectNull(PlayerMessageA, PlayerMessageB)) return;
-			
-			String NextMoveA = PlayerMessageA.getMsg("NextMove");
-			String NextMoveB = PlayerMessageA.getMsg("NextMove");
-			
-			if(isObjectNull(NextMoveA, NextMoveB)) return;
-			
-			int MoveA = Integer.parseInt(NextMoveA);
-			int MoveB = Integer.parseInt(NextMoveB);
-			
-			setMove(MoveA, PlayerLocationA);
-			setMove(MoveB, PlayerLocationB);
-			
-			countMap();
-			
-			Message Msg = new Message();
-			
-			Msg.setMsg("Map", ST.MapToString(MainMap));
-			Msg.setMsg("ErrorCode", ErrorCode.Success);
-			
-			Msg.setMsg("Live", A.isLive() + "");
-			A.sendMsg(Msg);
-			
-			Msg.setMsg("Live", B.isLive() + "");
-			B.sendMsg(Msg);
+		Message PlayerMessageA = A.getMessage();
+		Message PlayerMessageB = B.getMessage();
+		
+		if(isObjectNull(PlayerMessageA, PlayerMessageB)){
+			checkAlive();
+			return;
 		}
+		
+		String NextMoveA = PlayerMessageA.getMsg("NextMove");
+		String NextMoveB = PlayerMessageA.getMsg("NextMove");
+		
+		if(isObjectNull(NextMoveA, NextMoveB)){
+			checkAlive();
+			return;
+		}
+		
+		int MoveA = Integer.parseInt(NextMoveA);
+		int MoveB = Integer.parseInt(NextMoveB);
+		
+		setMove(MoveA, PlayerLocationA);
+		setMove(MoveB, PlayerLocationB);
+		
+		countMap();
+		checkAlive();
+		
+		Message Msg = new Message();
+		
+		Msg.setMsg("Map", ST.MapToString(MainMap));
+		Msg.setMsg("ErrorCode", ErrorCode.Success);
+		
+		Msg.setMsg("Live", A.isLive() + "");
+		A.sendMsg(Msg);
+		
+		Msg.setMsg("Live", B.isLive() + "");
+		B.sendMsg(Msg);
+			
+		
 	}
 	@Override
 	public void run() {
@@ -135,19 +138,9 @@ public class Map extends Notification implements Runnable {
 		Timer = new Timer(Option.TimeInterval);
 		Timer.addNotificationList(this);
 		new Thread(Timer).start();
-		
-		do{
-			try {
-				Thread.sleep(Option.TimeInterval / 10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			synchronized(checkPlayerLock){
-				if(A.isLive() == false || B.isLive() == false){
-					break;
-				}
-			}
-		}while(isContiue);
+	}
+	private void checkAlive(){
+		if(A.isLive() && B.isLive()) return;
 		
 		Timer.stop();
 		

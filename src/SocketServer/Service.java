@@ -87,7 +87,7 @@ public class Service implements Runnable {
 			Center.addPairPlayer(ID, Writer);
 			
 		}
-		if(FunctionName.equals("move")){
+		else if(FunctionName.equals("move")){
 			String ID = ClientMsg.getMsg("ID");
 			String Password = ClientMsg.getMsg("Password");
 			if(ID == null || Password == null){
