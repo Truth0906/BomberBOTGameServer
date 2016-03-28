@@ -13,8 +13,9 @@ import java.security.SecureRandom;
 
 import javax.net.SocketFactory;
 
-import ObjectStructure.ErrorCode;
+import ObjectStructure.BitFlag;
 import ObjectStructure.Message;
+import Tool.ErrorCode;
 import Tool.ST;
 
 public class testServerAPI {
@@ -107,11 +108,6 @@ public class testServerAPI {
 	}
 	public int move(String inputID, String inputPW, String inputMove, int putBombFlag){
 		
-		final int Move_Up = 		  	  0x01;
-		final int Move_Down =  		  	  0x02;
-		final int Move_Left = 			  0x03;
-		final int Move_Right = 			  0x04;
-		
 		if (!connect()) {
 	    	Errorcode = ErrorCode.ConnectError;
 	    	return Errorcode;
@@ -123,10 +119,10 @@ public class testServerAPI {
 	    Msg.setMsg("ID", inputID);
 	    Msg.setMsg("Password", inputPW);
 	    Msg.setMsg("BombFlag", putBombFlag + "");
-	    if(inputMove.toLowerCase().equals("up")) 	Msg.setMsg("Move", Move_Up);
-	    if(inputMove.toLowerCase().equals("down")) 	Msg.setMsg("Move", Move_Down);
-	    if(inputMove.toLowerCase().equals("left")) 	Msg.setMsg("Move", Move_Left);
-	    if(inputMove.toLowerCase().equals("right"))	Msg.setMsg("Move", Move_Right);
+	    if(inputMove.toLowerCase().equals("up")) 	Msg.setMsg("Move", BitFlag.Move_Up);
+	    if(inputMove.toLowerCase().equals("down")) 	Msg.setMsg("Move", BitFlag.Move_Down);
+	    if(inputMove.toLowerCase().equals("left")) 	Msg.setMsg("Move", BitFlag.Move_Left);
+	    if(inputMove.toLowerCase().equals("right"))	Msg.setMsg("Move", BitFlag.Move_Right);
 	    
 	    sendMsg(Msg);
 	    receiveMsg = receiveMsg();
@@ -154,11 +150,6 @@ public class testServerAPI {
 		return Errorcode;
 	}
 	public void showMap(){
-		final int Wall_Type = 				0x1000;
-		final int Path_Type =  				0x2000;
-		final int Bomb_Type =  				0x3000;
-		final int PlayerA = 				0x0100;
-		final int PlayerB =  				0x0200;		
 		
 		String Wall = null;
 		String Path = null;
@@ -181,11 +172,11 @@ public class testServerAPI {
 	    for(int y = 0 ; y < map.length ; y++){
 			for(int x = 0 ; x < map[0].length ; x++){
 				
-				if(map[y][x] == Bomb_Type) 		System.out.print(Bomb);
-				else if(map[y][x] == Path_Type) 	System.out.print(Path);
-				else if(map[y][x] == Wall_Type) 	System.out.print(Wall);
-				else if(map[y][x] == PlayerA) 	System.out.print(PA);
-				else if(map[y][x] == PlayerB) 	System.out.print(PB);
+				if(ST.CompareBitFlag(map[y][x], BitFlag.PlayerA)) 			System.out.print(PA);
+				else if(ST.CompareBitFlag(map[y][x], BitFlag.PlayerB)) 		System.out.print(PB);
+				else if(ST.CompareBitFlag(map[y][x], BitFlag.Bomb_Type)) 	System.out.print(Bomb);
+				else if(ST.CompareBitFlag(map[y][x], BitFlag.Path_Type)) 	System.out.print(Path);
+				else if(ST.CompareBitFlag(map[y][x], BitFlag.Wall_Type)) 	System.out.print(Wall);
 				//System.out.print(map[y][x] + " ");
 				
 			}
@@ -205,6 +196,7 @@ public class testServerAPI {
 	public int[][] getMap(){
 		return map;
 	}
+	
 	private boolean connect(){
 		
 		for(int i = 0 ; i < PortList.length ; i++){

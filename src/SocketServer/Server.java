@@ -48,8 +48,14 @@ public class Server implements Runnable {
     	}
     }
 	public static void main(String[] args) {
-		System.out.print("BomberGameBOT Server v1.0.16.0327 beta\n");
+		System.out.print("BomberGameBOT Server v1.0.16.0328 beta\n");
 		new Thread(new Server()).start();
+		
+//		int Flag  = 0x0100;
+//		int input = 0x0500;
+//		
+//		ST.showOnScreen("TEST", (Flag & input));
+//		ST.showOnScreen("TEST", ((Flag & input) == Flag) + "");
 		
 //		ST.showOnScreen("TEST", ST.OptionToString(new Option()));
 //		

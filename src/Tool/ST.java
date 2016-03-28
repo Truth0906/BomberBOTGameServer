@@ -147,10 +147,11 @@ public class ST {//Server Tool
 			}
 		}
 		
-		
 		return result;
 	}
-	
+	public static boolean CompareBitFlag(int input, int inputFlag){
+		return (input & inputFlag) == inputFlag;
+	}
 	public static int abs(int input){
 		if(input < 0) return -1 * input;
 		return input;

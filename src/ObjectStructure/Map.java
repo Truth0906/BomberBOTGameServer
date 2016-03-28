@@ -12,18 +12,7 @@ public class Map extends Notification implements Runnable {
 	private Block MainMap[][];
 	private Timer Timer;
 	private int MapTimeUpTimes;
-	
-	private final int PlayerA = 			0x0100;
-	private final int PlayerB =  			0x0200;
-	
-	
-	private final int Move_Up = 		  	  0x01;
-	private final int Move_Down =  		  	  0x02;
-	private final int Move_Left = 			  0x03;
-	private final int Move_Right = 			  0x04;
-	private final int putBombBeforeMove = 	0x10;
-	private final int putBombAfterMove =  	0x20;
-	
+		
 	private int PlayerLocationA[];
 	private int PlayerLocationB[];
 	
@@ -55,13 +44,13 @@ public class Map extends Notification implements Runnable {
 		
 		for(int y = 0 ; y < 13 ; y++){
 			for(int x = 0 ; x < 15 ; x++){
-				if(y % 2 == 1 && x % 2 ==1) MainMap[y][x] = new Block(Block.Wall_Type);
-				else MainMap[y][x] = new Block(Block.Path_Type);
+				if(y % 2 == 1 && x % 2 ==1) MainMap[y][x] = new Block(BitFlag.Wall_Type);
+				else MainMap[y][x] = new Block(BitFlag.Path_Type);
 			}
 		}
 		
-		MainMap[6][0].setPlayer(A, PlayerA);
-		MainMap[6][14].setPlayer(B, PlayerB);
+		MainMap[6][0].setPlayer(A, BitFlag.PlayerA);
+		MainMap[6][14].setPlayer(B, BitFlag.PlayerB);
 				
 		PlayerLocationA[0] = 6;
 		PlayerLocationA[1] = 0;
@@ -141,10 +130,10 @@ public class Map extends Notification implements Runnable {
 		Msg.setMsg("Message", "Game Joined");
 		Msg.setMsg("ErrorCode", ErrorCode.Success);
 		
-		Msg.setMsg("PlayerMark", PlayerA);
+		Msg.setMsg("PlayerMark", BitFlag.PlayerA);
 		A.sendMsg(Msg);
 		
-		Msg.setMsg("PlayerMark", PlayerB);
+		Msg.setMsg("PlayerMark", BitFlag.PlayerB);
 		B.sendMsg(Msg);
 		
 		
@@ -203,42 +192,42 @@ public class Map extends Notification implements Runnable {
 		Player tempP = MainMap[Y][X].getPlayer();
 		int tempPT = MainMap[Y][X].getPlayerType();
 		
-		if((inputBombFlag & putBombBeforeMove) == putBombBeforeMove) setBomb(Y, X);
+		if((inputBombFlag & BitFlag.putBombBeforeMove) == BitFlag.putBombBeforeMove) setBomb(Y, X);
 		
-		if(InputMove == Move_Up){
+		if(InputMove == BitFlag.Move_Up){
 			if( (Y - 1) >= 0){
-				if(MainMap[Y -1][X].getType() == Block.Path_Type){
-					MainMap[Y][X].setPlayer(null, Block.NoPlayer);
+				if(MainMap[Y -1][X].getType() == BitFlag.Path_Type){
+					MainMap[Y][X].setPlayer(null, BitFlag.NoPlayer);
 					Y--;
 					InputPlayerLocation[0] = Y;
 					MainMap[Y][X].setPlayer(tempP, tempPT);
 				}
 			}
 		}
-		else if(InputMove == Move_Down){
+		else if(InputMove == BitFlag.Move_Down){
 			if( (Y + 1) < MainMap.length ){
-				if(MainMap[Y + 1][X].getType() == Block.Path_Type){
-					MainMap[Y][X].setPlayer(null, Block.NoPlayer);
+				if(MainMap[Y + 1][X].getType() == BitFlag.Path_Type){
+					MainMap[Y][X].setPlayer(null, BitFlag.NoPlayer);
 					Y++;
 					InputPlayerLocation[0] = Y;
 					MainMap[Y][X].setPlayer(tempP, tempPT);
 				}
 			}
 		}
-		else if(InputMove == Move_Left){
+		else if(InputMove == BitFlag.Move_Left){
 			if( (X - 1) >= 0){
-				if(MainMap[Y][X - 1].getType() == Block.Path_Type){
-					MainMap[Y][X].setPlayer(null, Block.NoPlayer);
+				if(MainMap[Y][X - 1].getType() == BitFlag.Path_Type){
+					MainMap[Y][X].setPlayer(null, BitFlag.NoPlayer);
 					X--;
 					InputPlayerLocation[1] = X;
 					MainMap[Y][X].setPlayer(tempP, tempPT);
 				}
 			}
 		}
-		else if(InputMove == Move_Right){
+		else if(InputMove == BitFlag.Move_Right){
 			if( (X + 1) < MainMap[0].length){
-				if(MainMap[Y][X + 1].getType() == Block.Path_Type){
-					MainMap[Y][X].setPlayer(null, Block.NoPlayer);
+				if(MainMap[Y][X + 1].getType() == BitFlag.Path_Type){
+					MainMap[Y][X].setPlayer(null, BitFlag.NoPlayer);
 					X++;
 					InputPlayerLocation[1] = X;
 					MainMap[Y][X].setPlayer(tempP, tempPT);
@@ -246,41 +235,41 @@ public class Map extends Notification implements Runnable {
 			}
 		}
 		
-		if((inputBombFlag & putBombAfterMove) == putBombAfterMove) setBomb(Y, X);
+		if((inputBombFlag & BitFlag.putBombAfterMove) == BitFlag.putBombAfterMove) setBomb(Y, X);
 		
 	}
 	private void setBomb(int Y, int X){
 		int BombExplosionTime = MainMap[Y][X].getBombExplosionTime() > 0 ? MainMap[Y][X].getBombExplosionTime() : Option.BombExplosionTime; 
 		
 		MainMap[Y][X].setBombExplosionTime(BombExplosionTime);
-		MainMap[Y][X].setType(Block.Bomb_Type);
+		MainMap[Y][X].setType(BitFlag.Bomb_Type);
 		
 		for(int i = 0 ; i < Option.BombExplosionRange ; i++){
 			if((Y + i) >= MainMap.length ) break;
-			if(MainMap[Y + i][X].getType() == Block.Wall_Type) continue;
+			if(MainMap[Y + i][X].getType() == BitFlag.Wall_Type) continue;
 			
-			if(MainMap[Y + i][X].getType() == Block.Path_Type) MainMap[Y + i][X].setBombExplosionTime(BombExplosionTime);
+			if(MainMap[Y + i][X].getType() == BitFlag.Path_Type) MainMap[Y + i][X].setBombExplosionTime(BombExplosionTime);
 		}
 		
 		for(int i = 0 ; i < Option.BombExplosionRange ; i++){
 			if((X + i) >= MainMap[0].length ) break;
-			if(MainMap[Y][X + i].getType() == Block.Wall_Type) continue;
+			if(MainMap[Y][X + i].getType() == BitFlag.Wall_Type) continue;
 			
-			if(MainMap[Y][X + i].getType() == Block.Path_Type) MainMap[Y][X + i].setBombExplosionTime(BombExplosionTime);
+			if(MainMap[Y][X + i].getType() == BitFlag.Path_Type) MainMap[Y][X + i].setBombExplosionTime(BombExplosionTime);
 		}
 		
 		for(int i = 0 ; i < Option.BombExplosionRange ; i++){
 			if((Y - i) < 0 ) break;
-			if(MainMap[Y - i][X].getType() == Block.Wall_Type) continue;
+			if(MainMap[Y - i][X].getType() == BitFlag.Wall_Type) continue;
 			
-			if(MainMap[Y - i][X].getType() == Block.Path_Type) MainMap[Y - i][X].setBombExplosionTime(BombExplosionTime);
+			if(MainMap[Y - i][X].getType() == BitFlag.Path_Type) MainMap[Y - i][X].setBombExplosionTime(BombExplosionTime);
 		}
 		
 		for(int i = 0 ; i < Option.BombExplosionRange ; i++){
 			if((X - i) < 0 ) break;
-			if(MainMap[Y][X - i].getType() == Block.Wall_Type) continue;
+			if(MainMap[Y][X - i].getType() == BitFlag.Wall_Type) continue;
 			
-			if(MainMap[Y][X - i].getType() == Block.Path_Type) MainMap[Y][X - i].setBombExplosionTime(BombExplosionTime);
+			if(MainMap[Y][X - i].getType() == BitFlag.Path_Type) MainMap[Y][X - i].setBombExplosionTime(BombExplosionTime);
 		}
 	}
 		

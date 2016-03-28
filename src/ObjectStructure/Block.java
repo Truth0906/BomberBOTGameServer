@@ -2,21 +2,15 @@ package ObjectStructure;
 
 public class Block {
 	
-	public static final int UnknowType = 				0x0000;
-	public static final int NoPlayer =	 				0x0000;
-	public static final int Wall_Type = 				0x1000;
-	public static final int Path_Type =  				0x2000;
-	public static final int Bomb_Type =  				0x3000;
-	
 	private int BlockType;
 	private Player PlayerTemp;
 	private int PlayerType;
 	private int BombExplosionTime;
 	
 	public Block(){
-		BlockType = UnknowType;
+		BlockType = BitFlag.UnknowType;
 		PlayerTemp = null;
-		PlayerType = NoPlayer;
+		PlayerType = BitFlag.NoPlayer;
 		BombExplosionTime = 0;
 	}
 	public Block(int inputType){
@@ -29,7 +23,7 @@ public class Block {
 		BlockType = inputType;
 	}
 	public void setPlayer(Player inputPlayer, int inputPlayerType){
-		if(BlockType == Wall_Type) return;
+		if(BlockType == BitFlag.Wall_Type) return;
 		PlayerTemp = inputPlayer;
 		PlayerType = inputPlayerType;
 	}
@@ -40,7 +34,7 @@ public class Block {
 		return PlayerType;
 	}
 	public void setBombExplosionTime(int inputBombExplosionTime){
-		if(BlockType == Wall_Type) return;
+		if(BlockType == BitFlag.Wall_Type) return;
 		if(inputBombExplosionTime <= 0) return;
 		BombExplosionTime = inputBombExplosionTime;
 	}
@@ -50,30 +44,30 @@ public class Block {
 	@Override
 	public String toString() {
 		
-		if(PlayerTemp != null) return PlayerType + "";
-		if(BombExplosionTime > 0) return BombExplosionTime + "";
-		return BlockType + "";
+//		if(PlayerTemp != null) return PlayerType + "";
+//		if(BombExplosionTime > 0) return BombExplosionTime + "";
+//		return BlockType + "";
 		
-//		String result = "";
-//		int temp = 0;
-//		
-//		temp = temp & PlayerType;
-//		temp = temp & BombExplosionTime;
-//		temp = temp & BlockType;
-//		
-//		result = temp + "";
-//		
-//		return result;
+		String result = "";
+		int temp = 0;
+		
+		temp |= PlayerType;
+		temp |= BombExplosionTime;
+		temp |= BlockType;
+		
+		result = temp + "";
+		
+		return result;
 	}
 	
 	public void CountBombExplosionTime() {
-		if(BlockType == Wall_Type) return;
+		if(BlockType == BitFlag.Wall_Type) return;
 		if(BombExplosionTime == 0) return;
 		
 		if(BombExplosionTime > 0) --BombExplosionTime;
 		else{
-			BlockType = Path_Type;
-			if(PlayerType != NoPlayer && PlayerTemp != null){
+			BlockType = BitFlag.Path_Type;
+			if(PlayerType != BitFlag.NoPlayer && PlayerTemp != null){
 				PlayerTemp.setLive(false);
 			}
 		}
