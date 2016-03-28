@@ -51,7 +51,6 @@ public class Server implements Runnable {
 		System.out.print("BomberGameBOT Server v1.0.16.0327 beta\n");
 		new Thread(new Server()).start();
 		
-		
 //		ST.showOnScreen("TEST", ST.OptionToString(new Option()));
 //		
 //		Option test1 = new Option();

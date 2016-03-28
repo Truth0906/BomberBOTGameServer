@@ -15,11 +15,14 @@ public class Map extends Notification implements Runnable {
 	
 	private final int PlayerA = 			0x0100;
 	private final int PlayerB =  			0x0200;
-		
+	
+	
 	private final int Move_Up = 		  	  0x01;
 	private final int Move_Down =  		  	  0x02;
 	private final int Move_Left = 			  0x03;
 	private final int Move_Right = 			  0x04;
+	private final int putBombBeforeMove = 	0x10;
+	private final int putBombAfterMove =  	0x20;
 	
 	private int PlayerLocationA[];
 	private int PlayerLocationB[];
@@ -68,10 +71,14 @@ public class Map extends Notification implements Runnable {
 	
 	@Override
 	public void TimeUp() {
-		ST.showOnScreen(LogName, "A " + A.isLive());
-		ST.showOnScreen(LogName, "B " + B.isLive());
-		
+				
 		if(MapTimeUpTimes >= Option.GameTimeUp){
+			
+			if(A.isLive() && B.isLive()){
+				A.setLive(false);
+				B.setLive(false);
+			}
+			
 			checkAlive();
 			return;
 		}
@@ -96,26 +103,17 @@ public class Map extends Notification implements Runnable {
 		int MoveA = Integer.parseInt(NextMoveA);
 		int MoveB = Integer.parseInt(NextMoveB);
 		
-		String TempA = PlayerMessageA.getMsg("putBombBeforeMove");
-		String TempB = PlayerMessageB.getMsg("putBombBeforeMove");
+		String TempA = PlayerMessageA.getMsg("BombFlag");
+		String TempB = PlayerMessageB.getMsg("BombFlag");
 		if(isObjectNull(TempA, TempB)){
 			checkAlive();
 			return;
 		}
-		boolean PBBM_A = Boolean.parseBoolean(TempA);
-		boolean PBBM_B = Boolean.parseBoolean(TempB);
+		int BombFlag_A = Integer.parseInt(TempA);
+		int BombFlag_B = Integer.parseInt(TempB);
 		
-		TempA = PlayerMessageA.getMsg("putBombAfterMove");
-		TempB = PlayerMessageB.getMsg("putBombAfterMove");
-		if(isObjectNull(TempA, TempB)){
-			checkAlive();
-			return;
-		}
-		boolean PBAM_A = Boolean.parseBoolean(TempA);
-		boolean PBAM_B = Boolean.parseBoolean(TempB);
-		
-		setMove(PBBM_A, MoveA, PBAM_A, PlayerLocationA);
-		setMove(PBBM_B, MoveB, PBAM_B, PlayerLocationB);
+		setMove(MoveA, BombFlag_A, PlayerLocationA);
+		setMove(MoveB, BombFlag_B, PlayerLocationB);
 		
 		countMap();
 		checkAlive();
@@ -197,8 +195,7 @@ public class Map extends Notification implements Runnable {
 			}
 		}
 	}
-	//boolean putBombBeforeMove, String inputMove, boolean putBombAfterMove
-	private void setMove(boolean putBombBeforeMove, int InputMove,  boolean putBombAfterMove, int [] InputPlayerLocation){
+	private void setMove(int InputMove, int inputBombFlag, int [] InputPlayerLocation){
 		
 		int Y = InputPlayerLocation[0];
 		int X = InputPlayerLocation[1];
@@ -206,7 +203,7 @@ public class Map extends Notification implements Runnable {
 		Player tempP = MainMap[Y][X].getPlayer();
 		int tempPT = MainMap[Y][X].getPlayerType();
 		
-		if( putBombBeforeMove) setBomb(Y, X);
+		if((inputBombFlag & putBombBeforeMove) == putBombBeforeMove) setBomb(Y, X);
 		
 		if(InputMove == Move_Up){
 			if( (Y - 1) >= 0){
@@ -219,7 +216,7 @@ public class Map extends Notification implements Runnable {
 			}
 		}
 		else if(InputMove == Move_Down){
-			if( (Y + 1) >= MainMap.length ){
+			if( (Y + 1) < MainMap.length ){
 				if(MainMap[Y + 1][X].getType() == Block.Path_Type){
 					MainMap[Y][X].setPlayer(null, Block.NoPlayer);
 					Y++;
@@ -239,7 +236,7 @@ public class Map extends Notification implements Runnable {
 			}
 		}
 		else if(InputMove == Move_Right){
-			if( (X + 1) >= MainMap[0].length){
+			if( (X + 1) < MainMap[0].length){
 				if(MainMap[Y][X + 1].getType() == Block.Path_Type){
 					MainMap[Y][X].setPlayer(null, Block.NoPlayer);
 					X++;
@@ -249,7 +246,7 @@ public class Map extends Notification implements Runnable {
 			}
 		}
 		
-		if(putBombAfterMove) setBomb(Y, X);
+		if((inputBombFlag & putBombAfterMove) == putBombAfterMove) setBomb(Y, X);
 		
 	}
 	private void setBomb(int Y, int X){

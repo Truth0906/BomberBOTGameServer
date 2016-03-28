@@ -9,6 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.Charset;
+import java.security.SecureRandom;
 
 import javax.net.SocketFactory;
 
@@ -104,7 +105,7 @@ public class testServerAPI {
 	    
 	    return Errorcode;
 	}
-	public int move(String inputID, String inputPW, boolean putBombBeforeMove, String inputMove, boolean putBombAfterMove){
+	public int move(String inputID, String inputPW, String inputMove, int putBombFlag){
 		
 		final int Move_Up = 		  	  0x01;
 		final int Move_Down =  		  	  0x02;
@@ -121,12 +122,11 @@ public class testServerAPI {
 	    Msg.setMsg("FunctionName", "move");
 	    Msg.setMsg("ID", inputID);
 	    Msg.setMsg("Password", inputPW);
-	    Msg.setMsg("putBombBeforeMove", putBombBeforeMove + "");
+	    Msg.setMsg("BombFlag", putBombFlag + "");
 	    if(inputMove.toLowerCase().equals("up")) 	Msg.setMsg("Move", Move_Up);
 	    if(inputMove.toLowerCase().equals("down")) 	Msg.setMsg("Move", Move_Down);
 	    if(inputMove.toLowerCase().equals("left")) 	Msg.setMsg("Move", Move_Left);
 	    if(inputMove.toLowerCase().equals("right"))	Msg.setMsg("Move", Move_Right);
-	    Msg.setMsg("putBombAfterMove", putBombAfterMove + "");
 	    
 	    sendMsg(Msg);
 	    receiveMsg = receiveMsg();
@@ -269,9 +269,35 @@ public class testServerAPI {
 			ST.showOnScreen("AI", test.getErrorMessage());
 			return;
 		}
-		test.showMap();
-		test.move(inputID, inputPW, false, "up", false);
-		test.showMap();
+		
+		SecureRandom rand = new SecureRandom();
+		while(true){
+			int move = rand.nextInt();
+			
+			if(move < 0) move = move * -1;
+			move = move % 4;
+			
+			if(move == 0){
+				test.move(inputID, inputPW, "up", 0);
+				ST.showOnScreen("AI", "up");
+			}
+			else if(move == 1){
+				test.move(inputID, inputPW, "down", 0);
+				ST.showOnScreen("AI", "down");
+			}
+			else if(move == 2){
+				test.move(inputID, inputPW, "right", 0);
+				ST.showOnScreen("AI", "right");
+			}
+			else if(move == 3){
+				test.move(inputID, inputPW, "left", 0);
+				ST.showOnScreen("AI", "left");
+			}
+			else{
+				ST.showOnScreen("AI", "move = " + move);
+			}
+			test.showMap();
+		}
 		//int [][] map = test.getMap();
 		
 	}
