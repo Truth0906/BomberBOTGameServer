@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import ObjectStructure.BitFlag;
 import ObjectStructure.Timer;
 import Tool.ST;
 
@@ -51,11 +52,10 @@ public class Server implements Runnable {
 		System.out.print("BomberGameBOT Server v1.0.16.0328 beta\n");
 		new Thread(new Server()).start();
 		
-//		int Flag  = 0x0100;
-//		int input = 0x0500;
-//		
-//		ST.showOnScreen("TEST", (Flag & input));
-//		ST.showOnScreen("TEST", ((Flag & input) == Flag) + "");
+		
+		
+		ST.showOnScreen("TEST", (BitFlag.PlayerA & BitFlag.PlayerB));
+		//ST.showOnScreen("TEST", ((BitFlag.PlayerA & input) == Flag) + "");
 		
 //		ST.showOnScreen("TEST", ST.OptionToString(new Option()));
 //		

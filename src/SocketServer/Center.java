@@ -220,7 +220,7 @@ public class Center extends Notification{
 	}
 	@Override
 	public void TimeUp() {
-		System.gc();
-		ST.showOnScreen(LogName, "Free system resource");
+//		System.gc();
+//		ST.showOnScreen(LogName, "Free system resource");
 	}
 }

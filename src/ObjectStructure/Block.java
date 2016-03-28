@@ -1,20 +1,19 @@
 package ObjectStructure;
 
+import Tool.ST;
+
 public class Block {
 	
 	private int BlockType;
-	private Player PlayerTemp;
+	private Player PlayerTemp[];
 	private int PlayerType;
 	private int BombExplosionTime;
 	
-	public Block(){
-		BlockType = BitFlag.UnknowType;
-		PlayerTemp = null;
+	public Block(int inputType){
+		PlayerTemp = new Player[2];
+		BlockType = inputType;
 		PlayerType = BitFlag.NoPlayer;
 		BombExplosionTime = 0;
-	}
-	public Block(int inputType){
-		BlockType = inputType;	
 	}
 	public int getType(){
 		return BlockType;
@@ -22,13 +21,24 @@ public class Block {
 	public void setType(int inputType){
 		BlockType = inputType;
 	}
+	
+	public void removePlayer(int inputPlayerType){
+		if(BlockType == BitFlag.Wall_Type) return;
+		if(inputPlayerType == BitFlag.PlayerA) PlayerTemp[0] = null;
+		if(inputPlayerType == BitFlag.PlayerB) PlayerTemp[1] = null;
+		PlayerType &= ~(inputPlayerType);
+	}
+	
 	public void setPlayer(Player inputPlayer, int inputPlayerType){
 		if(BlockType == BitFlag.Wall_Type) return;
-		PlayerTemp = inputPlayer;
-		PlayerType = inputPlayerType;
+		if(inputPlayerType == BitFlag.PlayerA) PlayerTemp[0] = inputPlayer;
+		if(inputPlayerType == BitFlag.PlayerB) PlayerTemp[1] = inputPlayer;
+		PlayerType |= inputPlayerType;
 	}
-	public Player getPlayer(){
-		return PlayerTemp;
+	public Player getPlayer(int inputPlayerType){
+		if(inputPlayerType == BitFlag.PlayerA) return PlayerTemp[0];
+		if(inputPlayerType == BitFlag.PlayerB) return PlayerTemp[1];
+		return null;
 	}
 	public int getPlayerType(){
 		return PlayerType;
@@ -68,7 +78,8 @@ public class Block {
 		else{
 			BlockType = BitFlag.Path_Type;
 			if(PlayerType != BitFlag.NoPlayer && PlayerTemp != null){
-				PlayerTemp.setLive(false);
+				if(ST.CompareBitFlag(PlayerType, BitFlag.PlayerA))PlayerTemp[0].setLive(false);
+				if(ST.CompareBitFlag(PlayerType, BitFlag.PlayerB))PlayerTemp[1].setLive(false);
 			}
 		}
 	}

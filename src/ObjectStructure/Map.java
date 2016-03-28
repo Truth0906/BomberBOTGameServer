@@ -49,7 +49,7 @@ public class Map extends Notification implements Runnable {
 			}
 		}
 		
-		MainMap[6][0].setPlayer(A, BitFlag.PlayerA);
+		MainMap[6][ 0].setPlayer(A, BitFlag.PlayerA);
 		MainMap[6][14].setPlayer(B, BitFlag.PlayerB);
 				
 		PlayerLocationA[0] = 6;
@@ -82,7 +82,7 @@ public class Map extends Notification implements Runnable {
 		}
 		
 		String NextMoveA = PlayerMessageA.getMsg("Move");
-		String NextMoveB = PlayerMessageA.getMsg("Move");
+		String NextMoveB = PlayerMessageB.getMsg("Move");
 		
 		if(isObjectNull(NextMoveA, NextMoveB)){
 			checkAlive();
@@ -101,8 +101,8 @@ public class Map extends Notification implements Runnable {
 		int BombFlag_A = Integer.parseInt(TempA);
 		int BombFlag_B = Integer.parseInt(TempB);
 		
-		setMove(MoveA, BombFlag_A, PlayerLocationA);
-		setMove(MoveB, BombFlag_B, PlayerLocationB);
+		setMove(MoveA, BombFlag_A, PlayerLocationA, BitFlag.PlayerA);
+		setMove(MoveB, BombFlag_B, PlayerLocationB, BitFlag.PlayerB);
 		
 		countMap();
 		checkAlive();
@@ -184,53 +184,52 @@ public class Map extends Notification implements Runnable {
 			}
 		}
 	}
-	private void setMove(int InputMove, int inputBombFlag, int [] InputPlayerLocation){
+	private void setMove(int InputMove, int inputBombFlag, int [] InputPlayerLocation, int inputPlayerFlag){
 		
 		int Y = InputPlayerLocation[0];
 		int X = InputPlayerLocation[1];
 		
-		Player tempP = MainMap[Y][X].getPlayer();
-		int tempPT = MainMap[Y][X].getPlayerType();
+		Player tempP = MainMap[Y][X].getPlayer(inputPlayerFlag);
 		
 		if((inputBombFlag & BitFlag.putBombBeforeMove) == BitFlag.putBombBeforeMove) setBomb(Y, X);
 		
 		if(InputMove == BitFlag.Move_Up){
 			if( (Y - 1) >= 0){
 				if(MainMap[Y -1][X].getType() == BitFlag.Path_Type){
-					MainMap[Y][X].setPlayer(null, BitFlag.NoPlayer);
+					MainMap[Y][X].removePlayer(inputPlayerFlag);
 					Y--;
 					InputPlayerLocation[0] = Y;
-					MainMap[Y][X].setPlayer(tempP, tempPT);
+					MainMap[Y][X].setPlayer(tempP, inputPlayerFlag);
 				}
 			}
 		}
 		else if(InputMove == BitFlag.Move_Down){
 			if( (Y + 1) < MainMap.length ){
 				if(MainMap[Y + 1][X].getType() == BitFlag.Path_Type){
-					MainMap[Y][X].setPlayer(null, BitFlag.NoPlayer);
+					MainMap[Y][X].removePlayer(inputPlayerFlag);
 					Y++;
 					InputPlayerLocation[0] = Y;
-					MainMap[Y][X].setPlayer(tempP, tempPT);
+					MainMap[Y][X].setPlayer(tempP, inputPlayerFlag);
 				}
 			}
 		}
 		else if(InputMove == BitFlag.Move_Left){
 			if( (X - 1) >= 0){
 				if(MainMap[Y][X - 1].getType() == BitFlag.Path_Type){
-					MainMap[Y][X].setPlayer(null, BitFlag.NoPlayer);
+					MainMap[Y][X].removePlayer(inputPlayerFlag);
 					X--;
 					InputPlayerLocation[1] = X;
-					MainMap[Y][X].setPlayer(tempP, tempPT);
+					MainMap[Y][X].setPlayer(tempP, inputPlayerFlag);
 				}
 			}
 		}
 		else if(InputMove == BitFlag.Move_Right){
 			if( (X + 1) < MainMap[0].length){
 				if(MainMap[Y][X + 1].getType() == BitFlag.Path_Type){
-					MainMap[Y][X].setPlayer(null, BitFlag.NoPlayer);
+					MainMap[Y][X].removePlayer(inputPlayerFlag);
 					X++;
 					InputPlayerLocation[1] = X;
-					MainMap[Y][X].setPlayer(tempP, tempPT);
+					MainMap[Y][X].setPlayer(tempP, inputPlayerFlag);
 				}
 			}
 		}

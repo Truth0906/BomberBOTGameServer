@@ -157,27 +157,28 @@ public class testServerAPI {
 		
 		String PA = null;
 		String PB = null;//★☆
+		String PAB = null;
 		try {
 			Wall = new String("▉".getBytes("UTF-8"), Charset.forName("UTF-8"));
 			Path = new String("　".getBytes("UTF-8"), Charset.forName("UTF-8"));
 			Bomb = new String("◎".getBytes("UTF-8"), Charset.forName("UTF-8"));
 			
 			PA = new String("★".getBytes("UTF-8"), Charset.forName("UTF-8"));
-			PB = new String("☆".getBytes("UTF-8"), Charset.forName("UTF-8"));
+			PB = new String("☆".getBytes("UTF-8"), Charset.forName("UTF-8"));//✪
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		System.out.println(PAB);
 	    for(int y = 0 ; y < map.length ; y++){
 			for(int x = 0 ; x < map[0].length ; x++){
 				
-				if(ST.CompareBitFlag(map[y][x], BitFlag.PlayerA)) 			System.out.print(PA);
+				if(ST.CompareBitFlag(map[y][x], BitFlag.PlayerA))			System.out.print(PA);
 				else if(ST.CompareBitFlag(map[y][x], BitFlag.PlayerB)) 		System.out.print(PB);
 				else if(ST.CompareBitFlag(map[y][x], BitFlag.Bomb_Type)) 	System.out.print(Bomb);
 				else if(ST.CompareBitFlag(map[y][x], BitFlag.Path_Type)) 	System.out.print(Path);
 				else if(ST.CompareBitFlag(map[y][x], BitFlag.Wall_Type)) 	System.out.print(Wall);
-				//System.out.print(map[y][x] + " ");
+				else System.out.print(Wall);
 				
 			}
 			System.out.print(System.lineSeparator());
@@ -265,44 +266,81 @@ public class testServerAPI {
 		int PlayerMark = test.getPlayerMark();
 		int map[][];
 		SecureRandom rand = new SecureRandom();
+		int NoMove = -1;
 		while(true){
 			test.showMap();
 			map = test.getMap();
 			
-			int Y, X;
-			
+			int Y = 0, X = 0;
+			int move = 0;
 			String NextMove = "";
 			
-			int move = rand.nextInt();
-			
-			if(move < 0) move = move * -1;
-			move = move % 4;
-			
-			if(move == 0){ //up
-				if((Y - 1) >= 0){
-					
+			for(int y = 0 ; y < map.length ; y++){
+				for(int x = 0 ; x < map[0].length ; x++){
+					if((map[y][x] & PlayerMark) == PlayerMark){
+						Y = y;
+						X = x;
+						break;
+					}
 				}
 			}
-			else if(move == 1){
-				ST.showOnScreen("AI", "down");
-			}
-			else if(move == 2){
-				ST.showOnScreen("AI", "right");
-			}
-			else if(move == 3){
-				ST.showOnScreen("AI", "left");
-			}
 			
+			do{
 			
-			test.move(inputID, inputPW, NextMove, 0);
+				move = rand.nextInt();
+				
+				if(move < 0) move = move * -1;
+				move = move % 4;
+				
+				if(move == NoMove) continue;
+				
+				if(move == 0){ //up
+					if((Y - 1) < 0) continue;
+					if(!ST.CompareBitFlag(map[Y - 1][X], BitFlag.Path_Type)) continue; 
+					
+					NoMove = 1;
+					NextMove = "up";
+				}
+				else if(move == 1){//down
+					if((Y + 1) >= map.length) continue;
+					if(!ST.CompareBitFlag(map[Y + 1][X], BitFlag.Path_Type)) continue;
+					
+					NoMove = 0;
+					NextMove = "down";
+				}
+				else if(move == 2){//right
+					if((X + 1) >= map[0].length) continue;
+					if(!ST.CompareBitFlag(map[Y][X + 1], BitFlag.Path_Type)) continue;
+					
+					NoMove = 3;
+					NextMove = "right";
+				}
+				else if(move == 3){//left
+					if((X - 1) < 0) continue;
+					if(!ST.CompareBitFlag(map[Y][X - 1], BitFlag.Path_Type)) continue;
+					
+					NoMove = 2;
+					NextMove = "left";
+				}
+			}while(NextMove.equals(""));
+			ST.showOnScreen("AI", "Next move: " + NextMove);
+			
+			int putBombFlag = 0;
 			
 //			move = rand.nextInt();
-//			
 //			if(move < 0) move = move * -1;
-//			move = move % 4;
+//			move = move % 3;
+//			
+//			if(move == 1){//down
+//				putBombFlag = BitFlag.putBombAfterMove;
+//			}
+//			else if(move == 2){//right
+//				putBombFlag = BitFlag.putBombBeforeMove;
+//			}
 			
+			test.move(inputID, inputPW, NextMove, putBombFlag);
+					
 		}
-		//int [][] map = test.getMap();
 		
 	}
 }
