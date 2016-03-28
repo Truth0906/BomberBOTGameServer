@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry exported="true" kind="lib" path="Library/commons-codec-1.10.jar"/>
-	<classpathentry exported="true" kind="lib" path="Library/gson-2.6.2.jar"/>
 	<classpathentry kind="lib" path="E:/Git/BomberGameBOTServer/BomberGameBOTServer.jar"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>

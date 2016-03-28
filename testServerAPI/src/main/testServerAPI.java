@@ -262,33 +262,45 @@ public class testServerAPI {
 			return;
 		}
 		
+		int PlayerMark = test.getPlayerMark();
+		int map[][];
 		SecureRandom rand = new SecureRandom();
 		while(true){
+			test.showMap();
+			map = test.getMap();
+			
+			int Y, X;
+			
+			String NextMove = "";
+			
 			int move = rand.nextInt();
 			
 			if(move < 0) move = move * -1;
 			move = move % 4;
 			
-			if(move == 0){
-				test.move(inputID, inputPW, "up", 0);
-				ST.showOnScreen("AI", "up");
+			if(move == 0){ //up
+				if((Y - 1) >= 0){
+					
+				}
 			}
 			else if(move == 1){
-				test.move(inputID, inputPW, "down", 0);
 				ST.showOnScreen("AI", "down");
 			}
 			else if(move == 2){
-				test.move(inputID, inputPW, "right", 0);
 				ST.showOnScreen("AI", "right");
 			}
 			else if(move == 3){
-				test.move(inputID, inputPW, "left", 0);
 				ST.showOnScreen("AI", "left");
 			}
-			else{
-				ST.showOnScreen("AI", "move = " + move);
-			}
-			test.showMap();
+			
+			
+			test.move(inputID, inputPW, NextMove, 0);
+			
+//			move = rand.nextInt();
+//			
+//			if(move < 0) move = move * -1;
+//			move = move % 4;
+			
 		}
 		//int [][] map = test.getMap();
 		
