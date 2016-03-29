@@ -75,9 +75,10 @@ public class Block {
 		if(BombExplosionTime == 0) return;
 		
 		if(BombExplosionTime > 0) --BombExplosionTime;
-		else{
+		
+		if(BombExplosionTime == 0){
 			BlockType = BitFlag.Path_Type;
-			if(PlayerType != BitFlag.NoPlayer && PlayerTemp != null){
+			if(PlayerType != BitFlag.NoPlayer){
 				if(ST.CompareBitFlag(PlayerType, BitFlag.PlayerA))PlayerTemp[0].setLive(false);
 				if(ST.CompareBitFlag(PlayerType, BitFlag.PlayerB))PlayerTemp[1].setLive(false);
 			}

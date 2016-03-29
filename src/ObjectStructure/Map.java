@@ -38,7 +38,7 @@ public class Map extends Notification implements Runnable {
 	}
 	private void initMap(){
 		
-		int type = 1;
+		//int type = 1;
 		
 		MainMap = new Block[13][15];
 		
@@ -81,8 +81,8 @@ public class Map extends Notification implements Runnable {
 			return;
 		}
 		
-		String NextMoveA = PlayerMessageA.getMsg("Move");
-		String NextMoveB = PlayerMessageB.getMsg("Move");
+		String NextMoveA = PlayerMessageA.getMsg(Message.Move);
+		String NextMoveB = PlayerMessageB.getMsg(Message.Move);
 		
 		if(isObjectNull(NextMoveA, NextMoveB)){
 			checkAlive();
@@ -92,8 +92,8 @@ public class Map extends Notification implements Runnable {
 		int MoveA = Integer.parseInt(NextMoveA);
 		int MoveB = Integer.parseInt(NextMoveB);
 		
-		String TempA = PlayerMessageA.getMsg("BombFlag");
-		String TempB = PlayerMessageB.getMsg("BombFlag");
+		String TempA = PlayerMessageA.getMsg(Message.BombFlag);
+		String TempB = PlayerMessageB.getMsg(Message.BombFlag);
 		if(isObjectNull(TempA, TempB)){
 			checkAlive();
 			return;
@@ -106,16 +106,12 @@ public class Map extends Notification implements Runnable {
 		
 		countMap();
 		checkAlive();
-		
 		Message Msg = new Message();
 		
-		Msg.setMsg("Map", ST.MapToString(MainMap));
-		Msg.setMsg("ErrorCode", ErrorCode.Success);
+		Msg.setMsg(Message.Map, ST.MapToString(MainMap));
+		Msg.setMsg(Message.ErrorCode, ErrorCode.Success);
 		
-		Msg.setMsg("Live", A.isLive() + "");
 		A.sendMsg(Msg);
-		
-		Msg.setMsg("Live", B.isLive() + "");
 		B.sendMsg(Msg);
 		
 	}
@@ -126,14 +122,14 @@ public class Map extends Notification implements Runnable {
 		
 		Message Msg = new Message();
 		
-		Msg.setMsg("Map", ST.MapToString(MainMap));
-		Msg.setMsg("Message", "Game Joined");
-		Msg.setMsg("ErrorCode", ErrorCode.Success);
+		Msg.setMsg(Message.Map, ST.MapToString(MainMap));
+		Msg.setMsg(Message.Message, "Game Joined");
+		Msg.setMsg(Message.ErrorCode, ErrorCode.Success);
 		
-		Msg.setMsg("PlayerMark", BitFlag.PlayerA);
+		Msg.setMsg(Message.PlayerMark, BitFlag.PlayerA);
 		A.sendMsg(Msg);
 		
-		Msg.setMsg("PlayerMark", BitFlag.PlayerB);
+		Msg.setMsg(Message.PlayerMark, BitFlag.PlayerB);
 		B.sendMsg(Msg);
 		
 		
@@ -146,9 +142,14 @@ public class Map extends Notification implements Runnable {
 		
 		Timer.stop();
 		
+		String GameResult = "Error result";
+		
 		int ScoreTemp = ERSystem.newScore(A.getScore(), B.getScore());
 		
 		if(A.isLive()){
+			
+			GameResult = "Winner: " + A.getID();
+			
 			A.setScore(A.getScore() + ScoreTemp);
 			B.setScore(B.getScore() - ScoreTemp);
 			
@@ -157,6 +158,9 @@ public class Map extends Notification implements Runnable {
 			ST.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " " + A.getID() + " Win!");
 		}
 		else if(B.isLive()){
+			
+			GameResult = "Winner: " + B.getID();
+			
 			A.setScore(A.getScore() - ScoreTemp);
 			B.setScore(B.getScore() + ScoreTemp);
 			
@@ -166,13 +170,22 @@ public class Map extends Notification implements Runnable {
 		}
 		else{
 			
+			GameResult = "Peace end";
+			
 			A.setTie(A.getTie() + 1);
 			B.setTie(B.getTie() + 1);
 			ST.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " peace end!");
 			
 		}
-		
+				
 		Center.writePlayerData();
+		
+		Message Msg = new Message();
+		
+		Msg.setMsg(Message.End, (A.isLive() && B.isLive()));
+		Msg.setMsg(Message.GameResult, GameResult);
+		A.sendMsg(Msg);
+		B.sendMsg(Msg);
 		
 		A.setState(State.InPlayerList);
 		B.setState(State.InPlayerList);
@@ -185,6 +198,8 @@ public class Map extends Notification implements Runnable {
 		}
 	}
 	private void setMove(int InputMove, int inputBombFlag, int [] InputPlayerLocation, int inputPlayerFlag){
+		
+		InputMove &= BitFlag.Move_Filter;
 		
 		int Y = InputPlayerLocation[0];
 		int X = InputPlayerLocation[1];
@@ -276,8 +291,8 @@ public class Map extends Notification implements Runnable {
 		
 		Message Msg = new Message();
 		
-		Msg.setMsg("Message", "Your input is null");
-		Msg.setMsg("ErrorCode", ErrorCode.ParameterError);
+		Msg.setMsg(Message.Message, "Your input is null");
+		Msg.setMsg(Message.ErrorCode, ErrorCode.ParameterError);
 		
 		if(inputObjectA == null){
 			A.sendMsg(Msg);

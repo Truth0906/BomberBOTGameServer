@@ -53,8 +53,6 @@ public class Server implements Runnable {
 		new Thread(new Server()).start();
 		
 		
-		
-		ST.showOnScreen("TEST", (BitFlag.PlayerA & BitFlag.PlayerB));
 		//ST.showOnScreen("TEST", ((BitFlag.PlayerA & input) == Flag) + "");
 		
 //		ST.showOnScreen("TEST", ST.OptionToString(new Option()));

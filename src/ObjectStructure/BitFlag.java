@@ -13,10 +13,13 @@ public class BitFlag {
 	public static int PlayerB =  					0x0200;
 	
 	//Move
+	public static int Move_Wait = 		  	  		0x0000;
 	public static int Move_Up = 		  	  		0x0001;
 	public static int Move_Down =  		  	  		0x0002;
 	public static int Move_Left = 			  		0x0004;
 	public static int Move_Right = 			  		0x0008;
+	public static int Move_Filter =					0x000F;
+	
 	public static int putBombBeforeMove = 	  		0x0010;
 	public static int putBombAfterMove =  	  		0x0020;
 }

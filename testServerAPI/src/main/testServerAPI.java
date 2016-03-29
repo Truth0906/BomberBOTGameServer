@@ -25,10 +25,9 @@ public class testServerAPI {
 	private Socket Client;
 	private String ServerIP = "127.0.0.1";
 	private int PortList[] = {52013, 52014, 53013, 53014};
-	private int Errorcode;
-	private String ErrorMessage;
-	private int PlayerMark;
+
 	private int map[][];
+	private Message LastMessage;
 	
 	private String LogName = "TestAPI";
 	  
@@ -42,114 +41,97 @@ public class testServerAPI {
 	public String echo(String inputString){
 	    
 	    if (!connect()) {
-	    	Errorcode = ErrorCode.ConnectError;
-	    	ErrorMessage = "Connect Error";
+
 	    	return null;
 	    }
 	    
-	    Message Msg = new Message(), receiveMsg;
+	    Message Msg = new Message();
 	    
 	    Msg.setMsg("FunctionName", "echo");
 	    Msg.setMsg("Message", inputString);
 	    
 	    sendMsg(Msg);
-	    receiveMsg = receiveMsg();
+	    LastMessage = receiveMsg();
 //	    
 //	    ST.showOnScreen(LogName, receiveMsg.getMsg("Message"));
 //	    ST.showOnScreen(LogName, receiveMsg.getMsg("ErrorCode"));
 //	    
-	    Errorcode = Integer.parseInt(receiveMsg.getMsg("ErrorCode"));
-	    
-	    return receiveMsg.getMsg("Message");
+	    return LastMessage.getMsg("Message");
 	}
 	public int match(String inputID, String inputPW){
 	    
 	    if (!connect()) {
-	    	Errorcode = ErrorCode.ConnectError;
-	    	return Errorcode;
+	    	return getErrorCode();
 	    }
 	    
-	    Message Msg = new Message(), receiveMsg;
+	    Message Msg = new Message();
 	    
-	    Msg.setMsg("FunctionName", "match");
-	    Msg.setMsg("ID", inputID);
-	    Msg.setMsg("Password", inputPW);
+	    Msg.setMsg(Message.FunctionName, "match");
+	    Msg.setMsg(Message.ID, inputID);
+	    Msg.setMsg(Message.Password, inputPW);
 	    
 	    sendMsg(Msg);
-	    receiveMsg = receiveMsg();
+	    LastMessage = receiveMsg();
+	    
+	    ParseMap();
 	    
 //	    ST.showOnScreen(LogName, receiveMsg.getMsg("Message"));
 //	    ST.showOnScreen(LogName, receiveMsg.getMsg("ErrorCode"));
 	    //ST.showOnScreen(LogName, receiveMsg.getMsg("Map"));
 	    
-	    ErrorMessage = receiveMsg.getMsg("Message");
-	    Errorcode = Integer.parseInt(receiveMsg.getMsg("ErrorCode"));
+//	    ErrorMessage = receiveMsg.getMsg(Message.Message);
+//	    Errorcode = Integer.parseInt(receiveMsg.getMsg(Message.ErrorCode));
+//	    
+//	    if(Errorcode != 0 ) return Errorcode;
+//	    
+//	    String tempMap[] = receiveMsg.getMsg(Message.Map).split(" ");
+//	    map = new int[ Integer.parseInt(tempMap[0]) ][Integer.parseInt(tempMap[1])];
+//	    
+//	    int indexTemp = 2;
+//	    
+//	    for(int y = 0 ; y < map.length ; y++){
+//			for(int x = 0 ; x < map[0].length ; x++){
+//				
+//				map[y][x] = Integer.parseInt(tempMap[indexTemp++]);
+//				
+//			}
+//		}
+//	    
+//	    PlayerMark = Integer.parseInt(receiveMsg.getMsg(Message.PlayerMark));
+//	    
+//	    Errorcode = Integer.parseInt(receiveMsg.getMsg(Message.ErrorCode));
 	    
-	    if(Errorcode != 0 ) return Errorcode;
-	    
-	    String tempMap[] = receiveMsg.getMsg("Map").split(" ");
-	    map = new int[ Integer.parseInt(tempMap[0]) ][Integer.parseInt(tempMap[1])];
-	    
-	    int indexTemp = 2;
-	    
-	    for(int y = 0 ; y < map.length ; y++){
-			for(int x = 0 ; x < map[0].length ; x++){
-				
-				map[y][x] = Integer.parseInt(tempMap[indexTemp++]);
-				
-			}
-		}
-	    
-	    PlayerMark = Integer.parseInt(receiveMsg.getMsg("PlayerMark"));
-	    
-	    Errorcode = Integer.parseInt(receiveMsg.getMsg("ErrorCode"));
-	    
-	    return Errorcode;
+	    return getErrorCode();
 	}
-	public int move(String inputID, String inputPW, String inputMove, int putBombFlag){
+	public int move(String inputID, String inputPW, int inputMove, int putBombFlag){
 		
 		if (!connect()) {
-	    	Errorcode = ErrorCode.ConnectError;
-	    	return Errorcode;
+	    	return getErrorCode();
 	    }
 	    
-	    Message Msg = new Message(), receiveMsg;
+	    Message Msg = new Message();
 	    
-	    Msg.setMsg("FunctionName", "move");
-	    Msg.setMsg("ID", inputID);
-	    Msg.setMsg("Password", inputPW);
-	    Msg.setMsg("BombFlag", putBombFlag + "");
-	    if(inputMove.toLowerCase().equals("up")) 	Msg.setMsg("Move", BitFlag.Move_Up);
-	    if(inputMove.toLowerCase().equals("down")) 	Msg.setMsg("Move", BitFlag.Move_Down);
-	    if(inputMove.toLowerCase().equals("left")) 	Msg.setMsg("Move", BitFlag.Move_Left);
-	    if(inputMove.toLowerCase().equals("right"))	Msg.setMsg("Move", BitFlag.Move_Right);
+	    Msg.setMsg(Message.FunctionName, "move");
+	    Msg.setMsg(Message.ID, inputID);
+	    Msg.setMsg(Message.Password, inputPW);
+	    Msg.setMsg(Message.BombFlag, putBombFlag);
+	    Msg.setMsg(Message.Move, inputMove);
 	    
 	    sendMsg(Msg);
-	    receiveMsg = receiveMsg();
+	    LastMessage = receiveMsg();
 	    
-	    ErrorMessage = receiveMsg.getMsg("Message");
-	    Errorcode = Integer.parseInt(receiveMsg.getMsg("ErrorCode"));
+	    ParseMap();
 	    
-	    if(Errorcode != 0 ) return Errorcode;
-	    
-	    String tempMap[] = receiveMsg.getMsg("Map").split(" ");
-	    map = new int[ Integer.parseInt(tempMap[0]) ][Integer.parseInt(tempMap[1])];
-	    
-	    int indexTemp = 2;
-	    
-	    for(int y = 0 ; y < map.length ; y++){
-			for(int x = 0 ; x < map[0].length ; x++){
-				
-				map[y][x] = Integer.parseInt(tempMap[indexTemp++]);
-				
-			}
-		}
-	    
-	    Errorcode = Integer.parseInt(receiveMsg.getMsg("ErrorCode"));
-		
-		return Errorcode;
+	    return getErrorCode();
+//	    
+//	    isEnd = Boolean.parseBoolean(receiveMsg.getMsg(Message.End));
+//	    	    
+//	    Errorcode = Integer.parseInt(receiveMsg.getMsg(Message.ErrorCode));
+//		
+//		return Errorcode;
 	}
 	public void showMap(){
+		
 		
 		String Wall = null;
 		String Path = null;
@@ -169,7 +151,7 @@ public class testServerAPI {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(PAB);
+		System.out.print(System.lineSeparator());
 	    for(int y = 0 ; y < map.length ; y++){
 			for(int x = 0 ; x < map[0].length ; x++){
 				
@@ -186,18 +168,31 @@ public class testServerAPI {
 	    
 	}
 	public int getPlayerMark(){
-		return PlayerMark;
+		return Integer.parseInt(LastMessage.getMsg(Message.PlayerMark));
 	}
 	public String getErrorMessage(){
-		return ErrorMessage;
+		return LastMessage.getMsg(Message.Message);
 	}
 	public int getErrorCode(){
-		return Errorcode;
+		return Integer.parseInt(LastMessage.getMsg(Message.ErrorCode));
 	}
 	public int[][] getMap(){
 		return map;
 	}
-	
+	private void ParseMap(){
+		String tempMap[] = LastMessage.getMsg(Message.Map).split(" ");
+		map = new int[ Integer.parseInt(tempMap[0]) ][Integer.parseInt(tempMap[1])];
+		    
+		int indexTemp = 2;
+		  
+		for(int y = 0 ; y < map.length ; y++){
+			for(int x = 0 ; x < map[0].length ; x++){
+					
+				map[y][x] = Integer.parseInt(tempMap[indexTemp++]);
+				
+			}
+		}
+	} 
 	private boolean connect(){
 		
 		for(int i = 0 ; i < PortList.length ; i++){
@@ -273,7 +268,6 @@ public class testServerAPI {
 			
 			int Y = 0, X = 0;
 			int move = 0;
-			String NextMove = "";
 			
 			for(int y = 0 ; y < map.length ; y++){
 				for(int x = 0 ; x < map[0].length ; x++){
@@ -284,6 +278,8 @@ public class testServerAPI {
 					}
 				}
 			}
+			
+			int NextMove = -1;
 			
 			do{
 			
@@ -299,30 +295,31 @@ public class testServerAPI {
 					if(!ST.CompareBitFlag(map[Y - 1][X], BitFlag.Path_Type)) continue; 
 					
 					NoMove = 1;
-					NextMove = "up";
+					NextMove = BitFlag.Move_Up;
 				}
 				else if(move == 1){//down
 					if((Y + 1) >= map.length) continue;
 					if(!ST.CompareBitFlag(map[Y + 1][X], BitFlag.Path_Type)) continue;
 					
 					NoMove = 0;
-					NextMove = "down";
+					NextMove = BitFlag.Move_Down;
 				}
 				else if(move == 2){//right
 					if((X + 1) >= map[0].length) continue;
 					if(!ST.CompareBitFlag(map[Y][X + 1], BitFlag.Path_Type)) continue;
 					
 					NoMove = 3;
-					NextMove = "right";
+					NextMove = BitFlag.Move_Right;
 				}
 				else if(move == 3){//left
 					if((X - 1) < 0) continue;
 					if(!ST.CompareBitFlag(map[Y][X - 1], BitFlag.Path_Type)) continue;
 					
 					NoMove = 2;
-					NextMove = "left";
+					NextMove = BitFlag.Move_Left;
 				}
-			}while(NextMove.equals(""));
+				
+			}while(NextMove == -1);
 			ST.showOnScreen("AI", "Next move: " + NextMove);
 			
 			int putBombFlag = 0;

@@ -36,10 +36,10 @@ public class Center extends Notification{
 		
 		PairService = new PairService();
 		
-		Timer = new Timer(Option.savePlayerDataTime * 60 * 1000);
-		//Timer = new Timer(6000);
-		Timer.addNotificationList(this);
-		new Thread(Timer).start();
+//		Timer = new Timer(Option.savePlayerDataTime * 60 * 1000);
+//		//Timer = new Timer(6000);
+//		Timer.addNotificationList(this);
+//		new Thread(Timer).start();
 	}
 	public static boolean checkPlayerState(String inputID, String inputState){
 		Player P = null;
@@ -160,7 +160,7 @@ public class Center extends Notification{
 		
 	}
 	private void readPlayerData(){
-		try(BufferedReader br = new BufferedReader(new FileReader(Option.PlayerFileName))) {
+		try(BufferedReader br = new BufferedReader(new FileReader("Player_Data"))) {
 			
 		    String line = null;
 
@@ -175,7 +175,7 @@ public class Center extends Notification{
 		    br.close();
 		    
 		} catch (IOException e) {
-			File f = new File(Option.PlayerFileName);
+			File f = new File("Player_Data");
 
 			try {
 				f.createNewFile();
@@ -190,7 +190,7 @@ public class Center extends Notification{
 			File PlayerFile = null;
 			
 			try {
-				PlayerFile = new File(Option.PlayerFileName);
+				PlayerFile = new File("Player_Data");
 				if(! PlayerFile.exists()){
 					PlayerFile.createNewFile();
 				}
