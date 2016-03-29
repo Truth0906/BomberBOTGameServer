@@ -103,6 +103,12 @@ public class Service implements Runnable {
 				sendMsg(Msg);
 				return;
 			}
+			if(!Center.checkPlayerState(ID, State.InMap)){
+				Msg.setMsg("Message", "Player state is not playing");
+				Msg.setMsg("ErrorCode", ErrorCode.PlayerStateNotCorret);
+				sendMsg(Msg);
+				return;
+			}
 			//ST.showOnScreen(LogName, ID + " verify password success");
 			Center.setPlayerMove(ID, ClientMsg, Writer);
 			return;
