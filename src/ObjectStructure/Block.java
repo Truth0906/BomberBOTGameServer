@@ -46,7 +46,7 @@ public class Block {
 	public void setBombExplosionTime(int inputBombExplosionTime){
 		if(BlockType == BitFlag.Wall_Type) return;
 		if(inputBombExplosionTime <= 0) return;
-		BombExplosionTime = inputBombExplosionTime;
+		if(BombExplosionTime <= 0) BombExplosionTime = inputBombExplosionTime;
 	}
 	public int getBombExplosionTime(){
 		return BombExplosionTime;

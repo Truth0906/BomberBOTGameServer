@@ -15,6 +15,7 @@ import javax.net.SocketFactory;
 
 import ObjectStructure.BitFlag;
 import ObjectStructure.Message;
+import SocketServer.Option;
 import Tool.ErrorCode;
 import Tool.ST;
 
@@ -139,7 +140,8 @@ public class testServerAPI {
 		
 		String PA = null;
 		String PB = null;//★☆
-		String PAB = null;
+		String Number[] = new String[10];
+		
 		try {
 			Wall = new String("▉".getBytes("UTF-8"), Charset.forName("UTF-8"));
 			Path = new String("　".getBytes("UTF-8"), Charset.forName("UTF-8"));
@@ -147,17 +149,35 @@ public class testServerAPI {
 			
 			PA = new String("★".getBytes("UTF-8"), Charset.forName("UTF-8"));
 			PB = new String("☆".getBytes("UTF-8"), Charset.forName("UTF-8"));//✪
+			
+			Number[1] = new String("１".getBytes("UTF-8"), Charset.forName("UTF-8"));
+			Number[2] = new String("２".getBytes("UTF-8"), Charset.forName("UTF-8"));
+			Number[3] = new String("３".getBytes("UTF-8"), Charset.forName("UTF-8"));
+			Number[4] = new String("４".getBytes("UTF-8"), Charset.forName("UTF-8"));
+			Number[5] = new String("５".getBytes("UTF-8"), Charset.forName("UTF-8"));
+			Number[6] = new String("６".getBytes("UTF-8"), Charset.forName("UTF-8"));
+			Number[7] = new String("７".getBytes("UTF-8"), Charset.forName("UTF-8"));
+			Number[8] = new String("８".getBytes("UTF-8"), Charset.forName("UTF-8"));
+			Number[9] = new String("９".getBytes("UTF-8"), Charset.forName("UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.print(System.lineSeparator());
+		System.out.print(Number[1] + Number[2] + System.lineSeparator());
 	    for(int y = 0 ; y < map.length ; y++){
 			for(int x = 0 ; x < map[0].length ; x++){
 				
 				if(ST.CompareBitFlag(map[y][x], BitFlag.PlayerA))			System.out.print(PA);
 				else if(ST.CompareBitFlag(map[y][x], BitFlag.PlayerB)) 		System.out.print(PB);
 				else if(ST.CompareBitFlag(map[y][x], BitFlag.Bomb_Type)) 	System.out.print(Bomb);
+				else if((map[y][x] & 0xF) == 0x1)	System.out.print(Number[1]);
+				else if((map[y][x] & 0xF) == 0x2)	System.out.print(Number[2]);
+				else if((map[y][x] & 0xF) == 0x3)	System.out.print(Number[3]);
+				else if((map[y][x] & 0xF) == 0x4)	System.out.print(Number[4]);
+				else if((map[y][x] & 0xF) == 0x5)	System.out.print(Number[5]);
+				else if((map[y][x] & 0xF) == 0x6)	System.out.print(Number[6]);
+				else if((map[y][x] & 0xF) == 0x7)	System.out.print(Number[7]);
+				else if((map[y][x] & 0xF) == 0x8)	System.out.print(Number[8]);
 				else if(ST.CompareBitFlag(map[y][x], BitFlag.Path_Type)) 	System.out.print(Path);
 				else if(ST.CompareBitFlag(map[y][x], BitFlag.Wall_Type)) 	System.out.print(Wall);
 				else System.out.print(Wall);
@@ -330,16 +350,16 @@ public class testServerAPI {
 			
 			int putBombFlag = 0;
 			
-//			move = rand.nextInt();
-//			if(move < 0) move = move * -1;
-//			move = move % 3;
-//			
-//			if(move == 1){//down
-//				putBombFlag = BitFlag.putBombAfterMove;
-//			}
-//			else if(move == 2){//right
-//				putBombFlag = BitFlag.putBombBeforeMove;
-//			}
+			move = rand.nextInt();
+			if(move < 0) move = move * -1;
+			move = move % 5;
+			
+			if(move == 1){
+				putBombFlag = BitFlag.putBombAfterMove;
+			}
+			else if(move == 2){
+				putBombFlag = BitFlag.putBombBeforeMove;
+			}
 			
 			test.move(inputID, inputPW, NextMove, putBombFlag);
 			if(test.isGameEnd()) break;

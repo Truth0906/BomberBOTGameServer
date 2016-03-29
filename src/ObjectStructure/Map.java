@@ -178,6 +178,7 @@ public class Map extends Notification implements Runnable {
 		Msg.setMsg(Message.Map, ST.MapToString(MainMap));
 		Msg.setMsg(Message.End, true);
 		Msg.setMsg(Message.GameResult, GameResult);
+		Msg.setMsg(Message.ErrorCode, ErrorCode.Success);
 		
 		A.sendMsg(Msg);
 		B.sendMsg(Msg);
@@ -255,28 +256,28 @@ public class Map extends Notification implements Runnable {
 		
 		for(int i = 0 ; i < Option.BombExplosionRange ; i++){
 			if((Y + i) >= MainMap.length ) break;
-			if(MainMap[Y + i][X].getType() == BitFlag.Wall_Type) continue;
+			if(MainMap[Y + i][X].getType() == BitFlag.Wall_Type) break;
 			
 			if(MainMap[Y + i][X].getType() == BitFlag.Path_Type) MainMap[Y + i][X].setBombExplosionTime(BombExplosionTime);
 		}
 		
 		for(int i = 0 ; i < Option.BombExplosionRange ; i++){
 			if((X + i) >= MainMap[0].length ) break;
-			if(MainMap[Y][X + i].getType() == BitFlag.Wall_Type) continue;
+			if(MainMap[Y][X + i].getType() == BitFlag.Wall_Type) break;
 			
 			if(MainMap[Y][X + i].getType() == BitFlag.Path_Type) MainMap[Y][X + i].setBombExplosionTime(BombExplosionTime);
 		}
 		
 		for(int i = 0 ; i < Option.BombExplosionRange ; i++){
 			if((Y - i) < 0 ) break;
-			if(MainMap[Y - i][X].getType() == BitFlag.Wall_Type) continue;
+			if(MainMap[Y - i][X].getType() == BitFlag.Wall_Type) break;
 			
 			if(MainMap[Y - i][X].getType() == BitFlag.Path_Type) MainMap[Y - i][X].setBombExplosionTime(BombExplosionTime);
 		}
 		
 		for(int i = 0 ; i < Option.BombExplosionRange ; i++){
 			if((X - i) < 0 ) break;
-			if(MainMap[Y][X - i].getType() == BitFlag.Wall_Type) continue;
+			if(MainMap[Y][X - i].getType() == BitFlag.Wall_Type) break;
 			
 			if(MainMap[Y][X - i].getType() == BitFlag.Path_Type) MainMap[Y][X - i].setBombExplosionTime(BombExplosionTime);
 		}
