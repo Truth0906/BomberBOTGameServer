@@ -68,7 +68,7 @@ public class Map extends Notification implements Runnable {
 				B.setLive(false);
 			}
 			
-			checkAlive();
+			checkAlive("Time up");
 			return;
 		}
 		++MapTimeUpTimes;
@@ -76,28 +76,20 @@ public class Map extends Notification implements Runnable {
 		Message PlayerMessageA = A.getMessage();
 		Message PlayerMessageB = B.getMessage();
 		
-		if(isObjectNull(PlayerMessageA, PlayerMessageB)){
-			checkAlive();
-			return;
-		}
+		if(isObjectNull(PlayerMessageA, PlayerMessageB)) return;
 		
 		String NextMoveA = PlayerMessageA.getMsg(Message.Move);
 		String NextMoveB = PlayerMessageB.getMsg(Message.Move);
 		
-		if(isObjectNull(NextMoveA, NextMoveB)){
-			checkAlive();
-			return;
-		}
+		if(isObjectNull(NextMoveA, NextMoveB)) return;
 		
 		int MoveA = Integer.parseInt(NextMoveA);
 		int MoveB = Integer.parseInt(NextMoveB);
 		
 		String TempA = PlayerMessageA.getMsg(Message.BombFlag);
 		String TempB = PlayerMessageB.getMsg(Message.BombFlag);
-		if(isObjectNull(TempA, TempB)){
-			checkAlive();
-			return;
-		}
+		if(isObjectNull(TempA, TempB)) return;
+		
 		int BombFlag_A = Integer.parseInt(TempA);
 		int BombFlag_B = Integer.parseInt(TempB);
 		
@@ -105,7 +97,7 @@ public class Map extends Notification implements Runnable {
 		setMove(MoveB, BombFlag_B, PlayerLocationB, BitFlag.PlayerB);
 		
 		countMap();
-		checkAlive();
+		checkAlive("Game over");
 		Message Msg = new Message();
 		
 		Msg.setMsg(Message.Map, ST.MapToString(MainMap));
@@ -137,7 +129,7 @@ public class Map extends Notification implements Runnable {
 		Timer.addNotificationList(this);
 		new Thread(Timer).start();
 	}
-	private void checkAlive(){
+	private void checkAlive(String inputMessage){
 		if(A.isLive() && B.isLive()) return;
 		
 		Timer.stop();
@@ -181,9 +173,12 @@ public class Map extends Notification implements Runnable {
 		Center.writePlayerData();
 		
 		Message Msg = new Message();
+		if(inputMessage != null) Msg.setMsg(Message.Message, inputMessage);
 		
-		Msg.setMsg(Message.End, (A.isLive() && B.isLive()));
+		Msg.setMsg(Message.Map, ST.MapToString(MainMap));
+		Msg.setMsg(Message.End, true);
 		Msg.setMsg(Message.GameResult, GameResult);
+		
 		A.sendMsg(Msg);
 		B.sendMsg(Msg);
 		
@@ -289,20 +284,17 @@ public class Map extends Notification implements Runnable {
 		
 	private boolean isObjectNull(Object inputObjectA, Object inputObjectB){
 		
-		Message Msg = new Message();
-		
-		Msg.setMsg(Message.Message, "Your input is null");
-		Msg.setMsg(Message.ErrorCode, ErrorCode.ParameterError);
+		if(inputObjectA != null && inputObjectB != null) return false;
 		
 		if(inputObjectA == null){
-			A.sendMsg(Msg);
 			A.setLive(false);
 		}
 		if(inputObjectB == null){
-			B.sendMsg(Msg);
 			B.setLive(false);
 		}
-		if(A.isLive() == false || B.isLive() == false) return true;
-		return false;
+		
+		checkAlive("Input is null");
+		
+		return true;
 	}
 }

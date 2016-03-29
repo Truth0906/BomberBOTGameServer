@@ -179,6 +179,12 @@ public class testServerAPI {
 	public int[][] getMap(){
 		return map;
 	}
+	public boolean isGameEnd(){
+		return Boolean.parseBoolean(LastMessage.getMsg(Message.End));
+	}
+	public String getGameResult(){
+		return LastMessage.getMsg(Message.GameResult);
+	}
 	private void ParseMap(){
 		String tempMap[] = LastMessage.getMsg(Message.Map).split(" ");
 		map = new int[ Integer.parseInt(tempMap[0]) ][Integer.parseInt(tempMap[1])];
@@ -336,8 +342,9 @@ public class testServerAPI {
 //			}
 			
 			test.move(inputID, inputPW, NextMove, putBombFlag);
-					
+			if(test.isGameEnd()) break;
 		}
 		
+		ST.showOnScreen("AI", test.getGameResult());
 	}
 }
