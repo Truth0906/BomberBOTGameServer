@@ -3,7 +3,7 @@ package ObjectStructure;
 import java.util.HashMap;
 import java.util.Map;
 
-import Tool.ST;
+import Tool.ServerTool;
 
 public class Message {
 	
@@ -28,7 +28,7 @@ public class Message {
 	public String getMsg(String inputKey){
 		
 		String result = MsgMap.get(inputKey.toLowerCase());
-		result = ST.HexToString(result);
+		result = ServerTool.HexToString(result);
 		
 		return result;
 		
@@ -45,7 +45,7 @@ public class Message {
 	}
 	public void setMsg(String inputKey, String inputValue){
 		
-		MsgMap.put(inputKey.toLowerCase(), ST.StringToHex(inputValue));
+		MsgMap.put(inputKey.toLowerCase(), ServerTool.StringToHex(inputValue));
 		
 	}
 	public Map<String, String> getMsgMap() {

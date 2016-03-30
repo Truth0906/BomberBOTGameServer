@@ -10,12 +10,12 @@ import org.apache.commons.codec.binary.Hex;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import BomberGameBOTServer.Options;
 import ObjectStructure.Block;
 import ObjectStructure.Message;
 import ObjectStructure.Player;
-import SocketServer.Option;
 
-public class ST {//Server Tool
+public class ServerTool {//Server Tool
 	
 	
 	
@@ -32,7 +32,7 @@ public class ST {//Server Tool
 		//String style = System.lineSeparator();
 		String style = " ";
 		
-		System.out.println(ST.getTime() + "[" + inputLogName + "]" + style + inputMsg);
+		System.out.println(ServerTool.getTime() + "[" + inputLogName + "]" + style + inputMsg);
 	}
 	private static String ByteToHex(byte[] input){
 		
@@ -82,17 +82,17 @@ public class ST {//Server Tool
 //		
 //	}
 	
-	public static Option StringToOption(String inputPlayerString){
+	public static Options StringToOption(String inputPlayerString){
 		GsonBuilder gsonBuilder  = new GsonBuilder();
 		gsonBuilder.excludeFieldsWithModifiers(java.lang.reflect.Modifier.TRANSIENT);
 		
 		Gson gson = gsonBuilder.create();
 		
-		Option result = gson.fromJson(inputPlayerString, Option.class);
+		Options result = gson.fromJson(inputPlayerString, Options.class);
 				
 		return result;
 	}
-	public static String OptionToString(Option inputOption){
+	public static String OptionToString(Options inputOption){
 		
 		GsonBuilder gsonBuilder  = new GsonBuilder();
 		gsonBuilder.excludeFieldsWithModifiers(java.lang.reflect.Modifier.TRANSIENT);

@@ -1,6 +1,6 @@
 package ObjectStructure;
 
-import Tool.ST;
+import Tool.ServerTool;
 
 public class Timer implements Runnable{
 	

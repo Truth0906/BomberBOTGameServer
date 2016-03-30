@@ -3,8 +3,8 @@ package ObjectStructure;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-import SocketServer.Option;
-import Tool.ST;
+import BomberGameBOTServer.Options;
+import Tool.ServerTool;
 
 public class Player{
 	private String ID;
@@ -29,7 +29,7 @@ public class Player{
 
 	public Player(){
 		ID = null;
-		Score = Option.InitScore;
+		Score = Options.InitScore;
 		Password = null;
 		Wins = 0;
 		Losses = 0;
@@ -96,7 +96,7 @@ public class Player{
 	}
 	public boolean sendMsg(Message inputMsg){
 		
-		String Msg = ST.MessageToString(inputMsg);
+		String Msg = ServerTool.MessageToString(inputMsg);
 		try {
 			Writer.write(Msg + "\r\n");
 			Writer.flush();

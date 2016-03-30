@@ -1,4 +1,4 @@
-package SocketServer;
+package BomberGameBOTServer;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -8,7 +8,7 @@ import ObjectStructure.Map;
 import ObjectStructure.Notification;
 import ObjectStructure.Player;
 import ObjectStructure.Timer;
-import Tool.ST;
+import Tool.ServerTool;
 
 
 public class PairService  extends Notification{
@@ -70,9 +70,9 @@ public class PairService  extends Notification{
 				
 				ScoreB = temp.getScore();
 				
-				if(ST.abs(ScoreA - ScoreB) < Min && !(temp.getID().equals(PickupA.getID()))){
+				if(ServerTool.abs(ScoreA - ScoreB) < Min && !(temp.getID().equals(PickupA.getID()))){
 					
-					Min = ST.abs(ScoreA - ScoreB);
+					Min = ServerTool.abs(ScoreA - ScoreB);
 					PickupB = entry.getValue();
 					
 				}
@@ -81,7 +81,7 @@ public class PairService  extends Notification{
 			PlayerPool.remove(PickupA.getID().toLowerCase());
 			PlayerPool.remove(PickupB.getID().toLowerCase());
 			
-			ST.showOnScreen(LogName, PickupA.getID() + " and " + PickupB.getID() + " ready into map");
+			ServerTool.showOnScreen(LogName, PickupA.getID() + " and " + PickupB.getID() + " ready into map");
 			
 			new Thread(new Map(PickupA, PickupB)).start();
 			

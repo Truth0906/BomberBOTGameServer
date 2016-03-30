@@ -1,4 +1,4 @@
-package SocketServer;
+package BomberGameBOTServer;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,7 +13,7 @@ import ObjectStructure.Notification;
 import ObjectStructure.Player;
 import ObjectStructure.State;
 import ObjectStructure.Timer;
-import Tool.ST;
+import Tool.ServerTool;
 
 
 public class Center extends Notification{
@@ -36,7 +36,7 @@ public class Center extends Notification{
 		
 		PairService = new PairService();
 		
-//		Timer = new Timer(Option.savePlayerDataTime * 60 * 1000);
+//		Timer = new Timer(Options.savePlayerDataTime * 60 * 1000);
 //		//Timer = new Timer(6000);
 //		Timer.addNotificationList(this);
 //		new Thread(Timer).start();
@@ -110,19 +110,19 @@ public class Center extends Notification{
 		try {
 			OptionFile = new File("Option");
 			if(! OptionFile.exists()){
-				ST.showOnScreen(LogName, "Find Option file fail, create new one");
+				ServerTool.showOnScreen(LogName, "Find Option file fail, create new one");
 				OptionFile.createNewFile();
 			}
 		} catch (IOException e) {
-			ST.showOnScreen(LogName, "Error! create new Option file fails");
+			ServerTool.showOnScreen(LogName, "Error! create new Option file fails");
 			return;
 		}
 		
 		try(BufferedWriter Writer = new BufferedWriter(new FileWriter(OptionFile))) {
 			
-			Option temp = new Option();
+			Options temp = new Options();
 			
-			String OptionString = ST.OptionToString(temp);
+			String OptionString = ServerTool.OptionToString(temp);
 			
 			OptionString = OptionString.replaceAll("\\{", "\\{" + System.lineSeparator() + "\t");
 			OptionString = OptionString.replaceAll(",\"", "," + System.lineSeparator() + "\t\"");
@@ -133,12 +133,12 @@ public class Center extends Notification{
 			Writer.close();
 		    
 		} catch (IOException e) {
-			ST.showOnScreen(LogName, "Error! write Option file fails");
+			ServerTool.showOnScreen(LogName, "Error! write Option file fails");
 			return;
 		}
-		ST.showOnScreen(LogName, "Write Option file success");
+		ServerTool.showOnScreen(LogName, "Write Option file success");
 	}
-	private void readOptions(){
+	public void readOptions(){
 		
 		String OptionString = "";
 		
@@ -155,7 +155,7 @@ public class Center extends Notification{
 			writeOptions();
 		}
 				
-		ST.StringToOption(OptionString);
+		ServerTool.StringToOption(OptionString);
 		writeOptions();
 		
 	}
@@ -165,7 +165,7 @@ public class Center extends Notification{
 		    String line = null;
 
 		    while ((line = br.readLine()) != null) {
-		    	Player temp = ST.StringToPlayer(line);
+		    	Player temp = ServerTool.StringToPlayer(line);
 		    	
 		    	//ST.showOnScreen(LogName, temp.Status);
 		    	
@@ -181,7 +181,7 @@ public class Center extends Notification{
 				f.createNewFile();
 			} catch (IOException e1) {e1.printStackTrace();}
 			
-			ST.showOnScreen(LogName, "read player file fail, create new one");
+			ServerTool.showOnScreen(LogName, "read player file fail, create new one");
 		}
 	}
 	public static void writePlayerData(){
@@ -195,7 +195,7 @@ public class Center extends Notification{
 					PlayerFile.createNewFile();
 				}
 			} catch (IOException e) {
-				ST.showOnScreen(LogName, "Error! create new player file fails");
+				ServerTool.showOnScreen(LogName, "Error! create new player file fails");
 				return;
 			}
 			
@@ -204,7 +204,7 @@ public class Center extends Notification{
 				for(Entry<String, Player> entry : Players.entrySet()) {
 				    
 					Player TempPlayer = entry.getValue();
-					String line = ST.PlayerToString(TempPlayer);
+					String line = ServerTool.PlayerToString(TempPlayer);
 					Writer.write(line);
 					Writer.newLine();
 					
@@ -213,7 +213,7 @@ public class Center extends Notification{
 				Writer.close();
 			    
 			} catch (IOException e) {
-				ST.showOnScreen(LogName, "Error! write player file fails");
+				ServerTool.showOnScreen(LogName, "Error! write player file fails");
 				return;
 			}
 		}

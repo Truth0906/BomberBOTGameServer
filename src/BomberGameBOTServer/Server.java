@@ -1,4 +1,4 @@
-package SocketServer;
+package BomberGameBOTServer;
 
 
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.net.Socket;
 
 import ObjectStructure.BitFlag;
 import ObjectStructure.Timer;
-import Tool.ST;
+import Tool.ServerTool;
 
 public class Server implements Runnable {
 	private Center Center;
@@ -15,7 +15,7 @@ public class Server implements Runnable {
 	
 	public Server(){
 		Center = new Center();
-		ST.showOnScreen(LogName, "Socket server init complete");
+		ServerTool.showOnScreen(LogName, "Socket server init complete");
 	}
 	@Override
     public void run(){
@@ -24,16 +24,16 @@ public class Server implements Runnable {
     	
     	boolean isServerStart = false;
     	
-    	int [] PortList = Option.PortList;
+    	int [] PortList = Options.PortList;
     	
     	for(int i = 0 ; i< PortList.length ; i++){
 			try {
 				Server = new ServerSocket(PortList[i]);
 			} catch (IOException e) {
-				ST.showOnScreen(LogName, "Socket server try to start at " + PortList[i] + " port fail");
+				ServerTool.showOnScreen(LogName, "Socket server try to start at " + PortList[i] + " port fail");
 				continue;
 			}
-			ST.showOnScreen(LogName, "Socket server start at " + PortList[i] + " port success");
+			ServerTool.showOnScreen(LogName, "Socket server start at " + PortList[i] + " port success");
 			isServerStart = true;
 			break;
     	}

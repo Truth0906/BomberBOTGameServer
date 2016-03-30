@@ -1,10 +1,10 @@
 package ObjectStructure;
 
-import SocketServer.Center;
-import SocketServer.Option;
+import BomberGameBOTServer.Center;
+import BomberGameBOTServer.Options;
 import Tool.ERSystem;
 import Tool.ErrorCode;
-import Tool.ST;
+import Tool.ServerTool;
 
 public class Map extends Notification implements Runnable {
 	
@@ -61,7 +61,7 @@ public class Map extends Notification implements Runnable {
 	@Override
 	public void TimeUp() {
 				
-		if(MapTimeUpTimes >= Option.GameTimeUp){
+		if(MapTimeUpTimes >= Options.GameTimeUp){
 			
 			if(A.isLive() && B.isLive()){
 				A.setLive(false);
@@ -100,7 +100,7 @@ public class Map extends Notification implements Runnable {
 		checkAlive("Game over");
 		Message Msg = new Message();
 		
-		Msg.setMsg(Message.Map, ST.MapToString(MainMap));
+		Msg.setMsg(Message.Map, ServerTool.MapToString(MainMap));
 		Msg.setMsg(Message.ErrorCode, ErrorCode.Success);
 		
 		A.sendMsg(Msg);
@@ -110,11 +110,11 @@ public class Map extends Notification implements Runnable {
 	@Override
 	public void run() {
 		
-		ST.showOnScreen(LogName, A.getID() + " and " + B.getID() + " join game");
+		ServerTool.showOnScreen(LogName, A.getID() + " and " + B.getID() + " join game");
 		
 		Message Msg = new Message();
 		
-		Msg.setMsg(Message.Map, ST.MapToString(MainMap));
+		Msg.setMsg(Message.Map, ServerTool.MapToString(MainMap));
 		Msg.setMsg(Message.Message, "Game Joined");
 		Msg.setMsg(Message.ErrorCode, ErrorCode.Success);
 		
@@ -125,7 +125,7 @@ public class Map extends Notification implements Runnable {
 		B.sendMsg(Msg);
 		
 		
-		Timer = new Timer(Option.TimeInterval);
+		Timer = new Timer(Options.TimeInterval);
 		Timer.addNotificationList(this);
 		new Thread(Timer).start();
 	}
@@ -147,7 +147,7 @@ public class Map extends Notification implements Runnable {
 			
 			A.setWins(A.getWins() + 1);
 			B.setLosses(B.getLosses() + 1);
-			ST.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " " + A.getID() + " Win!");
+			ServerTool.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " " + A.getID() + " Win!");
 		}
 		else if(B.isLive()){
 			
@@ -158,7 +158,7 @@ public class Map extends Notification implements Runnable {
 			
 			A.setLosses(A.getLosses() + 1);
 			B.setWins(B.getWins() + 1);
-			ST.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " " + B.getID() + " Win!");
+			ServerTool.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " " + B.getID() + " Win!");
 		}
 		else{
 			
@@ -166,7 +166,7 @@ public class Map extends Notification implements Runnable {
 			
 			A.setTie(A.getTie() + 1);
 			B.setTie(B.getTie() + 1);
-			ST.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " peace end!");
+			ServerTool.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " peace end!");
 			
 		}
 				
@@ -175,7 +175,7 @@ public class Map extends Notification implements Runnable {
 		Message Msg = new Message();
 		if(inputMessage != null) Msg.setMsg(Message.Message, inputMessage);
 		
-		Msg.setMsg(Message.Map, ST.MapToString(MainMap));
+		Msg.setMsg(Message.Map, ServerTool.MapToString(MainMap));
 		Msg.setMsg(Message.End, true);
 		Msg.setMsg(Message.GameResult, GameResult);
 		Msg.setMsg(Message.ErrorCode, ErrorCode.Success);
@@ -249,33 +249,33 @@ public class Map extends Notification implements Runnable {
 		
 	}
 	private void setBomb(int Y, int X){
-		int BombExplosionTime = MainMap[Y][X].getBombExplosionTime() > 0 ? MainMap[Y][X].getBombExplosionTime() : Option.BombExplosionTime; 
+		int BombExplosionTime = MainMap[Y][X].getBombExplosionTime() > 0 ? MainMap[Y][X].getBombExplosionTime() : Options.BombExplosionTime; 
 		
 		MainMap[Y][X].setBombExplosionTime(BombExplosionTime);
 		MainMap[Y][X].setType(BitFlag.Bomb_Type);
 		
-		for(int i = 0 ; i < Option.BombExplosionRange ; i++){
+		for(int i = 0 ; i < Options.BombExplosionRange ; i++){
 			if((Y + i) >= MainMap.length ) break;
 			if(MainMap[Y + i][X].getType() == BitFlag.Wall_Type) break;
 			
 			if(MainMap[Y + i][X].getType() == BitFlag.Path_Type) MainMap[Y + i][X].setBombExplosionTime(BombExplosionTime);
 		}
 		
-		for(int i = 0 ; i < Option.BombExplosionRange ; i++){
+		for(int i = 0 ; i < Options.BombExplosionRange ; i++){
 			if((X + i) >= MainMap[0].length ) break;
 			if(MainMap[Y][X + i].getType() == BitFlag.Wall_Type) break;
 			
 			if(MainMap[Y][X + i].getType() == BitFlag.Path_Type) MainMap[Y][X + i].setBombExplosionTime(BombExplosionTime);
 		}
 		
-		for(int i = 0 ; i < Option.BombExplosionRange ; i++){
+		for(int i = 0 ; i < Options.BombExplosionRange ; i++){
 			if((Y - i) < 0 ) break;
 			if(MainMap[Y - i][X].getType() == BitFlag.Wall_Type) break;
 			
 			if(MainMap[Y - i][X].getType() == BitFlag.Path_Type) MainMap[Y - i][X].setBombExplosionTime(BombExplosionTime);
 		}
 		
-		for(int i = 0 ; i < Option.BombExplosionRange ; i++){
+		for(int i = 0 ; i < Options.BombExplosionRange ; i++){
 			if((X - i) < 0 ) break;
 			if(MainMap[Y][X - i].getType() == BitFlag.Wall_Type) break;
 			

@@ -1,4 +1,4 @@
-package SocketServer;
+package BomberGameBOTServer;
 
 
 import java.io.BufferedReader;
@@ -11,7 +11,7 @@ import java.net.Socket;
 import ObjectStructure.Message;
 import ObjectStructure.State;
 import Tool.ErrorCode;
-import Tool.ST;
+import Tool.ServerTool;
 /*
  * This class service one client
  * */
@@ -37,7 +37,7 @@ public class Service implements Runnable {
 		String FunctionName = ClientMsg.getMsg("FunctionName");
 		
 		if(FunctionName == null){
-			ST.showOnScreen(LogName, ClientSocket.getInetAddress()+" FunctionName not found");
+			ServerTool.showOnScreen(LogName, ClientSocket.getInetAddress()+" FunctionName not found");
 			Msg.setMsg("Message", "Empty function name");
 			Msg.setMsg("ErrorCode", ErrorCode.ParameterError);
 			sendMsg(Msg);
@@ -48,9 +48,9 @@ public class Service implements Runnable {
 			
 			String m = ClientMsg.getMsg("Message");
 			m = (m == null ? "" : m);
-			ST.showOnScreen(LogName, ClientSocket.getInetAddress()+" echo " + m);
+			ServerTool.showOnScreen(LogName, ClientSocket.getInetAddress()+" echo " + m);
 			
-			Msg.setMsg("Message", m + " echo back at " + ST.getTime());
+			Msg.setMsg("Message", m + " echo back at " + ServerTool.getTime());
 			Msg.setMsg("ErrorCode", ErrorCode.Success);
 			sendMsg(Msg);
 			return;
@@ -71,11 +71,11 @@ public class Service implements Runnable {
 					sendMsg(Msg);
 					return;
 				}
-				ST.showOnScreen(LogName, ID + " verify password success");
+				ServerTool.showOnScreen(LogName, ID + " verify password success");
 			}
 			else{ //new player
 				Center.newPlayer(ID, Password);
-				ST.showOnScreen(LogName, ID + " create player success");
+				ServerTool.showOnScreen(LogName, ID + " create player success");
 			}
 			if(!Center.checkPlayerState(ID, State.InPlayerList)){
 				Msg.setMsg("Message", "Player state is pairing or playing");
@@ -115,7 +115,7 @@ public class Service implements Runnable {
 		}
 		else{
 			
-			ST.showOnScreen(LogName, ClientSocket.getInetAddress()+" Unknow function " + FunctionName);
+			ServerTool.showOnScreen(LogName, ClientSocket.getInetAddress()+" Unknow function " + FunctionName);
 			Msg.setMsg("ErrorCode", ErrorCode.ParameterError);
 			sendMsg(Msg);
 			
@@ -130,8 +130,8 @@ public class Service implements Runnable {
     		Writer= new BufferedWriter(new OutputStreamWriter(ClientSocket.getOutputStream(),"UTF-8"));
 		} catch (java.io.IOException e) {
 			
-			ST.showOnScreen(LogName, ClientSocket.getInetAddress()+" Create IO Buffer fail");
-			ST.showOnScreen(LogName, ClientSocket.getInetAddress()+" lose connection");
+			ServerTool.showOnScreen(LogName, ClientSocket.getInetAddress()+" Create IO Buffer fail");
+			ServerTool.showOnScreen(LogName, ClientSocket.getInetAddress()+" lose connection");
 			
 			closeConnection();
 			
@@ -148,7 +148,7 @@ public class Service implements Runnable {
 	}
 	private boolean sendMsg(Message inputMsg){
 		
-		String Msg = ST.MessageToString(inputMsg);
+		String Msg = ServerTool.MessageToString(inputMsg);
 		try {
 			Writer.write(Msg + "\r\n");
 			Writer.flush();
@@ -167,7 +167,7 @@ public class Service implements Runnable {
 		String receivedString = null;
 		try {
 			receivedString = Reader.readLine();
-			resultMsg = ST.StringToMessage(receivedString);
+			resultMsg = ServerTool.StringToMessage(receivedString);
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
