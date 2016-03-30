@@ -1,11 +1,11 @@
 package ObjectStructure;
 
 public class State {
-	public static String InPlayerList = "In Player List";
-	public static String InPairPool = "In Pairl Pool";
-	public static String InMap = "In Map";
-	
+	public static String InPlayerList = "InPlayerList";
+	public static String InPairPool = "InPairlPool";
+	public static String InMap = "InMap";
 	private String Status;
+	
 	public String getStatus() {
 		return Status;
 	}
@@ -19,8 +19,7 @@ public class State {
 		return Status;
 	}
 	public void setStatus(String inputState) {
-		// TODO Auto-generated method stub
-		
+		Status = inputState;
 	}
 	
 }
