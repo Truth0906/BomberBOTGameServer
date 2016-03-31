@@ -1,4 +1,4 @@
-package Tool;
+package ServerTool;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
@@ -10,10 +10,10 @@ import org.apache.commons.codec.binary.Hex;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import BomberGameBOTServer.Options;
-import ObjectStructure.Block;
-import ObjectStructure.Message;
-import ObjectStructure.Player;
+import BomberGameBOTServer.ServerOptions;
+import ServerObjectStructure.Block;
+import ServerObjectStructure.Message;
+import ServerObjectStructure.Player;
 
 public class ServerTool {//Server Tool
 	
@@ -82,17 +82,17 @@ public class ServerTool {//Server Tool
 //		
 //	}
 	
-	public static Options StringToOption(String inputPlayerString){
+	public static ServerOptions StringToOption(String inputPlayerString){
 		GsonBuilder gsonBuilder  = new GsonBuilder();
 		gsonBuilder.excludeFieldsWithModifiers(java.lang.reflect.Modifier.TRANSIENT);
 		
 		Gson gson = gsonBuilder.create();
 		
-		Options result = gson.fromJson(inputPlayerString, Options.class);
+		ServerOptions result = gson.fromJson(inputPlayerString, ServerOptions.class);
 				
 		return result;
 	}
-	public static String OptionToString(Options inputOption){
+	public static String OptionToString(ServerOptions inputOption){
 		
 		GsonBuilder gsonBuilder  = new GsonBuilder();
 		gsonBuilder.excludeFieldsWithModifiers(java.lang.reflect.Modifier.TRANSIENT);

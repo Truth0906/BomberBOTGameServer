@@ -1,10 +1,10 @@
-package ObjectStructure;
+package ServerObjectStructure;
 
-import BomberGameBOTServer.Center;
-import BomberGameBOTServer.Options;
-import Tool.ERSystem;
-import Tool.ErrorCode;
-import Tool.ServerTool;
+import BomberGameBOTServer.ServerCenter;
+import BomberGameBOTServer.ServerOptions;
+import ServerTool.ERSystem;
+import ServerTool.ErrorCode;
+import ServerTool.ServerTool;
 
 public class Map extends Notification implements Runnable {
 	
@@ -61,7 +61,7 @@ public class Map extends Notification implements Runnable {
 	@Override
 	public void TimeUp() {
 				
-		if(MapTimeUpTimes >= Options.GameTimeUp){
+		if(MapTimeUpTimes >= ServerOptions.GameTimeUp){
 			
 			if(A.isLive() && B.isLive()){
 				A.setLive(false);
@@ -125,7 +125,7 @@ public class Map extends Notification implements Runnable {
 		B.sendMsg(Msg);
 		
 		
-		Timer = new Timer(Options.TimeInterval);
+		Timer = new Timer(ServerOptions.TimeInterval);
 		Timer.addNotificationList(this);
 		new Thread(Timer).start();
 	}
@@ -170,7 +170,7 @@ public class Map extends Notification implements Runnable {
 			
 		}
 				
-		Center.writePlayerData();
+		ServerCenter.writePlayerData();
 		
 		Message Msg = new Message();
 		if(inputMessage != null) Msg.setMsg(Message.Message, inputMessage);
@@ -249,33 +249,33 @@ public class Map extends Notification implements Runnable {
 		
 	}
 	private void setBomb(int Y, int X){
-		int BombExplosionTime = MainMap[Y][X].getBombExplosionTime() > 0 ? MainMap[Y][X].getBombExplosionTime() : Options.BombExplosionTime; 
+		int BombExplosionTime = MainMap[Y][X].getBombExplosionTime() > 0 ? MainMap[Y][X].getBombExplosionTime() : ServerOptions.BombExplosionTime; 
 		
 		MainMap[Y][X].setBombExplosionTime(BombExplosionTime);
 		MainMap[Y][X].setType(BitFlag.Bomb_Type);
 		
-		for(int i = 0 ; i < Options.BombExplosionRange ; i++){
+		for(int i = 0 ; i < ServerOptions.BombExplosionRange ; i++){
 			if((Y + i) >= MainMap.length ) break;
 			if(MainMap[Y + i][X].getType() == BitFlag.Wall_Type) break;
 			
 			if(MainMap[Y + i][X].getType() == BitFlag.Path_Type) MainMap[Y + i][X].setBombExplosionTime(BombExplosionTime);
 		}
 		
-		for(int i = 0 ; i < Options.BombExplosionRange ; i++){
+		for(int i = 0 ; i < ServerOptions.BombExplosionRange ; i++){
 			if((X + i) >= MainMap[0].length ) break;
 			if(MainMap[Y][X + i].getType() == BitFlag.Wall_Type) break;
 			
 			if(MainMap[Y][X + i].getType() == BitFlag.Path_Type) MainMap[Y][X + i].setBombExplosionTime(BombExplosionTime);
 		}
 		
-		for(int i = 0 ; i < Options.BombExplosionRange ; i++){
+		for(int i = 0 ; i < ServerOptions.BombExplosionRange ; i++){
 			if((Y - i) < 0 ) break;
 			if(MainMap[Y - i][X].getType() == BitFlag.Wall_Type) break;
 			
 			if(MainMap[Y - i][X].getType() == BitFlag.Path_Type) MainMap[Y - i][X].setBombExplosionTime(BombExplosionTime);
 		}
 		
-		for(int i = 0 ; i < Options.BombExplosionRange ; i++){
+		for(int i = 0 ; i < ServerOptions.BombExplosionRange ; i++){
 			if((X - i) < 0 ) break;
 			if(MainMap[Y][X - i].getType() == BitFlag.Wall_Type) break;
 			

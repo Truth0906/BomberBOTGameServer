@@ -1,6 +1,6 @@
-package ObjectStructure;
+package ServerObjectStructure;
 
-import Tool.ServerTool;
+import ServerTool.ServerTool;
 
 public class Block {
 	

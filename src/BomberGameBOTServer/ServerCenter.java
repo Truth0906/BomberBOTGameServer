@@ -8,15 +8,15 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import ObjectStructure.Message;
-import ObjectStructure.Notification;
-import ObjectStructure.Player;
-import ObjectStructure.State;
-import ObjectStructure.Timer;
-import Tool.ServerTool;
+import ServerObjectStructure.Message;
+import ServerObjectStructure.Notification;
+import ServerObjectStructure.Player;
+import ServerObjectStructure.State;
+import ServerObjectStructure.Timer;
+import ServerTool.ServerTool;
 
 
-public class Center extends Notification{
+public class ServerCenter extends Notification{
 	
 	private static Object Players_Lock;
 	private static HashMap<String, Player> Players;
@@ -26,7 +26,7 @@ public class Center extends Notification{
 	private static Timer Timer;
 	
 	private static String LogName = "Center";
-	public Center(){
+	public ServerCenter(){
 		Players_Lock = new Object();
 
 		readOptions();
@@ -120,7 +120,7 @@ public class Center extends Notification{
 		
 		try(BufferedWriter Writer = new BufferedWriter(new FileWriter(OptionFile))) {
 			
-			Options temp = new Options();
+			ServerOptions temp = new ServerOptions();
 			
 			String OptionString = ServerTool.OptionToString(temp);
 			

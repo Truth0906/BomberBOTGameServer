@@ -1,4 +1,4 @@
-package ObjectStructure;
+package ServerObjectStructure;
 
 public class State {
 	public static String InPlayerList = "InPlayerList";

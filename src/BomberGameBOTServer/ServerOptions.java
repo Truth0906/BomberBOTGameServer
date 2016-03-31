@@ -1,6 +1,6 @@
 package BomberGameBOTServer;
 
-public class Options {
+public class ServerOptions {
 	public static int[]PortList = new int[] {52013, 52014, 53013, 53014};
 	public static long TimeInterval = 5000;
 	public static int InitScore = 1200;

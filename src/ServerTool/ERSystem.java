@@ -1,4 +1,4 @@
-package Tool;
+package ServerTool;
 
 public class ERSystem {
 	private static int win = 1;

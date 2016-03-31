@@ -1,9 +1,9 @@
-package ObjectStructure;
+package ServerObjectStructure;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import Tool.ServerTool;
+import ServerTool.ServerTool;
 
 public class Message {
 	

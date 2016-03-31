@@ -1,4 +1,4 @@
-package ObjectStructure;
+package ServerObjectStructure;
 
 public class BitFlag {
 	

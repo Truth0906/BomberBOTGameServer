@@ -5,16 +5,16 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import ObjectStructure.BitFlag;
-import ObjectStructure.Timer;
-import Tool.ServerTool;
+import ServerObjectStructure.BitFlag;
+import ServerObjectStructure.Timer;
+import ServerTool.ServerTool;
 
 public class Server implements Runnable {
-	private Center Center;
+	private ServerCenter Center;
 	private String LogName = "SocketServer";
 	
 	public Server(){
-		Center = new Center();
+		Center = new ServerCenter();
 		ServerTool.showOnScreen(LogName, "Socket server init complete");
 	}
 	@Override
@@ -24,7 +24,7 @@ public class Server implements Runnable {
     	
     	boolean isServerStart = false;
     	
-    	int [] PortList = Options.PortList;
+    	int [] PortList = ServerOptions.PortList;
     	
     	for(int i = 0 ; i< PortList.length ; i++){
 			try {

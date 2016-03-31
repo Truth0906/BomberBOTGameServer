@@ -8,10 +8,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
-import ObjectStructure.Message;
-import ObjectStructure.State;
-import Tool.ErrorCode;
-import Tool.ServerTool;
+import ServerObjectStructure.Message;
+import ServerObjectStructure.State;
+import ServerTool.ErrorCode;
+import ServerTool.ServerTool;
 /*
  * This class service one client
  * */
@@ -64,8 +64,8 @@ public class Service implements Runnable {
 				sendMsg(Msg);
 				return;
 			}
-			if(Center.isPlayerExist(ID)){ // registered player
-				if(!Center.verifyPassword(ID, Password)){
+			if(ServerCenter.isPlayerExist(ID)){ // registered player
+				if(!ServerCenter.verifyPassword(ID, Password)){
 					Msg.setMsg("Message", "Wrong password");
 					Msg.setMsg("ErrorCode", ErrorCode.IDandPWError);
 					sendMsg(Msg);
@@ -74,17 +74,17 @@ public class Service implements Runnable {
 				ServerTool.showOnScreen(LogName, ID + " verify password success");
 			}
 			else{ //new player
-				Center.newPlayer(ID, Password);
+				ServerCenter.newPlayer(ID, Password);
 				ServerTool.showOnScreen(LogName, ID + " create player success");
 			}
-			if(!Center.checkPlayerState(ID, State.InPlayerList)){
+			if(!ServerCenter.checkPlayerState(ID, State.InPlayerList)){
 				Msg.setMsg("Message", "Player state is pairing or playing");
 				Msg.setMsg("ErrorCode", ErrorCode.PlayerStateNotCorret);
 				sendMsg(Msg);
 				return;
 			}
 			
-			Center.addPairPlayer(ID, Writer);
+			ServerCenter.addPairPlayer(ID, Writer);
 			
 		}
 		else if(FunctionName.equals("move")){
@@ -97,20 +97,20 @@ public class Service implements Runnable {
 				sendMsg(Msg);
 				return;
 			}
-			if(!Center.verifyPassword(ID, Password)){
+			if(!ServerCenter.verifyPassword(ID, Password)){
 				Msg.setMsg("Message", "Wrong password");
 				Msg.setMsg("ErrorCode", ErrorCode.IDandPWError);
 				sendMsg(Msg);
 				return;
 			}
-			if(!Center.checkPlayerState(ID, State.InMap)){
+			if(!ServerCenter.checkPlayerState(ID, State.InMap)){
 				Msg.setMsg("Message", "Player state is not playing");
 				Msg.setMsg("ErrorCode", ErrorCode.PlayerStateNotCorret);
 				sendMsg(Msg);
 				return;
 			}
 			//ST.showOnScreen(LogName, ID + " verify password success");
-			Center.setPlayerMove(ID, ClientMsg, Writer);
+			ServerCenter.setPlayerMove(ID, ClientMsg, Writer);
 			return;
 		}
 		else{

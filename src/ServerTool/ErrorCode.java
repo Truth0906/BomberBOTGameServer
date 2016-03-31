@@ -1,4 +1,4 @@
-package Tool;
+package ServerTool;
 
 public class ErrorCode {
 	public static int Success								= 0x000000;

@@ -1,10 +1,10 @@
-package ObjectStructure;
+package ServerObjectStructure;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-import BomberGameBOTServer.Options;
-import Tool.ServerTool;
+import BomberGameBOTServer.ServerOptions;
+import ServerTool.ServerTool;
 
 public class Player{
 	private String ID;
@@ -29,7 +29,7 @@ public class Player{
 
 	public Player(){
 		ID = null;
-		Score = Options.InitScore;
+		Score = ServerOptions.InitScore;
 		Password = null;
 		Wins = 0;
 		Losses = 0;

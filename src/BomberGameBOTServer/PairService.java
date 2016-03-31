@@ -2,13 +2,14 @@ package BomberGameBOTServer;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.Random;
 
-import ObjectStructure.Map;
-import ObjectStructure.Notification;
-import ObjectStructure.Player;
-import ObjectStructure.Timer;
-import Tool.ServerTool;
+import ServerObjectStructure.Map;
+import ServerObjectStructure.Notification;
+import ServerObjectStructure.Player;
+import ServerObjectStructure.Timer;
+import ServerTool.ServerTool;
+
+import java.util.Random;
 
 
 public class PairService  extends Notification{

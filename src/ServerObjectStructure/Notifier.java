@@ -1,4 +1,4 @@
-package ObjectStructure;
+package ServerObjectStructure;
 
 import java.util.ArrayList;
 import java.util.Iterator;
