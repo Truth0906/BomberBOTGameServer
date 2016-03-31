@@ -45,6 +45,7 @@ public class Server implements Runnable {
 				clientThread.start();
 			} catch (IOException e) {
 				return;
+				
 			}
     	}
     }
