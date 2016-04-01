@@ -51,7 +51,7 @@
 		<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
 		<antcall target="build" />
 	</target>
-	<target name="New_configuration">
+	<target name="Start Server">
 		<java classname="BomberGameBOTServer.Server" failonerror="true" fork="yes">
 			<classpath refid="BomberGameBOTServer.classpath" />
 		</java>
@@ -63,6 +63,7 @@
 	</path>
 
 	<target name="compile">
+				
 		<delete dir="./classes" />
 		<mkdir dir="./classes" />
 
@@ -76,14 +77,22 @@
 	</target>
 
 	<target name="jar" description="Creates the JAR file in " depends="compile">
-
-		<jar jarfile="./BomberGameBOTServer.jar" basedir="./classes">
+		<unzip src="./Library/gson-2.6.2.jar" dest="./classes">
+		  <patternset>
+		    <include name="**/*.class" />
+		  </patternset>
+		</unzip>
+		<unzip src="./Library/commons-codec-1.10.jar" dest="./classes">
+		  <patternset>
+		    <include name="**/*.class" />
+		  </patternset>
+		</unzip>
+		<jar jarfile="./Output/BomberGameBOTServer.jar" basedir="./classes">
 			<manifest>
 				<attribute name="Main-Class" value="BomberGameBOTServer.Server" />
-				<attribute name="Class-path" value="./Library/gson-2.6.2.jar ./Library/commons-codec-1.10.jar" />
+				<attribute name="Class-path" value="." />
 			</manifest>
 		</jar>
-
 		<delete includeemptydirs="true">
 			<fileset dir="./classes" includes="**/*" />
 		</delete>
