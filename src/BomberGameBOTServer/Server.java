@@ -24,14 +24,14 @@ public class Server implements Runnable {
     	
     	int [] PortList = ServerOptions.PortList;
     	
-    	for(int i = 0 ; i< PortList.length ; i++){
+    	for(int port : PortList){
 			try {
-				Server = new ServerSocket(PortList[i]);
+				Server = new ServerSocket(port);
 			} catch (IOException e) {
-				ServerTool.showOnScreen(LogName, "Socket server try to start at " + PortList[i] + " port fail");
+				ServerTool.showOnScreen(LogName, "Socket server try to start at " + port + " port fail");
 				continue;
 			}
-			ServerTool.showOnScreen(LogName, "Socket server start at " + PortList[i] + " port success");
+			ServerTool.showOnScreen(LogName, "Socket server start at " + port + " port success");
 			isServerStart = true;
 			break;
     	}
@@ -50,9 +50,8 @@ public class Server implements Runnable {
 	public static void main(String[] args) {
 				
 		System.out.print("BomberGameBOT Server v1.0.16.0401 beta\n");
-		Server S = new Server();
-		new Thread(S).start();
-				
+		new Thread(new Server()).start();
+		
 	}
 }
  

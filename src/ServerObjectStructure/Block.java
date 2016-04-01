@@ -15,10 +15,10 @@ public class Block {
 		PlayerType = BitFlag.NoPlayer;
 		BombExplosionTime = 0;
 	}
-	public int getType(){
+	public int getBlockType(){
 		return BlockType;
 	}
-	public void setType(int inputType){
+	public void setBlockType(int inputType){
 		BlockType = inputType;
 	}
 	
@@ -46,7 +46,7 @@ public class Block {
 	public void setBombExplosionTime(int inputBombExplosionTime){
 		if(BlockType == BitFlag.Wall_Type) return;
 		if(inputBombExplosionTime <= 0) return;
-		if(BombExplosionTime <= 0) BombExplosionTime = inputBombExplosionTime;
+		if(BombExplosionTime > inputBombExplosionTime || BombExplosionTime == 0) BombExplosionTime = inputBombExplosionTime;
 	}
 	public int getBombExplosionTime(){
 		return BombExplosionTime;
@@ -74,7 +74,7 @@ public class Block {
 		if(BlockType == BitFlag.Wall_Type) return;
 		if(BombExplosionTime == 0) return;
 		
-		if(BombExplosionTime > 0) --BombExplosionTime;
+		if(BombExplosionTime > 0) BombExplosionTime--;
 		
 		if(BombExplosionTime == 0){
 			BlockType = BitFlag.Path_Type;
