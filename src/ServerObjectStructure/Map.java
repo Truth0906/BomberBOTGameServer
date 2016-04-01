@@ -142,23 +142,32 @@ public class Map extends Notification implements Runnable {
 			
 			GameResult = "Winner: " + A.getID();
 			
+			ServerTool.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " " + A.getID() + " Win!");
+			ServerTool.showOnScreen(LogName, A.getID() + " " + A.getScore() + " -> " + (A.getScore() + ScoreTemp));
+			ServerTool.showOnScreen(LogName, B.getID() + " " + B.getScore() + " -> " + (B.getScore() - ScoreTemp));
+			
+			
 			A.setScore(A.getScore() + ScoreTemp);
 			B.setScore(B.getScore() - ScoreTemp);
 			
 			A.setWins(A.getWins() + 1);
 			B.setLosses(B.getLosses() + 1);
-			ServerTool.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " " + A.getID() + " Win!");
+			
 		}
 		else if(B.isLive()){
 			
 			GameResult = "Winner: " + B.getID();
+			
+			ServerTool.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " " + B.getID() + " Win!");
+			ServerTool.showOnScreen(LogName, A.getID() + " " + A.getScore() + " -> " + (A.getScore() - ScoreTemp));
+			ServerTool.showOnScreen(LogName, B.getID() + " " + B.getScore() + " -> " + (B.getScore() + ScoreTemp));
 			
 			A.setScore(A.getScore() - ScoreTemp);
 			B.setScore(B.getScore() + ScoreTemp);
 			
 			A.setLosses(A.getLosses() + 1);
 			B.setWins(B.getWins() + 1);
-			ServerTool.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " " + B.getID() + " Win!");
+			
 		}
 		else{
 			

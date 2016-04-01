@@ -5,16 +5,14 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import ServerObjectStructure.BitFlag;
-import ServerObjectStructure.Timer;
 import ServerTool.ServerTool;
 
 public class Server implements Runnable {
-	private ServerCenter Center;
+	//private ServerCenter Center;
 	private String LogName = "SocketServer";
 	
 	public Server(){
-		Center = new ServerCenter();
+		new ServerCenter();
 		ServerTool.showOnScreen(LogName, "Socket server init complete");
 	}
 	@Override
@@ -50,61 +48,11 @@ public class Server implements Runnable {
     	}
     }
 	public static void main(String[] args) {
-		System.out.print("BomberGameBOT Server v1.0.16.0329 beta\n");
-		new Thread(new Server()).start();
-		
-		
-		//ST.showOnScreen("TEST", ((BitFlag.PlayerA & input) == Flag) + "");
-		
-//		ST.showOnScreen("TEST", ST.OptionToString(new Option()));
-//		
-//		Option test1 = new Option();
-//		Option test2 = new Option();
-//		
-//		ST.showOnScreen("TEST", "Test1 = " + test1.InitScore);
-//		ST.showOnScreen("TEST", "Test2 = " + test2.InitScore);
-//				
-//		ST.showOnScreen("TEST", ST.OptionToString(new Option()));
-		
-//		Player test = new Player();
-//		test.setID("testID");
-//		test.setPassWord("testPW");
-//		
-//		String result;
-//		ST.showOnScreen("TEST", result = ST.PlayerToString(test));
-//		Player test3 = ST.StringToPlayer(result);
-//		ST.showOnScreen("TEST", test3.getID());
-		
-//		String result;
-//		ST.showOnScreen("TEST", result = ST.StringToHex("Yo man!!!"));
-//		ST.showOnScreen("TEST", ST.HexToString(result));
-		
-//		ST.showOnScreen("TEST", ST.SHA256("Hi"));
-		
-//		int ScoreA = 1600, ScoreB = 1600;
-//		ERSystem.newScore(ScoreA, ScoreB);
-//		ST.showOnScreen("TEST", (ERSystem.newScore(ScoreA, ScoreB) + ""));
-		
-//		Timer test = new Timer(2000);
-//		new Thread(test).start();
-		
-//		String testResult;
-//		Message test = new Message();
-//		
-//		test.setMsg("Name", "Truth");
-//		test.setMsg("Age", "2");
-//		
-//		ST.showOnScreen("TEST", test.getMsg("Name"));
-//		ST.showOnScreen("TEST", test.getMsg("Age"));
-//		
-//		ST.showOnScreen("TEST", testResult = ST.MessageToString(test));
-//		
-//		test = ST.StringToMessage(testResult);
-//		
-//		ST.showOnScreen("TEST", test.getMsg("Name"));
-//		ST.showOnScreen("TEST", test.getMsg("Age"));
-//		ST.showOnScreen("TEST", test.getMsg("Out") == null ? "True" : "False");
-		
+				
+		System.out.print("BomberGameBOT Server v1.0.16.0401 beta\n");
+		Server S = new Server();
+		new Thread(S).start();
+				
 	}
 }
  

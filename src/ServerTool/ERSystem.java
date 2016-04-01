@@ -8,7 +8,7 @@ public class ERSystem {
 	public ERSystem(){
 	}
 	private static double getExpectedScore (int ScoreA, int ScoreB) {
-        return 1.0 / (1.0 + Math.pow(10.0, ((double) (ScoreB - ScoreA) / 400.0)));
+        return 1.0 / (1.0 + Math.pow(10.0, ((ScoreB - ScoreA) / 400.0)));
 	}
 	public static int newScore(int ScoreA,int ScoreB){
 		
@@ -19,7 +19,7 @@ public class ERSystem {
 		}
 		
 		double temp = K * (win - getExpectedScore(ScoreA, ScoreB));
-		if(abs((double)(temp - (int)temp)) >= 0.5){
+		if(abs(temp - (int)temp) >= 0.5){
 			if(temp > 0) temp +=0.5;
 			else temp -= 0.5;
 		}

@@ -1,7 +1,5 @@
 package ServerObjectStructure;
 
-import ServerTool.ServerTool;
-
 public class Timer implements Runnable{
 	
 	private long timeInterval;
