@@ -277,8 +277,6 @@ public class Map extends Notification implements Runnable {
 	}
 	private void setBomb(int Y, int X){
 		
-		if(MainMap[Y][X].getBlockType() == BitFlag.Bomb_Type) return;
-		
 		int BombExplosionTime = MainMap[Y][X].getBombExplosionTime() > 0 ? MainMap[Y][X].getBombExplosionTime() : ServerOptions.BombExplosionTime; 
 		
 		MainMap[Y][X].setBombExplosionTime(BombExplosionTime);
