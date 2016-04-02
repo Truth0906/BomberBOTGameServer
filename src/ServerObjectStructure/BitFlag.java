@@ -22,4 +22,10 @@ public class BitFlag {
 	
 	public static int putBombBeforeMove = 	  		0x0010;
 	public static int putBombAfterMove =  	  		0x0020;
+	
+	//version
+	public static int Version_Newer =	 	  		0x0010;
+	public static int Version_Older =  				0x0020;
+	public static int Version_Same =  				0x0040;
+	
 }

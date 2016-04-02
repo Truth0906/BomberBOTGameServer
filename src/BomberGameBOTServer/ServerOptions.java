@@ -8,4 +8,5 @@ public class ServerOptions {
 	public static int BombExplosionTime = 10;
 	public static int BombExplosionRange = 8;
 	public static boolean Log = false;
+	public static String minAPIVersion = "1.0.160402";
 }

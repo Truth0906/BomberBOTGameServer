@@ -8,6 +8,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
+import javax.swing.text.html.Option;
+
+import ServerObjectStructure.BitFlag;
 import ServerObjectStructure.Message;
 import ServerObjectStructure.State;
 import ServerTool.ErrorCode;
@@ -44,6 +47,24 @@ public class Service implements Runnable {
 			return;
 		}
 		
+		String inputAPIVersion = ClientMsg.getMsg(Message.APIVersion);
+		
+		int checkVersionResult = ServerTool.checkVerson(inputAPIVersion, ServerOptions.minAPIVersion);
+		
+		if(checkVersionResult == BitFlag.Version_Older){
+			Msg.setMsg(Message.Message, "API version too old");
+			Msg.setMsg(Message.ErrorCode, ErrorCode.APIVersionTooLow);
+			sendMsg(Msg);
+			return;
+		}
+		else if(checkVersionResult == ErrorCode.ParameterError){
+			Msg.setMsg(Message.Message, "Server can't extract API version");
+			Msg.setMsg(Message.ErrorCode, ErrorCode.ParameterError);
+			sendMsg(Msg);
+			return;
+		}
+		
+		
 		if(FunctionName.equals("echo")){
 			
 			String m = ClientMsg.getMsg("Message");
@@ -59,15 +80,15 @@ public class Service implements Runnable {
 			String ID = ClientMsg.getMsg("ID");
 			String Password = ClientMsg.getMsg("Password");
 			if(ID == null || Password == null){
-				Msg.setMsg("Message", "null ID or Password");
-				Msg.setMsg("ErrorCode", ErrorCode.ParameterError);
+				Msg.setMsg(Message.Message, "null ID or Password");
+				Msg.setMsg(Message.ErrorCode, ErrorCode.ParameterError);
 				sendMsg(Msg);
 				return;
 			}
 			if(ServerCenter.isPlayerExist(ID)){ // registered player
 				if(!ServerCenter.verifyPassword(ID, Password)){
-					Msg.setMsg("Message", "Wrong password");
-					Msg.setMsg("ErrorCode", ErrorCode.IDandPWError);
+					Msg.setMsg(Message.Message, "Wrong password");
+					Msg.setMsg(Message.ErrorCode, ErrorCode.IDandPWError);
 					sendMsg(Msg);
 					return;
 				}
@@ -78,8 +99,8 @@ public class Service implements Runnable {
 				ServerTool.showOnScreen(LogName, ID + " create player success");
 			}
 			if(!ServerCenter.checkPlayerState(ID, State.InPlayerList)){
-				Msg.setMsg("Message", "Player state is pairing or playing");
-				Msg.setMsg("ErrorCode", ErrorCode.PlayerStateNotCorret);
+				Msg.setMsg(Message.Message, "Player state is pairing or playing");
+				Msg.setMsg(Message.ErrorCode, ErrorCode.PlayerStateNotCorret);
 				sendMsg(Msg);
 				return;
 			}
@@ -92,20 +113,20 @@ public class Service implements Runnable {
 			String ID = ClientMsg.getMsg("ID");
 			String Password = ClientMsg.getMsg("Password");
 			if(ID == null || Password == null){
-				Msg.setMsg("Message", "null ID or Password");
-				Msg.setMsg("ErrorCode", ErrorCode.ParameterError);
+				Msg.setMsg(Message.Message, "null ID or Password");
+				Msg.setMsg(Message.ErrorCode, ErrorCode.ParameterError);
 				sendMsg(Msg);
 				return;
 			}
 			if(!ServerCenter.verifyPassword(ID, Password)){
-				Msg.setMsg("Message", "Wrong password");
-				Msg.setMsg("ErrorCode", ErrorCode.IDandPWError);
+				Msg.setMsg(Message.Message, "Wrong password");
+				Msg.setMsg(Message.ErrorCode, ErrorCode.IDandPWError);
 				sendMsg(Msg);
 				return;
 			}
 			if(!ServerCenter.checkPlayerState(ID, State.InMap)){
-				Msg.setMsg("Message", "Player state is not playing");
-				Msg.setMsg("ErrorCode", ErrorCode.PlayerStateNotCorret);
+				Msg.setMsg(Message.Message, "Player state is not playing");
+				Msg.setMsg(Message.ErrorCode, ErrorCode.PlayerStateNotCorret);
 				sendMsg(Msg);
 				return;
 			}

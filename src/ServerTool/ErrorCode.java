@@ -8,4 +8,5 @@ public class ErrorCode {
 	public static int IDandPWError							= 0x000004;
 	public static int PlayerStateNotCorret					= 0x000005;
 	public static int ConnectError							= 0x000006;
+	public static int APIVersionTooLow						= 0x000007;
 }

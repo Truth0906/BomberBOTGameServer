@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import BomberGameBOTServer.ServerOptions;
+import ServerObjectStructure.BitFlag;
 import ServerObjectStructure.Block;
 import ServerObjectStructure.Message;
 import ServerObjectStructure.Player;
@@ -155,5 +156,20 @@ public class ServerTool {//Server Tool
 	public static int abs(int input){
 		if(input < 0) return -1 * input;
 		return input;
+	}
+	public static int checkVerson(String inputVersionA, String inputVersionB){
+		
+		if(inputVersionA == null || inputVersionB == null) return ErrorCode.ParameterError;
+		
+		String TempVersionA[] =  inputVersionA.split(".");
+		String TempVersionB[] =  inputVersionB.split(".");
+		
+		for(int i = 0 ; i < TempVersionB.length ; i++){
+			if(Integer.parseInt(TempVersionA[i]) < Integer.parseInt(TempVersionB[i])) return BitFlag.Version_Older;
+			if(Integer.parseInt(TempVersionA[i]) > Integer.parseInt(TempVersionB[i])) return BitFlag.Version_Newer;
+		}
+		
+		return BitFlag.Version_Same;
+		
 	}
 }

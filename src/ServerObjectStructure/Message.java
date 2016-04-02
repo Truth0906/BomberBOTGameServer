@@ -18,6 +18,7 @@ public class Message {
 	public static final String BombFlag				= "BombFlag";
 	public static final String End					= "End";
 	public static final String GameResult			= "GameResult";
+	public static final String APIVersion			= "APIVersion";
 	
 	private HashMap<String, String> MsgMap;
 	public Message(){

@@ -200,7 +200,10 @@ public class Map extends Notification implements Runnable {
 		Msg.setMsg(Message.GameResult, GameResult);
 		Msg.setMsg(Message.ErrorCode, ErrorCode.Success);
 		
+		Msg.setMsg(Message.PlayerMark, BitFlag.PlayerA);
 		A.sendMsg(Msg);
+		
+		Msg.setMsg(Message.PlayerMark, BitFlag.PlayerB);
 		B.sendMsg(Msg);
 		
 		A.setState(State.InPlayerList);
