@@ -3,12 +3,13 @@ package ServerObjectStructure;
 public class BitFlag {
 	
 	//Map
-	public static int UnknowType = 					0x0000;
-	public static int NoPlayer =	 				0x0000;
-	public static int Wall_Type = 					0x1000;
-	public static int Path_Type =  					0x2000;
-	public static int Bomb_Type =  					0x4000;
+	public static int BlockType_Unknow = 			0x0000;
+	public static int BlockType_NoPlayer =			0x0000;
+	public static int BlockType_Wall = 				0x1000;
+	public static int BlockType_Path =  			0x2000;
+	public static int BlockType_Bomb =  			0x4000;
 	
+	//PlayerMark
 	public static int PlayerA = 			        0x0100;
 	public static int PlayerB =  					0x0200;
 	

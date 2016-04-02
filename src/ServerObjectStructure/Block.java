@@ -12,7 +12,7 @@ public class Block {
 	public Block(int inputType){
 		PlayerTemp = new Player[2];
 		BlockType = inputType;
-		PlayerType = BitFlag.NoPlayer;
+		PlayerType = BitFlag.BlockType_NoPlayer;
 		BombExplosionTime = 0;
 	}
 	public int getBlockType(){
@@ -23,14 +23,14 @@ public class Block {
 	}
 	
 	public void removePlayer(int inputPlayerType){
-		if(BlockType == BitFlag.Wall_Type) return;
+		if(BlockType == BitFlag.BlockType_Wall) return;
 		if(inputPlayerType == BitFlag.PlayerA) PlayerTemp[0] = null;
 		if(inputPlayerType == BitFlag.PlayerB) PlayerTemp[1] = null;
 		PlayerType &= ~(inputPlayerType);
 	}
 	
 	public void setPlayer(Player inputPlayer, int inputPlayerType){
-		if(BlockType == BitFlag.Wall_Type) return;
+		if(BlockType == BitFlag.BlockType_Wall) return;
 		if(inputPlayerType == BitFlag.PlayerA) PlayerTemp[0] = inputPlayer;
 		if(inputPlayerType == BitFlag.PlayerB) PlayerTemp[1] = inputPlayer;
 		PlayerType |= inputPlayerType;
@@ -44,7 +44,7 @@ public class Block {
 		return PlayerType;
 	}
 	public void setBombExplosionTime(int inputBombExplosionTime){
-		if(BlockType == BitFlag.Wall_Type) return;
+		if(BlockType == BitFlag.BlockType_Wall) return;
 		if(inputBombExplosionTime <= 0) return;
 		if(BombExplosionTime > inputBombExplosionTime || BombExplosionTime == 0) BombExplosionTime = inputBombExplosionTime;
 	}
@@ -71,14 +71,14 @@ public class Block {
 	}
 	
 	public void CountBombExplosionTime() {
-		if(BlockType == BitFlag.Wall_Type) return;
+		if(BlockType == BitFlag.BlockType_Wall) return;
 		if(BombExplosionTime == 0) return;
 		
 		if(BombExplosionTime > 0) BombExplosionTime--;
 		
 		if(BombExplosionTime == 0){
-			BlockType = BitFlag.Path_Type;
-			if(PlayerType != BitFlag.NoPlayer){
+			BlockType = BitFlag.BlockType_Path;
+			if(PlayerType != BitFlag.BlockType_NoPlayer){
 				if(ServerTool.CompareBitFlag(PlayerType, BitFlag.PlayerA))PlayerTemp[0].setLive(false);
 				if(ServerTool.CompareBitFlag(PlayerType, BitFlag.PlayerB))PlayerTemp[1].setLive(false);
 			}
