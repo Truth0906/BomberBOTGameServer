@@ -8,6 +8,8 @@ public class BitFlag {
 	public static int BlockType_Wall = 				0x1000;
 	public static int BlockType_Path =  			0x2000;
 	public static int BlockType_Bomb =  			0x4000;
+	public static int BlockType_Filter =			0xF000;
+	public static int BlockType_BombCDFilter =		0x00FF;
 	
 	//PlayerMark
 	public static int PlayerA = 			        0x0100;

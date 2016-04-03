@@ -136,7 +136,6 @@ public class ServerCenter extends Notification{
 			ServerTool.showOnScreen(LogName, "Error! write Option file fails");
 			return;
 		}
-		ServerTool.showOnScreen(LogName, "Write Option file success");
 	}
 	public void readOptions(){
 		
@@ -157,7 +156,7 @@ public class ServerCenter extends Notification{
 				
 		ServerTool.StringToOption(OptionString);
 		writeOptions();
-		
+		ServerTool.showOnScreen(LogName, "Read Option file success");
 	}
 	private void readPlayerData(){
 		try(BufferedReader br = new BufferedReader(new FileReader("Player_Data"))) {
