@@ -98,8 +98,8 @@ public class Service implements Runnable {
 				ServerCenter.newPlayer(ID, Password);
 				ServerTool.showOnScreen(LogName, ID + " create player success");
 			}
-			if(!ServerCenter.checkPlayerState(ID, State.InPlayerList)){
-				Msg.setMsg(Message.Message, "Player state is pairing or playing");
+			if(ServerCenter.checkPlayerState(ID, State.InMap)){
+				Msg.setMsg(Message.Message, "Player is playing");
 				Msg.setMsg(Message.ErrorCode, ErrorCode.PlayerStateNotCorret);
 				sendMsg(Msg);
 				return;

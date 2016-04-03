@@ -14,7 +14,7 @@ public class Map extends Notification implements Runnable {
 	private Block MainMap[][];
 	private Timer Timer;
 	private int MapTimeUpTimes;
-		
+	
 	private int PlayerLocationA[];
 	private int PlayerLocationB[];
 	
@@ -103,6 +103,8 @@ public class Map extends Notification implements Runnable {
 		Message Msg = new Message();
 		
 		Msg.setMsg(Message.Map, ServerTool.MapToString(MainMap));
+		Msg.setMsg(Message.End, false);
+		Msg.setMsg(Message.Message, "Next move");
 		Msg.setMsg(Message.ErrorCode, ErrorCode.Success);
 		
 		
@@ -117,7 +119,7 @@ public class Map extends Notification implements Runnable {
 	public void run() {
 		
 		try {
-			Thread.sleep(new Random().nextInt(800) + 100);
+			Thread.sleep(new Random().nextInt((int)(ServerOptions.TimeInterval * 0.8)) + (int)(ServerOptions.TimeInterval * 0.1));
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
