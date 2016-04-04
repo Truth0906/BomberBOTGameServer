@@ -287,28 +287,28 @@ public class Map extends Notification implements Runnable {
 		MainMap[Y][X].setBombExplosionTime(BombExplosionTime);
 		MainMap[Y][X].setBlockType(BitFlag.BlockType_Bomb);
 		
-		for(int i = 0 ; i < ServerOptions.BombExplosionRange ; i++){
+		for(int i = 0 ; i < ServerOptions.BombExplosionRange + 1 ; i++){
 			if((Y + i) >= MainMap.length ) break;
 			if(MainMap[Y + i][X].getBlockType() == BitFlag.BlockType_Wall) break;
 			
 			if(MainMap[Y + i][X].getBlockType() == BitFlag.BlockType_Path) MainMap[Y + i][X].setBombExplosionTime(BombExplosionTime);
 		}
 		
-		for(int i = 0 ; i < ServerOptions.BombExplosionRange ; i++){
+		for(int i = 0 ; i < ServerOptions.BombExplosionRange + 1; i++){
 			if((X + i) >= MainMap[0].length ) break;
 			if(MainMap[Y][X + i].getBlockType() == BitFlag.BlockType_Wall) break;
 			
 			if(MainMap[Y][X + i].getBlockType() == BitFlag.BlockType_Path) MainMap[Y][X + i].setBombExplosionTime(BombExplosionTime);
 		}
 		
-		for(int i = 0 ; i < ServerOptions.BombExplosionRange ; i++){
+		for(int i = 0 ; i < ServerOptions.BombExplosionRange + 1; i++){
 			if((Y - i) < 0 ) break;
 			if(MainMap[Y - i][X].getBlockType() == BitFlag.BlockType_Wall) break;
 			
 			if(MainMap[Y - i][X].getBlockType() == BitFlag.BlockType_Path) MainMap[Y - i][X].setBombExplosionTime(BombExplosionTime);
 		}
 		
-		for(int i = 0 ; i < ServerOptions.BombExplosionRange ; i++){
+		for(int i = 0 ; i < ServerOptions.BombExplosionRange + 1; i++){
 			if((X - i) < 0 ) break;
 			if(MainMap[Y][X - i].getBlockType() == BitFlag.BlockType_Wall) break;
 			
