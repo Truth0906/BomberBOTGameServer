@@ -119,7 +119,7 @@ public class Map extends Notification implements Runnable {
 	public void run() {
 		
 		try {
-			Thread.sleep(new Random().nextInt((int)(ServerOptions.TimeInterval * 0.8)) + (int)(ServerOptions.TimeInterval * 0.1));
+			Thread.sleep(new Random().nextInt((int)(ServerOptions.GameTimeInterval * 0.9)) + (int)(ServerOptions.GameTimeInterval * 0.05));
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -138,7 +138,7 @@ public class Map extends Notification implements Runnable {
 		Msg.setMsg(Message.PlayerMark, BitFlag.PlayerB);
 		B.sendMsg(Msg);
 		
-		Timer = new Timer(ServerOptions.TimeInterval);
+		Timer = new Timer(ServerOptions.GameTimeInterval);
 		Timer.addNotificationList(this);
 		new Thread(Timer).start();
 	}

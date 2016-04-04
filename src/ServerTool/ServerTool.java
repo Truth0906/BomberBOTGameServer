@@ -1,6 +1,7 @@
 package ServerTool;
 
 import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
@@ -65,23 +66,23 @@ public class ServerTool {//Server Tool
 		}
 		return result;
 	}
-//	public static String SHA256(String inputData){
-//		
-//		MessageDigest sha = null;
-//		
-//		try{
-//			sha = MessageDigest.getInstance("SHA-256");  
-//			sha.update(inputData.getBytes("UTF-8"));  
-//		}catch(Exception e){
-//			e.printStackTrace();
-//			return null;
-//		}
-//		
-//		String result = ByteToHex(sha.digest()); 
-//		
-//		return result;
-//		
-//	}
+	public static String SHA256(String inputData){
+		
+		MessageDigest sha = null;
+		
+		try{
+			sha = MessageDigest.getInstance("SHA-256");  
+			sha.update(inputData.getBytes("UTF-8"));  
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+		
+		String result = ByteToHex(sha.digest()); 
+		
+		return result;
+		
+	}
 	
 	public static ServerOptions StringToOption(String inputPlayerString){
 		GsonBuilder gsonBuilder  = new GsonBuilder();

@@ -18,6 +18,9 @@ import ServerTool.ServerTool;
 
 public class ServerCenter extends Notification{
 	
+	private static String PlayerDataFile = "Players";
+	private static String OptionDataFile = "Options";
+	
 	private static Object Players_Lock;
 	private static HashMap<String, Player> Players;
 	
@@ -76,7 +79,7 @@ public class ServerCenter extends Notification{
 		
 		Player NewPlayer = new Player();
 		NewPlayer.setID(inputID);
-		NewPlayer.setPassWord(inputPassword);
+		NewPlayer.setPassWord(ServerTool.SHA256(inputPassword));
 		
 		synchronized(Players_Lock){
 			Players.put(inputID.toLowerCase(), NewPlayer);
@@ -101,14 +104,14 @@ public class ServerCenter extends Notification{
 		}
 		if(temp == null) return false;
 		
-		return temp.getPassWord().equals(inputPassword);
+		return temp.getPassWord().equals(ServerTool.SHA256(inputPassword));
 	}
 	private void writeOptions(){
 		
 		File OptionFile = null;
 		
 		try {
-			OptionFile = new File("Option");
+			OptionFile = new File(OptionDataFile);
 			if(! OptionFile.exists()){
 				ServerTool.showOnScreen(LogName, "Find Option file fail, create new one");
 				OptionFile.createNewFile();
@@ -141,7 +144,7 @@ public class ServerCenter extends Notification{
 		
 		String OptionString = "";
 		
-		try(BufferedReader br = new BufferedReader(new FileReader("Option"))) {
+		try(BufferedReader br = new BufferedReader(new FileReader(OptionDataFile))) {
 			
 		    String line = null;
 		    
@@ -159,14 +162,12 @@ public class ServerCenter extends Notification{
 		ServerTool.showOnScreen(LogName, "Read Option file success");
 	}
 	private void readPlayerData(){
-		try(BufferedReader br = new BufferedReader(new FileReader("Player_Data"))) {
+		try(BufferedReader br = new BufferedReader(new FileReader(PlayerDataFile))) {
 			
 		    String line = null;
 
 		    while ((line = br.readLine()) != null) {
 		    	Player temp = ServerTool.StringToPlayer(line);
-		    	
-		    	//ST.showOnScreen(LogName, temp.Status);
 		    	
 		    	Players.put(temp.getID().toLowerCase(), temp);
 		    }
@@ -174,14 +175,15 @@ public class ServerCenter extends Notification{
 		    br.close();
 		    
 		} catch (IOException e) {
-			File f = new File("Player_Data");
+			File f = new File(PlayerDataFile);
 
 			try {
 				f.createNewFile();
 			} catch (IOException e1) {e1.printStackTrace();}
 			
-			ServerTool.showOnScreen(LogName, "read player file fail, create new one");
+			ServerTool.showOnScreen(LogName, "Find player file fail, create new one");
 		}
+		ServerTool.showOnScreen(LogName, "Read Player file success");
 	}
 	public static void writePlayerData(){
 		synchronized(Players_Lock){
@@ -189,7 +191,7 @@ public class ServerCenter extends Notification{
 			File PlayerFile = null;
 			
 			try {
-				PlayerFile = new File("Player_Data");
+				PlayerFile = new File(PlayerDataFile);
 				if(! PlayerFile.exists()){
 					PlayerFile.createNewFile();
 				}

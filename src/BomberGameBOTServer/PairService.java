@@ -25,7 +25,7 @@ public class PairService  extends Notification{
 		
 		PlayerPool = new HashMap<String, Player>();
 		
-		Timer = new Timer(1000);
+		Timer = new Timer(ServerOptions.PairTimeInterval);
 		Timer.addNotificationList(this);
 		new Thread(Timer).start();
 	}
@@ -37,18 +37,26 @@ public class PairService  extends Notification{
 		}
 		
 	}
-
+	
+	private boolean isServerAI(String inputPlayerID){
+		boolean result = false;
+		
+		for(String EachName : ServerOptions.ServerAI){
+			if(EachName.equals(inputPlayerID)){
+				result = true;
+				break;
+			}
+		}
+		
+		return result;
+	}
 	@Override
 	public void TimeUp() {
 		
 		synchronized(PlayerPool_Lock){
 
 			if(PlayerPool.size() < 2) return;
-			
-			int RandomIndex = new Random().nextInt(PlayerPool.size());
-			
-			int i = 0;
-			
+						
 			Player PickupA = null;
 			Player PickupB = null;
 			int ScoreA = 0;
@@ -57,13 +65,16 @@ public class PairService  extends Notification{
 			
 			for(Entry<String, Player> entry : PlayerPool.entrySet()) {
 			    
-				if(i++ < RandomIndex ) continue;
-				
 				PickupA = entry.getValue();
+				
+				if(isServerAI(PickupA.getID())) continue;
+				
 				ScoreA = PickupA.getScore();
 				
 				break;
 			}
+			
+			if(ScoreA == 0) return;
 			
 			for(Entry<String, Player> entry : PlayerPool.entrySet()) {
 			    
