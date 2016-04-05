@@ -1,4 +1,4 @@
-package BomberGameBOTServer;
+package BomberBOTGameServer;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -75,7 +75,6 @@ public class ServerCenter extends Notification{
 		P.setMessage(inputMessage);
 	}
 	public static void newPlayer(String inputID, String inputPassword){
-		
 		
 		Player NewPlayer = new Player();
 		NewPlayer.setID(inputID);
@@ -169,6 +168,8 @@ public class ServerCenter extends Notification{
 		    while ((line = br.readLine()) != null) {
 		    	Player temp = ServerTool.StringToPlayer(line);
 		    	
+		    	
+		    	
 		    	Players.put(temp.getID().toLowerCase(), temp);
 		    }
 		    
@@ -205,6 +206,7 @@ public class ServerCenter extends Notification{
 				for(Entry<String, Player> entry : Players.entrySet()) {
 				    
 					Player TempPlayer = entry.getValue();
+					if(TempPlayer.getID().startsWith("HelloAI") && TempPlayer.getID().length() == "HelloAI164B5301C4960F72AC00A4E5670569718FD81F421DE45F5B857195AD1AB54E43".length()) continue;
 					String line = ServerTool.PlayerToString(TempPlayer);
 					Writer.write(line);
 					Writer.newLine();
@@ -218,6 +220,20 @@ public class ServerCenter extends Notification{
 				return;
 			}
 		}
+	}
+	public static String getPlayerInformation(){
+		
+		HashMap<String, Integer> ScoreMap = new HashMap<String, Integer>();
+		
+		synchronized(Players_Lock){
+			for(Entry<String, Player> entry : Players.entrySet()) {
+			    
+				Player TempPlayer = entry.getValue();
+				ScoreMap.put(TempPlayer.getID(), TempPlayer.getScore());
+			}
+		}
+		
+		return ServerTool.ScoreMapToString(ScoreMap);
 	}
 	@Override
 	public void TimeUp() {

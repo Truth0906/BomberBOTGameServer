@@ -3,7 +3,7 @@ package ServerObjectStructure;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-import BomberGameBOTServer.ServerOptions;
+import BomberBOTGameServer.ServerOptions;
 import ServerTool.ServerTool;
 
 public class Player{

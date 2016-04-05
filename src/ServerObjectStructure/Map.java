@@ -2,8 +2,8 @@ package ServerObjectStructure;
 
 import java.util.Random;
 
-import BomberGameBOTServer.ServerCenter;
-import BomberGameBOTServer.ServerOptions;
+import BomberBOTGameServer.ServerCenter;
+import BomberBOTGameServer.ServerOptions;
 import ServerTool.ERSystem;
 import ServerTool.ErrorCode;
 import ServerTool.ServerTool;

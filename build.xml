@@ -4,7 +4,7 @@
               To include a user specific buildfile here, simply create one in the same
               directory with the processing instruction <?eclipse.ant.import?>
               as the first entry and export the buildfile again. -->
-	<project basedir="." default="jar" name="BomberGameBOTServer">
+	<project basedir="." default="jar" name="BomberBOTGameServer">
 	<path id="project-classpath">
 		<pathelement location="." />
 	</path>
@@ -33,9 +33,9 @@
 		    <include name="**/*.class" />
 		  </patternset>
 		</unzip>
-		<jar jarfile="./Output/BomberGameBOTServer.jar" basedir="./classes">
+		<jar jarfile="./Output/BomberBOTGameServer.jar" basedir="./classes">
 			<manifest>
-				<attribute name="Main-Class" value="BomberGameBOTServer.Server" />
+				<attribute name="Main-Class" value="BomberBOTGameServer.Server" />
 				<attribute name="Class-path" value="." />
 			</manifest>
 		</jar>

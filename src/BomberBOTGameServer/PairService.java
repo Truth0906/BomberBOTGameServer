@@ -1,4 +1,4 @@
-package BomberGameBOTServer;
+package BomberBOTGameServer;
 
 import java.util.HashMap;
 import java.util.Map.Entry;

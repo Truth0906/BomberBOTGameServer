@@ -1,4 +1,4 @@
-package BomberGameBOTServer;
+package BomberBOTGameServer;
 
 
 import java.io.BufferedReader;
@@ -71,8 +71,13 @@ public class Service implements Runnable {
 			m = (m == null ? "" : m);
 			ServerTool.showOnScreen(LogName, ClientSocket.getInetAddress()+" echo " + m);
 			
-			Msg.setMsg("Message", m + " echo back at " + ServerTool.getTime());
-			Msg.setMsg("ErrorCode", ErrorCode.Success);
+			Msg.setMsg(Message.Message, m + " echo back at " + ServerTool.getTime());
+			Msg.setMsg(Message.ErrorCode, ErrorCode.Success);
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {e.printStackTrace();}
+			
 			sendMsg(Msg);
 			return;
 		}
@@ -92,9 +97,16 @@ public class Service implements Runnable {
 					sendMsg(Msg);
 					return;
 				}
-				ServerTool.showOnScreen(LogName, ID + " verify password success");
 			}
 			else{ //new player
+				
+				if((!ServerTool.isLetterNumber(ID)) || (!ServerTool.isLetterNumber(Password))){
+					Msg.setMsg(Message.Message, "ID and Password must be letter or number");
+					Msg.setMsg(Message.ErrorCode, ErrorCode.ParameterError);
+					sendMsg(Msg);
+					return;
+				}
+				
 				ServerCenter.newPlayer(ID, Password);
 				ServerTool.showOnScreen(LogName, ID + " create player success");
 			}
@@ -106,6 +118,7 @@ public class Service implements Runnable {
 			}
 			
 			ServerCenter.addPairPlayer(ID, Writer);
+			ServerTool.showOnScreen(LogName, ID + " login");
 			
 		}
 		else if(FunctionName.equals("move")){
@@ -134,10 +147,38 @@ public class Service implements Runnable {
 			ServerCenter.setPlayerMove(ID, ClientMsg, Writer);
 			return;
 		}
+		else if(FunctionName.equals("query")){
+			
+			String ID = ClientMsg.getMsg("ID");
+			String Password = ClientMsg.getMsg("Password");
+			if(ID == null || Password == null){
+				Msg.setMsg(Message.Message, "null ID or Password");
+				Msg.setMsg(Message.ErrorCode, ErrorCode.ParameterError);
+				sendMsg(Msg);
+				return;
+			}
+			if(!ServerCenter.verifyPassword(ID, Password)){
+				Msg.setMsg(Message.Message, "Wrong password");
+				Msg.setMsg(Message.ErrorCode, ErrorCode.ParameterError);
+				sendMsg(Msg);
+				return;
+			}
+			
+			String PlayerInformation = ServerCenter.getPlayerInformation();
+			Msg.setMsg(Message.ScoreMap, PlayerInformation);
+			Msg.setMsg(Message.ErrorCode, ErrorCode.Success);
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {e.printStackTrace();}
+			
+			sendMsg(Msg);
+			return;
+		}
 		else{
 			
 			ServerTool.showOnScreen(LogName, ClientSocket.getInetAddress()+" Unknow function " + FunctionName);
-			Msg.setMsg("ErrorCode", ErrorCode.ParameterError);
+			Msg.setMsg(Message.ErrorCode, ErrorCode.ParameterError);
 			sendMsg(Msg);
 			
 		}

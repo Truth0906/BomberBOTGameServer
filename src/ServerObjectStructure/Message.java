@@ -19,6 +19,8 @@ public class Message {
 	public static final String End					= "End";
 	public static final String GameResult			= "GameResult";
 	public static final String APIVersion			= "APIVersion";
+	public static final String ScoreMap				= "ScoreMap";
+	
 	
 	private HashMap<String, String> MsgMap;
 	public Message(){

@@ -1,4 +1,4 @@
-package BomberGameBOTServer;
+package BomberBOTGameServer;
 
 public class ServerOptions {
 	public static int[]PortList = new int[] {52013, 52014, 53013, 53014};

@@ -3,6 +3,7 @@ package ServerTool;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.TimeZone;
 
 import org.apache.commons.codec.DecoderException;
@@ -11,7 +12,7 @@ import org.apache.commons.codec.binary.Hex;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import BomberGameBOTServer.ServerOptions;
+import BomberBOTGameServer.ServerOptions;
 import ServerObjectStructure.BitFlag;
 import ServerObjectStructure.Block;
 import ServerObjectStructure.Message;
@@ -133,7 +134,7 @@ public class ServerTool {//Server Tool
 		
 		String result = gson.toJson(inputMsg);
 		result = result.substring(10, result.length() -1);
-		return result;		
+		return result;
 	}
 	
 	public static String MapToString(Block [][] inputMap){
@@ -172,5 +173,23 @@ public class ServerTool {//Server Tool
 		
 		return BitFlag.Version_Same;
 		
+	}
+	
+	public static boolean isLetterNumber(String input){
+		
+		char [] inputCharArray = input.toCharArray();
+		
+		for(char charTemp : inputCharArray){
+			if(!Character.isLetterOrDigit(charTemp)) return false;
+		}
+		
+		return true;
+	}
+	public static String ScoreMapToString(HashMap<String, Integer> inputScoreMap){
+		
+		Gson gson = new Gson();
+		
+		String result = gson.toJson(inputScoreMap);
+		return result;
 	}
 }
