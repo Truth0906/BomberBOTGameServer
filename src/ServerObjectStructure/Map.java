@@ -151,43 +151,52 @@ public class Map extends Notification implements Runnable {
 		
 		int ScoreTemp = ERSystem.newScore(A.getScore(), B.getScore());
 		
+		boolean isTestAI = ServerTool.isTestAI(A.getID()) || ServerTool.isTestAI(B.getID());
+		
 		if(A.isLive()){
 			
 			GameResult = "Winner: " + A.getID();
 			
 			ServerTool.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " " + A.getID() + " Win!");
-			ServerTool.showOnScreen(LogName, A.getID() + " " + A.getScore() + " -> " + (A.getScore() + ScoreTemp));
-			ServerTool.showOnScreen(LogName, B.getID() + " " + B.getScore() + " -> " + (B.getScore() - ScoreTemp));
 			
-			
-			A.setScore(A.getScore() + ScoreTemp);
-			B.setScore(B.getScore() - ScoreTemp);
-			
-			A.setWins(A.getWins() + 1);
-			B.setLosses(B.getLosses() + 1);
-			
+			if(!isTestAI){
+				
+				ServerTool.showOnScreen(LogName, A.getID() + " " + A.getScore() + " -> " + (A.getScore() + ScoreTemp));
+				ServerTool.showOnScreen(LogName, B.getID() + " " + B.getScore() + " -> " + (B.getScore() - ScoreTemp));
+				
+				
+				A.setScore(A.getScore() + ScoreTemp);
+				B.setScore(B.getScore() - ScoreTemp);
+				
+				A.setWins(A.getWins() + 1);
+				B.setLosses(B.getLosses() + 1);
+			}
 		}
 		else if(B.isLive()){
 			
 			GameResult = "Winner: " + B.getID();
 			
 			ServerTool.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " " + B.getID() + " Win!");
-			ServerTool.showOnScreen(LogName, A.getID() + " " + A.getScore() + " -> " + (A.getScore() - ScoreTemp));
-			ServerTool.showOnScreen(LogName, B.getID() + " " + B.getScore() + " -> " + (B.getScore() + ScoreTemp));
 			
-			A.setScore(A.getScore() - ScoreTemp);
-			B.setScore(B.getScore() + ScoreTemp);
-			
-			A.setLosses(A.getLosses() + 1);
-			B.setWins(B.getWins() + 1);
-			
+			if(!isTestAI){
+				ServerTool.showOnScreen(LogName, A.getID() + " " + A.getScore() + " -> " + (A.getScore() - ScoreTemp));
+				ServerTool.showOnScreen(LogName, B.getID() + " " + B.getScore() + " -> " + (B.getScore() + ScoreTemp));
+				
+				A.setScore(A.getScore() - ScoreTemp);
+				B.setScore(B.getScore() + ScoreTemp);
+				
+				A.setLosses(A.getLosses() + 1);
+				B.setWins(B.getWins() + 1);
+			}
 		}
 		else{
 			
 			GameResult = "Peace end";
 			
-			A.setTie(A.getTie() + 1);
-			B.setTie(B.getTie() + 1);
+			if(!isTestAI){
+				A.setTie(A.getTie() + 1);
+				B.setTie(B.getTie() + 1);
+			}
 			ServerTool.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " peace end!");
 			
 		}

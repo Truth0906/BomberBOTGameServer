@@ -51,7 +51,7 @@ public class Server implements Runnable {
     }
 	public static void main(String[] args) {
 				
-		System.out.print("BomberBOTGame Server v 1.0.16.0405 beta\n");
+		System.out.print("BomberBOTGame Server v 1.0.16.0406 beta\n");
 		new Thread(new Server()).start();
 		
 	}

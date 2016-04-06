@@ -65,16 +65,18 @@ public class PairService  extends Notification{
 			
 			for(Entry<String, Player> entry : PlayerPool.entrySet()) {
 			    
-				PickupA = entry.getValue();
+				Player temp = entry.getValue();
 				
-				if(isServerAI(PickupA.getID())) continue;
+				if(isServerAI(temp.getID())) continue;
 				
-				ScoreA = PickupA.getScore();
-				
+				ScoreA = temp.getScore();
+				PickupA = temp;
 				break;
 			}
 			
-			if(ScoreA == 0) return;
+			if(PickupA == null) return;
+			
+			boolean isTestAI = ServerTool.isTestAI(PickupA.getID());
 			
 			for(Entry<String, Player> entry : PlayerPool.entrySet()) {
 			    
@@ -82,12 +84,31 @@ public class PairService  extends Notification{
 				
 				ScoreB = temp.getScore();
 				
+				if(isTestAI && ((!isServerAI(temp.getID()) && !ServerTool.isTestAI(temp.getID())))) continue;
+				
 				if(ServerTool.abs(ScoreA - ScoreB) < Min && !(temp.getID().equals(PickupA.getID()))){
 					
 					Min = ServerTool.abs(ScoreA - ScoreB);
-					PickupB = entry.getValue();
+					PickupB = temp;
 					
 				}
+			}
+			
+			if(PickupB == null){
+				for(Entry<String, Player> entry : PlayerPool.entrySet()) {
+				    
+					Player temp = entry.getValue();
+					
+					ScoreB = temp.getScore();
+					
+					if(ServerTool.abs(ScoreA - ScoreB) < Min && !(temp.getID().equals(PickupA.getID()))){
+						
+						Min = ServerTool.abs(ScoreA - ScoreB);
+						PickupB = temp;
+						
+					}
+				}
+				if(PickupB == null) return;
 			}
 			
 			PlayerPool.remove(PickupA.getID().toLowerCase());
@@ -98,5 +119,5 @@ public class PairService  extends Notification{
 			new Thread(new Map(PickupA, PickupB)).start();
 			
 		}
-	} 
+	}
 }
