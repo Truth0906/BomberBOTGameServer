@@ -1,5 +1,7 @@
 package BomberBOTGameServer;
 
+import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -75,8 +77,10 @@ public class PairService  extends Notification{
 			}
 			
 			if(PickupA == null) return;
-			
+			//Find a player that is not Server Test AI
 			boolean isTestAI = ServerTool.isTestAI(PickupA.getID());
+			
+			ArrayList<Player> PlayerBList = new ArrayList<Player>();
 			
 			for(Entry<String, Player> entry : PlayerPool.entrySet()) {
 			    
@@ -84,17 +88,22 @@ public class PairService  extends Notification{
 				
 				ScoreB = temp.getScore();
 				
-				if(isTestAI && ((!isServerAI(temp.getID()) && !ServerTool.isTestAI(temp.getID())))) continue;
+				if(isTestAI && (!isServerAI(temp.getID())) && (!ServerTool.isTestAI(temp.getID()))) continue;
+				if((!isTestAI) && ((isServerAI(temp.getID()) || ServerTool.isTestAI(temp.getID())))) continue;
 				
 				if(ServerTool.abs(ScoreA - ScoreB) < Min && !(temp.getID().equals(PickupA.getID()))){
 					
 					Min = ServerTool.abs(ScoreA - ScoreB);
-					PickupB = temp;
+					PlayerBList = new ArrayList<Player>();
+					PlayerBList.add(temp);
 					
+				}
+				else if(ServerTool.abs(ScoreA - ScoreB) == Min){
+					PlayerBList.add(temp);
 				}
 			}
 			
-			if(PickupB == null){
+			if(PlayerBList.size() == 0){
 				for(Entry<String, Player> entry : PlayerPool.entrySet()) {
 				    
 					Player temp = entry.getValue();
@@ -104,12 +113,18 @@ public class PairService  extends Notification{
 					if(ServerTool.abs(ScoreA - ScoreB) < Min && !(temp.getID().equals(PickupA.getID()))){
 						
 						Min = ServerTool.abs(ScoreA - ScoreB);
-						PickupB = temp;
+						PlayerBList = new ArrayList<Player>();
+						PlayerBList.add(temp);
 						
 					}
+					else if(ServerTool.abs(ScoreA - ScoreB) == Min){
+						PlayerBList.add(temp);
+					}
 				}
-				if(PickupB == null) return;
+				if(PlayerBList.size() == 0) return;
 			}
+			
+			PickupB = PlayerBList.get(new SecureRandom().nextInt(PlayerBList.size()));
 			
 			PlayerPool.remove(PickupA.getID().toLowerCase());
 			PlayerPool.remove(PickupB.getID().toLowerCase());
