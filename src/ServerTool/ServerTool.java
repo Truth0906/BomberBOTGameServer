@@ -192,7 +192,4 @@ public class ServerTool {//Server Tool
 		String result = gson.toJson(inputScoreMap);
 		return result;
 	}
-	public static boolean isTestAI(String inputID){
-		return inputID.toLowerCase().contains("test") || inputID.toLowerCase().startsWith("HelloAI");
-	}
 }

@@ -26,7 +26,21 @@ public class Player{
 	public void setLive(boolean inputLive) {
 		Live = inputLive;
 	}
-
+	public boolean isTestAI(){
+		return ID.toLowerCase().contains("test") || ID.toLowerCase().startsWith("helloai");
+	}
+	public boolean isServerAI(){
+		boolean result = false;
+		
+		for(String EachName : ServerOptions.ServerAI){
+			if(EachName.equals(ID)){
+				result = true;
+				break;
+			}
+		}
+		
+		return result;
+	}
 	public Player(){
 		ID = null;
 		Score = ServerOptions.InitScore;

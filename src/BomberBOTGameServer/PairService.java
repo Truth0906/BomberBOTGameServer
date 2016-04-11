@@ -11,10 +11,7 @@ import ServerObjectStructure.Player;
 import ServerObjectStructure.Timer;
 import ServerTool.ServerTool;
 
-import java.util.Random;
-
-
-public class PairService  extends Notification{
+public class PairService extends Notification{
 	
 	private static Object PlayerPool_Lock;
 	private static HashMap<String, Player> PlayerPool;
@@ -40,18 +37,6 @@ public class PairService  extends Notification{
 		
 	}
 	
-	private boolean isServerAI(String inputPlayerID){
-		boolean result = false;
-		
-		for(String EachName : ServerOptions.ServerAI){
-			if(EachName.equals(inputPlayerID)){
-				result = true;
-				break;
-			}
-		}
-		
-		return result;
-	}
 	@Override
 	public void TimeUp() {
 		
@@ -69,7 +54,7 @@ public class PairService  extends Notification{
 			    
 				Player temp = entry.getValue();
 				
-				if(isServerAI(temp.getID())) continue;
+				if(temp.isServerAI()) continue;
 				
 				ScoreA = temp.getScore();
 				PickupA = temp;
@@ -78,7 +63,7 @@ public class PairService  extends Notification{
 			
 			if(PickupA == null) return;
 			//Find a player that is not Server Test AI
-			boolean isTestAI = ServerTool.isTestAI(PickupA.getID());
+			boolean isTestAI = PickupA.isTestAI();
 			
 			ArrayList<Player> PlayerBList = new ArrayList<Player>();
 			
@@ -88,8 +73,8 @@ public class PairService  extends Notification{
 				
 				ScoreB = temp.getScore();
 				
-				if(isTestAI && (!isServerAI(temp.getID())) && (!ServerTool.isTestAI(temp.getID()))) continue;
-				if((!isTestAI) && ((isServerAI(temp.getID()) || ServerTool.isTestAI(temp.getID())))) continue;
+				if(isTestAI && (!temp.isServerAI()) && (!temp.isTestAI())) continue;
+				if((!isTestAI) && (temp.isServerAI() || temp.isTestAI())) continue;
 				
 				if(ServerTool.abs(ScoreA - ScoreB) < Min && !(temp.getID().equals(PickupA.getID()))){
 					

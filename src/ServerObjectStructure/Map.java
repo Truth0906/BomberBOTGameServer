@@ -148,10 +148,8 @@ public class Map extends Notification implements Runnable {
 		Timer.stop();
 		
 		String GameResult = "Error result";
-		
-		int ScoreTemp = EloRating.newScore(A.getScore(), B.getScore());
-		
-		boolean isTestAI = ServerTool.isTestAI(A.getID()) || ServerTool.isTestAI(B.getID());
+				
+		boolean isTestAI = A.isTestAI() || B.isTestAI();
 		
 		if(A.isLive()){
 			
@@ -160,6 +158,8 @@ public class Map extends Notification implements Runnable {
 			ServerTool.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " " + A.getID() + " Win!");
 			
 			if(!isTestAI){
+				
+				int ScoreTemp = EloRating.newScore(A.getScore(), B.getScore());
 				
 				ServerTool.showOnScreen(LogName, A.getID() + " " + A.getScore() + " -> " + (A.getScore() + ScoreTemp));
 				ServerTool.showOnScreen(LogName, B.getID() + " " + B.getScore() + " -> " + (B.getScore() - ScoreTemp));
@@ -179,6 +179,9 @@ public class Map extends Notification implements Runnable {
 			ServerTool.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " " + B.getID() + " Win!");
 			
 			if(!isTestAI){
+				
+				int ScoreTemp = EloRating.newScore(B.getScore(), A.getScore());
+				
 				ServerTool.showOnScreen(LogName, A.getID() + " " + A.getScore() + " -> " + (A.getScore() - ScoreTemp));
 				ServerTool.showOnScreen(LogName, B.getID() + " " + B.getScore() + " -> " + (B.getScore() + ScoreTemp));
 				

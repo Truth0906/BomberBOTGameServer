@@ -46,8 +46,8 @@ public class BomberBOTGameServer implements Runnable {
 				clientThread=new Thread(new Service(ClientSocket));
 				clientThread.start();
 			} catch (IOException e) {
+				ServerTool.showOnScreen(LogName, "BomberBOTGame Server accept fail");
 				return;
-				
 			}
     	}
     }
