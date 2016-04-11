@@ -5,13 +5,15 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import ServerTool.EloRating;
 import ServerTool.ServerTool;
 
-public class Server implements Runnable {
-	//private ServerCenter Center;
-	private String LogName = "SocketServer";
+public class BomberBOTGameServer implements Runnable {
 	
-	public Server(){
+	public static String ServerVersion = "1.0.16.0411 beta";
+	private String LogName = "BomberBOTGameServer";
+	
+	public BomberBOTGameServer(){
 		new ServerCenter();
 		ServerTool.showOnScreen(LogName, "Server center init success");
 		ServerTool.showOnScreen(LogName, "Server init success");
@@ -51,8 +53,8 @@ public class Server implements Runnable {
     }
 	public static void main(String[] args) {
 				
-		System.out.print("BomberBOTGame Server v 1.0.16.0406 beta\n");
-		new Thread(new Server()).start();
+		System.out.println("BomberBOTGame Server v " + BomberBOTGameServer.ServerVersion);
+		new Thread(new BomberBOTGameServer()).start();
 		
 	}
 }

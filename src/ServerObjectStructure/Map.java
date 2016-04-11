@@ -4,7 +4,7 @@ import java.util.Random;
 
 import BomberBOTGameServer.ServerCenter;
 import BomberBOTGameServer.ServerOptions;
-import ServerTool.ERSystem;
+import ServerTool.EloRating;
 import ServerTool.ErrorCode;
 import ServerTool.ServerTool;
 
@@ -149,7 +149,7 @@ public class Map extends Notification implements Runnable {
 		
 		String GameResult = "Error result";
 		
-		int ScoreTemp = ERSystem.newScore(A.getScore(), B.getScore());
+		int ScoreTemp = EloRating.newScore(A.getScore(), B.getScore());
 		
 		boolean isTestAI = ServerTool.isTestAI(A.getID()) || ServerTool.isTestAI(B.getID());
 		
