@@ -14,7 +14,7 @@ public class BitFlag {
 	//PlayerMark
 	public static int PlayerA = 			        0x0100;
 	public static int PlayerB =  					0x0200;
-	
+	public static int Player_Filter =				0x0F00;
 	//Move
 	public static int Move_Wait = 		  	  		0x0000;
 	public static int Move_Up = 		  	  		0x0001;

@@ -14,6 +14,10 @@ public class Message {
 	public static final String Message 				= "Message";
 	public static final String ErrorCode 			= "ErrorCode";
 	public static final String PlayerMark 			= "PlayerMark";
+	public static final String PlayerInfo_Wins		= "PlayerInfo_Wins";
+	public static final String PlayerInfo_Losses	= "PlayerInfo_Losses";
+	public static final String PlayerInfo_Draw		= "PlayerInfo_Draw";
+	public static final String PlayerInfo_Score		= "PlayerInfo_Score";
 	public static final String Move					= "Move";
 	public static final String BombFlag				= "BombFlag";
 	public static final String End					= "End";

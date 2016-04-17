@@ -35,7 +35,7 @@
 		</unzip>
 		<jar jarfile="./Output/BomberBOTGameServer.jar" basedir="./classes">
 			<manifest>
-				<attribute name="Main-Class" value="BomberBOTGameServer.Server" />
+				<attribute name="Main-Class" value="BomberBOTGameServer.BomberBOTGameServer" />
 				<attribute name="Class-path" value="." />
 			</manifest>
 		</jar>

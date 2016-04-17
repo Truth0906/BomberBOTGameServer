@@ -133,9 +133,17 @@ public class Map extends Notification implements Runnable {
 		Msg.setMsg(Message.ErrorCode, ErrorCode.Success);
 		
 		Msg.setMsg(Message.PlayerMark, BitFlag.PlayerA);
+		Msg.setMsg(Message.PlayerInfo_Wins, A.getWins());
+		Msg.setMsg(Message.PlayerInfo_Losses, A.getLosses());
+		Msg.setMsg(Message.PlayerInfo_Draw, A.getDraw());
+		Msg.setMsg(Message.PlayerInfo_Score, A.getScore());
 		A.sendMsg(Msg);
 		
 		Msg.setMsg(Message.PlayerMark, BitFlag.PlayerB);
+		Msg.setMsg(Message.PlayerInfo_Wins, B.getWins());
+		Msg.setMsg(Message.PlayerInfo_Losses, B.getLosses());
+		Msg.setMsg(Message.PlayerInfo_Draw, B.getDraw());
+		Msg.setMsg(Message.PlayerInfo_Score, B.getScore());
 		B.sendMsg(Msg);
 		
 		Timer = new Timer(ServerOptions.GameTimeInterval);
@@ -197,8 +205,8 @@ public class Map extends Notification implements Runnable {
 			GameResult = "Peace end";
 			
 			if(!isTestAI){
-				A.setTie(A.getTie() + 1);
-				B.setTie(B.getTie() + 1);
+				A.setDraw(A.getDraw() + 1);
+				B.setDraw(B.getDraw() + 1);
 			}
 			ServerTool.showOnScreen(LogName, A.getID() + " vs " + B.getID() + " peace end!");
 			

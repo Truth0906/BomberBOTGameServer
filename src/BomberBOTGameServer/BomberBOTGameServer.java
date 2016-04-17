@@ -10,7 +10,7 @@ import ServerTool.ServerTool;
 
 public class BomberBOTGameServer implements Runnable {
 	
-	public static String ServerVersion = "1.0.16.0411 beta";
+	public static String ServerVersion = "1.0.16.0417 beta";
 	private String LogName = "BomberBOTGameServer";
 	
 	public BomberBOTGameServer(){

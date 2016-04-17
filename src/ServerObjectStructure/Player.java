@@ -12,7 +12,7 @@ public class Player{
 	private String Password;
 	private int Wins;
 	private int Losses;
-	private int Tie;
+	private int Draw;
 
 	private transient BufferedWriter Writer;
 	private transient Message message;
@@ -47,17 +47,17 @@ public class Player{
 		Password = null;
 		Wins = 0;
 		Losses = 0;
-		Tie = 0;
+		Draw = 0;
 		message = null;
 		Status = new State();
 	}
 	
-	public int getTie() {
-		return Tie;
+	public int getDraw() {
+		return Draw;
 	}
 
-	public void setTie(int inputTie) {
-		Tie = inputTie;
+	public void setDraw(int inputDraw) {
+		Draw = inputDraw;
 	}
 
 	public String getState(){
